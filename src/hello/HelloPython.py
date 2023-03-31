@@ -29,8 +29,8 @@ cars = ["Ford", "Volvo", "Syrena"]
 cars.append("VW")
 cars.insert(2, "Fiat")
 
-for x in cars:
-    print(x)
+for car in cars:
+    print(car)
 
 print(id(counter))  # id of an object
 

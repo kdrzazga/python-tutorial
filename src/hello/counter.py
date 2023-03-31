@@ -1,6 +1,6 @@
 class Counter:
     def __init__(self):
-        self.__current = 0;
+        self.__current = 0
 
     def increment(self):
         self.__current += 1
@@ -10,4 +10,3 @@ class Counter:
 
     def reset(self):
         self.__current = 0
-
