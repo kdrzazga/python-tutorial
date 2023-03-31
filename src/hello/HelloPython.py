@@ -32,8 +32,8 @@ cars.insert(2, "Fiat")
 for x in cars:
     print(x)
 
+print(id(counter))  # id of an object
 
-print(id(counter)) #id of an object
 
 def mutable_param(lst=[]):
     lst.append(1)
@@ -49,10 +49,10 @@ def proper_mutable_param(lst=None):
     return lst
 
 
-print(mutable_param()) #gathers alrguments
+print(mutable_param())  # gathers alrguments
 print(mutable_param())
 print(mutable_param())
 
-print(proper_mutable_param()) #collects alrguments
+print(proper_mutable_param())  # collects alrguments
 print(proper_mutable_param())
 print(proper_mutable_param())
