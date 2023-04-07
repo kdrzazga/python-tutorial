@@ -12,4 +12,3 @@ def test_navigating_ryan_air():
 
     main_page = MainPage(driver, url)
     main_page.open()
-

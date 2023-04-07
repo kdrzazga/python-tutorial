@@ -26,8 +26,7 @@ class RequestsTest(unittest.TestCase):
 
     def test_get_all_books(self):
         auth = HTTPBasicAuth('admin', 'admin')
-        resp = requests.get(self._base_url + "/readBooks"
-                            , auth=auth)
+        resp = requests.get(self._base_url + "/readBooks", auth=auth)
         data = resp.json()  # list
 
         self.assertEqual(200, resp.status_code)
@@ -42,9 +41,6 @@ class RequestsTest(unittest.TestCase):
                 self.assertEqual(book_author, book['author']['lastname'])
                 self._logger.info("The book '" + book['title'] + "' was written by " + book['author']['lastname'])
                 break
-
-
-
         self._logger.info(data)
 
     def test_get_all_authors(self):
