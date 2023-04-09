@@ -8,6 +8,7 @@ class Person:
 
 
 class Employee(Person):
-    def __int__(self, name, age, job_title):
+
+    def __init__(self, name, age, job_title):
         super().__init__(name, age)
         self.job_title = job_title
