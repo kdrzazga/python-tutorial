@@ -1,0 +1,4 @@
+hostAuthors: http://localhost:8981
+endpointAuthors: /author/
+hostWaut: http://localhost:8080
+endpointWautReadAll: /read
