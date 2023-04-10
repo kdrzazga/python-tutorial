@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Install tools') {
             steps {
-                 sh 'sudo apt-get update && sudo apt-get install -y python3-pip'
+                 sh 'apt-get update && apt-get install -y python3-pip'
                  sh 'pip3 install pytest'
              }
         }
