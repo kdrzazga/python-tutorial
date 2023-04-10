@@ -1,9 +1,12 @@
 import os
+
+import pytest as pytest
 from selenium import webdriver
 
 from src.ryan_air.MainPage import MainPage
 
 
+@pytest.mark.webtest
 def test_navigating_ryan_air():
     chrome_drv_path = '../src/ryan_air/resources/chromedriver/111/chromedriver.exe'
     os.environ["webdriver.chrome.driver"] = chrome_drv_path
