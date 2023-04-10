@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Install tools') {
+            steps {
+                 sh 'apt-get update && apt-get install -y python3-pip'
+                 sh 'pip3 install pytest'
+             }
+        }
         stage('Checkout') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/kdrzazga/python-tutorial.git']]])
@@ -9,7 +15,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt'
             }
         }
         stage('Unit Test') {
