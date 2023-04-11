@@ -5,7 +5,12 @@
 # docker run -p 8080:8080 python-tutorial-linux-img
 FROM alpine:3.14
 
-# Install required packages (nano, git and python + pytest)
+# Install required packages (wget, curl, nano, git and python + pip + pytest)
+RUN apk update && \
+    apk add --no-cache wget unzip && \
+    rm -rf /var/cache/apk/*
+
+RUN apk add curl
 RUN apk add nano
 RUN apk add git
 
@@ -42,6 +47,14 @@ RUN git status
 RUN git reset --hard
 RUN git checkout test-classification
 
+# Download webdriver
+RUN CHROME_DRIVER_VERSION=$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE) && \
+    wget -q https://chromedriver.storage.googleapis.com/${CHROME_DRIVER_VERSION}/chromedriver_linux64.zip -O /tmp/chromedriver.zip
+RUN unzip -q /tmp/chromedriver.zip -d /usr/local/bin
+
+
+# Set the PATH environment variable to include the Chrome WebDriver
+ENV PATH=$PATH:/usr/local/bin
 USER userX
 
 ##Running tests
