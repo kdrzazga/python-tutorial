@@ -5,14 +5,23 @@
 # docker run -p 8080:8080 python-tutorial-linux-img
 FROM alpine:3.14
 
-# Install required packages (git and python)
+# Install required packages (git and python + pytest)
 RUN apk add git
 
 RUN apk add --no-cache bash python3 py3-pip && \
     ln -s -f /usr/bin/python3 /usr/bin/python && \
     ln -s -f /usr/bin/pip3 /usr/bin/pip
 
+RUN pip install --no-cache-dir pytest
+
+# Check installed programs
+RUN git --version
+RUN python --version
+RUN pip --version
+RUN pytest --version
+
 # Create directory
+RUN rm -rf /usr/share/python-code #remove old one
 RUN mkdir -p /usr/share/python-code
 WORKDIR /usr/share/python-code
 
@@ -28,19 +37,13 @@ RUN chmod -R 777 /usr/share/python-code
 WORKDIR /usr/share/python-code/python-tutorial
 RUN git config --global --add safe.directory /usr/share/python-code/python-tutorial
 RUN git status
+RUN git reset --hard
 RUN git checkout test-classification
-
-# Install additional stuff
-RUN pip install --no-cache-dir pytest
-
-# Check installed programs
-RUN git --version
-RUN python --version
-RUN pip --version
-RUN pytest --version
 
 USER userX
 
 ##Running tests
 RUN pip install -r requirements.txt
-#RUN pytest -m unit --junitxml=unittest-result.xml
+#RUN pytest -m unit --junitxml=unittest-result.xml --maxfail=9999
+#RUN pytest -m api --junitxml=apitest-result.xml --maxfail=9999
+#RUN pytest -m webtest --junitxml=uitest-result.xml --maxfail=9999
