@@ -5,7 +5,8 @@
 # docker run -p 8080:8080 python-tutorial-linux-img
 FROM alpine:3.14
 
-# Install required packages (git and python + pytest)
+# Install required packages (nano, git and python + pytest)
+RUN apk add nano
 RUN apk add git
 
 RUN apk add --no-cache bash python3 py3-pip && \
@@ -15,6 +16,7 @@ RUN apk add --no-cache bash python3 py3-pip && \
 RUN pip install --no-cache-dir pytest
 
 # Check installed programs
+RUN nano --version
 RUN git --version
 RUN python --version
 RUN pip --version
@@ -44,6 +46,6 @@ USER userX
 
 ##Running tests
 RUN pip install -r requirements.txt
-#RUN pytest -m unit --junitxml=unittest-result.xml --maxfail=9999
+RUN pytest -m unit --junitxml=unittest-result.xml --maxfail=9999
 #RUN pytest -m api --junitxml=apitest-result.xml --maxfail=9999
 #RUN pytest -m webtest --junitxml=uitest-result.xml --maxfail=9999
