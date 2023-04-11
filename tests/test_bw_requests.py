@@ -1,10 +1,10 @@
 import logging
 import unittest
+from http import HTTPStatus
 
 import pytest
 import requests
 from requests.auth import HTTPBasicAuth
-from http import HTTPStatus
 
 
 # tests for webservice https://github.com/kdrzazga/buggy-webservice/releases
