@@ -1,4 +1,6 @@
 import unittest
+import pytest
+
 from unittest.mock import patch
 
 from src.simple_mocks_testing.account import Account
@@ -6,6 +8,7 @@ from src.simple_mocks_testing.account import Account
 
 class MyTestCase(unittest.TestCase):
 
+    @pytest.mark.unit
     @patch('src.simple_mocks_testing.account.check_score', autospec=True)  # need to patch not where the object is
     # defined, but where it is USED, so don't put here src.simple_mocks_testing.account.check_score
     def test_account(self, mock_check_score):

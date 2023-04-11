@@ -1,6 +1,7 @@
 import logging
 import unittest
 import httpretty
+import pytest
 import requests
 from http import HTTPStatus
 
@@ -8,6 +9,7 @@ from tests.wataut.config_reader import read_yml
 
 
 class SirThaddeusReadTests(unittest.TestCase):
+    _url = None
     _logger = logging.getLogger(__name__)
     _properties = read_yml()
 
@@ -31,6 +33,8 @@ class SirThaddeusReadTests(unittest.TestCase):
             content_type="text/plain"
         )
 
+    @pytest.mark.api
+    @pytest.mark.authors_service
     def test_read_author(self):
         # Make a request to mock
         response = requests.get(self._url + "Sir_Thaddeus")
@@ -40,6 +44,8 @@ class SirThaddeusReadTests(unittest.TestCase):
         assert response.status_code == 200
         assert response.text == "Mocked Adam Mickiewicz"
 
+    @pytest.mark.api
+    @pytest.mark.waut_service
     def test_to_be_failed(self):
         self._logger.info("\n---------------------\n")
 

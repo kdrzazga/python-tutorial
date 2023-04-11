@@ -1,8 +1,10 @@
 import logging
 import unittest
+from http import HTTPStatus
+
+import pytest
 import requests
 from requests.auth import HTTPBasicAuth
-from http import HTTPStatus
 
 
 # tests for webservice https://github.com/kdrzazga/buggy-webservice/releases
@@ -15,15 +17,19 @@ class RequestsTest(unittest.TestCase):
     def setUp(cls):
         logging.basicConfig(level=logging.INFO)  # logger will write to console output
 
+    @pytest.mark.api
+    @pytest.mark.buggywebservice
     def test_basic_response(self):
         resp = requests.get(self._base_url)
         data = resp.text
 
-        self.assertEqual(HTTPStatus.OK.value, resp.status_code)
+        self.assertEqual(HTTPStatus.OK, resp.status_code)
         self.assertRegex(data, "\n?H2 database[\S\s]*")
         self.assertRegex(data, "[\S\s]*Open SWAGGER for all available set of request[\S\s]*")
         self.assertRegex(data, "[\S\s]*Sample JSONs for update:[\S\s]*")
 
+    @pytest.mark.api
+    @pytest.mark.buggywebservice
     def test_get_all_books(self):
         auth = HTTPBasicAuth('admin', 'admin')
         resp = requests.get(self._base_url + "/readBooks", auth=auth)
@@ -43,6 +49,8 @@ class RequestsTest(unittest.TestCase):
                 break
         self._logger.info(data)
 
+    @pytest.mark.api
+    @pytest.mark.buggywebservice
     def test_get_all_authors(self):
         auth = HTTPBasicAuth('user', 'user')
         resp = requests.get(self._base_url + "/readAuthors", auth=auth)
@@ -51,6 +59,8 @@ class RequestsTest(unittest.TestCase):
         self.assertEqual(200, resp.status_code)
         self.assertTrue(type(data) is list)
 
+    @pytest.mark.api
+    @pytest.mark.buggywebservice
     def test_delete_book(self):
         book_id = "2001"
         endpoint = "/deleteBook/%s" % book_id

@@ -1,8 +1,9 @@
 import logging
 import unittest
-import requests
-from requests.auth import HTTPBasicAuth
 from http import HTTPStatus
+
+import pytest
+import requests
 
 
 # tests for webservice https://github.com/kdrzazga/buggy-webservice/releases
@@ -15,7 +16,10 @@ class WebAutomationRequestsTest(unittest.TestCase):
     def setUp(cls):
         logging.basicConfig(level=logging.INFO)  # logger will write to console output
 
-    def test_basic_response(self): # python -m unittest test_webaut_requests.WebAutomationRequestsTest.test_basic_response
+    @pytest.mark.api
+    @pytest.mark.waut_service
+    def test_basic_response(
+            self):  # python -m unittest test_webaut_requests.WebAutomationRequestsTest.test_basic_response
         resp = requests.get(self._base_url)
         data = resp.text
 
