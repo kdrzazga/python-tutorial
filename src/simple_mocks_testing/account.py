@@ -7,7 +7,7 @@ class Account:
     _name: string
     _balance: float
 
-    def __init__(self, name, balance):
+    def __init__(self, name: str, balance: float):
         self._name = name
         self._balance = balance
 
