@@ -14,10 +14,10 @@ RUN apk add --no-cache bash python3 py3-pip && \
     ln -s -f /usr/bin/python3 /usr/bin/python && \
     ln -s -f /usr/bin/pip3 /usr/bin/pip
 
-RUN pip install flask gunicorn
+RUN pip install flask gunicorn pyyaml
 
 # Copy the source code for the Flask apps into the container
-COPY card.py account.py country.py ./
+COPY card.py account.py country.py cards.yml ./
 
 # Expose ports 5955, 5957, and 5981 for the Flask apps to listen on
 EXPOSE 5955 5957 5981

@@ -1,20 +1,45 @@
-from flask import Flask
+import json
+
+from flask import Flask, jsonify
 
 SERVICE_NAME = 'COUNTRY'
-
 app = Flask(__name__)
 
 
 @app.route('/', methods=['GET'])
 def say_hello():
     print("Hello from service " + SERVICE_NAME)
-    return 'I am microservice %s' % SERVICE_NAME
+    return 'Microservice %s' % SERVICE_NAME
 
 
-@app.route('/{name}', methods=['GET'])
+@app.route('/<name>', methods=['GET'])
 def get_country_info(name: str):
-    print("Info about country " + name)
-    return 'Country name: %s' % name
+    print("Received input | country= " + name)
+    data = _get_data()
+    country_data = data.get(name)
+    if country_data is None:
+        return jsonify({'error': 'Country not found'}), 404
+    else:
+        print("Country data:\n%s", json.dumps(country_data, indent=2))
+
+    return jsonify(country_data)
+
+
+def _get_data():
+    return {
+        'Poland': {
+            'capital': 'Warsaw',
+            'currency': 'PLN'
+        },
+        'USA': {
+            'capital': 'Washington, D.C.',
+            'currency': 'USD'
+        },
+        'Canada': {
+            'capital': 'Ottawa',
+            'currency': 'CAD'
+        }
+    }
 
 
 if __name__ == '__main__':
