@@ -13,6 +13,6 @@ debit-card:
 credit-card:
   - id: 5678
     name: Mastercard Credit
-    customer-name: Marek Smith
+    customer-name: Marek Kowalski
     issue-date: 2022-02-01
     account-ref: 8765

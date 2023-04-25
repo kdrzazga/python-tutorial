@@ -1,6 +1,7 @@
 import json
 
 from flask import Flask, jsonify
+from loguru import logger
 
 SERVICE_NAME = 'COUNTRY'
 app = Flask(__name__)
@@ -8,19 +9,19 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def say_hello():
-    print("Hello from service " + SERVICE_NAME)
+    logger.info("Hello from service " + SERVICE_NAME)
     return 'Microservice %s' % SERVICE_NAME
 
 
 @app.route('/<name>', methods=['GET'])
 def get_country_info(name: str):
-    print("Received input | country= " + name)
+    logger.info("Received input | country= " + name)
     data = _get_data()
     country_data = data.get(name)
     if country_data is None:
         return jsonify({'error': 'Country not found'}), 404
     else:
-        print("Country data:\n%s", json.dumps(country_data, indent=2))
+        logger.info("Country data:\n%s", json.dumps(country_data, indent=2))
 
     return jsonify(country_data)
 
