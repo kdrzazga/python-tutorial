@@ -2,12 +2,16 @@ import pygame
 
 from player import Player
 from enemy import Enemy
+from board import Board
 
 class Drawer:
     
     width = 800
     window_height = 600
     board_height = window_height * 86 //100
+    cell_width = width // Board.sizeX
+    cell_height = board_height // Board.sizeY
+    
     title = "ULTIMATE WIZARD"
 
     def __init__(self):
@@ -16,20 +20,17 @@ class Drawer:
         pygame.display.set_caption(Drawer.title)
 
     def draw_board(self, board):
-        self._draw_player(board.player)
-        self._draw_enemy(board.enemy)
-
-    def _draw_player(self, player):
-        player_bitmap = pygame.image.load(Player.sprite_path).convert_alpha()
-        image_width, image_height = player_bitmap.get_size()
-        self.window.blit(player_bitmap, (player.x, player.y))
-        pygame.display.update()
-        
-    def _draw_enemy(self, player):
-        player_bitmap = pygame.image.load(Enemy.sprite_path).convert_alpha()
-        image_width, image_height = player_bitmap.get_size()
-        self.window.blit(player_bitmap, (player.x, player.y))
-        pygame.display.update()
+        self.draw_sprite(Player.sprite_path, board.player.x, board.player.y)
+        self.draw_sprite(Enemy.sprite_path, board.enemy.x, board.enemy.y)
+    
+    def draw_sprite(self, sprite_path, x, y):
+        sprite_bitmap = pygame.image.load(sprite_path).convert_alpha()
+    
+        x = x * Drawer.cell_width
+        y = y * Drawer.cell_height
+    
+        self.window.blit(sprite_bitmap, (x, y))
+        pygame.display.update()    
         
     def main_loop(self):
         running = True
