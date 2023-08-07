@@ -18,7 +18,7 @@ RUN apk add --no-cache bash python3 py3-pip && \
     ln -s -f /usr/bin/python3 /usr/bin/python && \
     ln -s -f /usr/bin/pip3 /usr/bin/pip
 
-RUN pip install --no-cache-dir pytest
+RUN pip install --no-cache-dir pygame pytest
 
 # Check installed programs
 RUN nano --version
