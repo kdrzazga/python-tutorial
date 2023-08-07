@@ -14,6 +14,7 @@ YELLOW = (238, 238, 119)
 class Drawer:
 
     platform_path = "resources/floor.png"
+    ladder_path = "resources/ladder.png"
     
     width = 800
     window_height = 600
@@ -34,21 +35,26 @@ class Drawer:
         self.caption_text_color1 = YELLOW
         self.caption_text_color3 = WHITE
         self.caption_text_color2 = CYAN
-        
+
         pygame.display.set_caption(Drawer.title)
 
     def draw_board(self, board):
         self.draw_sprite(Player.sprite_path, board.player.x, board.player.y)
-        self.draw_sprite(Enemy.sprite_path, board.enemy.x, board.enemy.y)
+        self.draw_sprite(Enemy.sprite_path, board.enemy.x, board.enemy.y)   
+
+        for cell_x, cell_y in board.ladders:
+            print("Ladder:", str(cell_x), str(cell_y))
+            self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)        
+        
         for cell_x, cell_y in board.platforms:
             print("Platform:", str(cell_x), str(cell_y))
             self.draw_platform(cell_x, cell_y)
-            
+
     def draw_platform(self, x, y):
         platform_bitmap = pygame.image.load(Drawer.platform_path)
     
         x = x * Drawer.cell_width
-        y = (y + 1) * Drawer.cell_height - 8 #5 is height of platform and it is supposed to be drawn on the bottom of cell
+        y = (y + 1) * Drawer.cell_height - 8 #height of platform is supposed to be drawn on the bottom of cell
     
         self.window.blit(platform_bitmap, (x, y))
         pygame.display.update() 
