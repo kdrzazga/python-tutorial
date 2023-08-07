@@ -9,15 +9,29 @@ class Board:
     def __init__(self):
         self.player = Player(16, 9)
         self.enemy = Enemy(9, 3)
-
-        self.platforms = [(0,3), (1,3), (2,3), (3,3), (0,9), (1,9), (2,9), (3,9), (4,9), (5,9), (6,9), (8,9), (9,9), (14,9), (15,9), (16,9)]
-
+    
+        self.platforms = []
+        
+        for x in range(Board.sizeX // 2 - 3):
+            self.platforms.append((x, 3))
+            
+        for x in range(Board.sizeX // 2 - 2, Board.sizeX):
+            self.platforms.append((x, 5))
+            
+        for x in range(Board.sizeX // 5):
+            self.platforms.append((x, x + 6))
+            self.platforms.append((Board.sizeX - x - 1, x + 6))
+        
+        for x in range(Board.sizeX):
+            self.platforms.append((x, 9))       
+            self.platforms.append((x, 1))       
+        
         self.ladders = []
         for y in range(Board.sizeY):
-            self.ladders.append((1, y))
+            self.ladders.append((3, y))
             self.ladders.append((15, y))
 
         for y in range(2 * Board.sizeY//3, Board.sizeY):
             self.ladders.append((8, y))
         
-        self.fields = [[0 for _ in range(Board.sizeX)] for _ in range(Board.sizeY)]
+        self.fields = [[0 for _ in range(Board.sizeX)] for _ in range(Board.sizeY)] #TODO to be removed

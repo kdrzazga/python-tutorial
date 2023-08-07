@@ -82,7 +82,7 @@ class Drawer:
         self.window.blit(caption_surface, (0, Drawer.board_height))
         pygame.display.update()
     
-    def main_loop(self):
+    def main_loop(self, board, info):
         running = True
         while running:
             for event in pygame.event.get():

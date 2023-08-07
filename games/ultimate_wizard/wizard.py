@@ -8,4 +8,4 @@ info = Info()
 
 drawer.draw_board(board)
 drawer.draw_info(info)
-drawer.main_loop()
+drawer.main_loop(board, info)
