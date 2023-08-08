@@ -1,3 +1,5 @@
+import logging
+
 from player import Player
 from enemy import Enemy
 
@@ -7,6 +9,8 @@ class Board:
     sizeY = 10
 
     def __init__(self):
+    
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
     
         self.player = Player(16, 9)
         self.enemy = Enemy(9, 3)
@@ -38,7 +42,7 @@ class Board:
     def get_field(self, x, y):
         content = []
         if x < 0 and y < 0 and x >= Board.sizeX or y >= Board.sizeY:
-            print("Field out of bounds")
+            logging.error("Field [%d, %d] out of bounds", x, y)
             return content
         
         else:
@@ -62,7 +66,11 @@ class Board:
     def free_fall(self, sprite):
         if sprite.y < Board.sizeY - 1 and not self.has_platform_below(sprite.x, sprite.y):
             sprite.y += 1
+        
+        logging.info('Sprite position (%d, %d)', sprite.x, sprite.y)
+            
             
     def has_platform_below(self, x, y):
-        return 'platform' in self.get_field(x, y + 1)
+        logging.info('Field [%d, %d] contains %s', x, y, self.get_field(x, y))
+        return 'platform' in self.get_field(x, y)
         

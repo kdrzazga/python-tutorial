@@ -1,3 +1,4 @@
+import logging
 import pygame
 import os
 
@@ -25,6 +26,7 @@ class Drawer:
     title = "ULTIMATE WIZARD"
 
     def __init__(self):
+        logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
         self.window = pygame.display.set_mode((Drawer.width, Drawer.window_height))
         self.clock = pygame.time.Clock()
         self.font_path = os.path.join("resources", "font.ttf")
@@ -43,15 +45,15 @@ class Drawer:
         self.draw_sprite(Enemy.sprite_path, board.enemy.x, board.enemy.y)   
 
         for cell_x, cell_y in board.ladders:
-            print("Ladder:", str(cell_x), str(cell_y))
+            logging.info("Ladder: %d, %d", cell_x, cell_y)
             self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)        
         
         for cell_x, cell_y in board.platforms:
-            print("Platform:", str(cell_x), str(cell_y))
+            logging.info("Platform: %d, %d", cell_x, cell_y)
             self.draw_platform(cell_x, cell_y)
             
-        board.move_down(board.player)
-        board.move_down(board.enemy)
+        board.free_fall(board.player)
+        board.free_fall(board.enemy)
 
     def draw_platform(self, x, y):
         platform_bitmap = pygame.image.load(Drawer.platform_path)

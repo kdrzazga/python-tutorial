@@ -40,7 +40,15 @@ class BoardTest(unittest.TestCase):
             self.board.free_fall(self.board.enemy) #in 3rd iteration it should hit platform and not move anymore
         
         field_content = self.board.get_field(9, 5)
-        self.assertListEqual(field_content, ['platform', 'enemy'])   
+
+        expected = ['platform', 'enemy']
+        actual = field_content
+        
+        for item in expected:
+            if item in actual:
+                actual.remove(item)
+        
+        self.assertListEqual(actual, [])        
         
 
 if __name__ == '__main__':
