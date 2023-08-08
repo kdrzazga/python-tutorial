@@ -39,9 +39,12 @@ class Drawer:
 
         pygame.display.set_caption(Drawer.title)
 
-    def clear(self, board):
-        rect_dimensions = pygame.Rect(0, 0, Drawer.width, Drawer.board_height)
-        pygame.draw.rect(self.window, BLACK, rect_dimensions)
+    def clear(self, sprite):
+        x = sprite.x * Drawer.cell_width
+        y = sprite.y * Drawer.cell_height
+        
+        empty_cell = pygame.Rect(x, y, Drawer.cell_width, Drawer.cell_height)
+        pygame.draw.rect(self.window, BLACK, empty_cell)
     
     def draw_board(self, board):
         self.draw_sprite(Player.sprite_path, board.player.x, board.player.y)
@@ -107,20 +110,22 @@ class Drawer:
                 if event.type == pygame.QUIT:
                     running = False
 
+            self.clear(board.player)
+            self.clear(board.enemy)
+
             if len(player_sequence) > 0:
                 player_move = player_sequence.pop(0)
-                logging.info("PLAYER's player_move: %s", player_move)
+                logging.debug("PLAYER's player_move: %s", player_move)
                 board.move_sprite(board.player, player_move)
 
             if len(enemy_sequence) > 0:
                 enemy_move = enemy_sequence.pop(0)
-                logging.info("ENEMY's player_move: %s", enemy_move)
+                logging.debug("ENEMY's player_move: %s", enemy_move)
                 board.move_sprite(board.enemy, enemy_move)
 
             board.free_fall(board.player)
             board.free_fall(board.enemy)
 
-            self.clear(board)
             self.draw_board(board)
             self.draw_info(board.player)
             pygame.display.update()

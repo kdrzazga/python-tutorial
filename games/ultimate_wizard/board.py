@@ -63,7 +63,7 @@ class Board:
 
     def move_sprite(self, sprite, direction):
         target_x, target_y = decode_move(sprite, direction)
-        logging.info('Moving sprite %s : (%d, %d) -> (%d, %d)', sprite.name, sprite.x, sprite.y, target_x, target_y)
+        logging.debug('Moving sprite %s : (%d, %d) -> (%d, %d)', sprite.name, sprite.x, sprite.y, target_x, target_y)
         self._perform_sprite_move(sprite, target_x, target_y)
 
     def _perform_sprite_move(self, sprite, target_x, target_y):
@@ -75,7 +75,7 @@ class Board:
                 or target_y < 0
                 or target_y >= Board.sizeY
         ):
-            logging.info('Invalid move')
+            logging.debug('Invalid move')
             return
 
         current_content = self.get_field(sprite.x, sprite.y)
@@ -83,12 +83,12 @@ class Board:
 
         # ladder -> ladder
         if 'ladder' in current_content and 'ladder' in target_content:
-            logging.info('Ladders are present.Move sprite (%d, %d) -> (%d, %d)', sprite.x, sprite.y, target_x, target_y)
+            logging.debug('Ladders are present.Move sprite (%d, %d) -> (%d, %d)', sprite.x, sprite.y, target_x, target_y)
             sprite.x, sprite.y = target_x, target_y
 
         # platform -> nothing (and free fall)
         # elif not any(['platform' in content for content in target_content]):
-        #    logging.info('Move sprite and check for free fall')
+        #    logging.debug('Move sprite and check for free fall')
         #    if sprite.y < Board.sizeY - 1:
         #        sprite.y += 1
         else:  # platform -> platform
@@ -98,8 +98,8 @@ class Board:
         if sprite.y < Board.sizeY - 1 and not self.has_platform_below(sprite.x, sprite.y):
             sprite.y += 1
 
-        logging.info('Sprite "%s" position (%d, %d)', sprite.name, sprite.x, sprite.y)
+        logging.debug('Sprite "%s" position (%d, %d)', sprite.name, sprite.x, sprite.y)
 
     def has_platform_below(self, x, y):
-        logging.info('Field [%d, %d] contains %s', x, y, self.get_field(x, y))
+        logging.debug('Field [%d, %d] contains %s', x, y, self.get_field(x, y))
         return 'platform' in self.get_field(x, y)
