@@ -44,7 +44,11 @@ class Board:
             
         return content
 
-    def move_sprite(self, sprite, target_x, target_y):
+    def move_sprite(self, sprite, direction):
+        target_x, target_y = self.decode_move(sprite, direction)
+        self._perform_sprite_move(sprite, target_x, target_y)
+
+    def _perform_sprite_move(self, sprite, target_x, target_y):
         if (
             abs(target_x - sprite.x) > 1
             or abs(target_y - sprite.y) > 1
@@ -69,9 +73,24 @@ class Board:
             sprite.y += 1
         
         logging.info('Sprite position (%d, %d)', sprite.x, sprite.y)
-            
-            
+     
     def has_platform_below(self, x, y):
         logging.info('Field [%d, %d] contains %s', x, y, self.get_field(x, y))
         return 'platform' in self.get_field(x, y)
+        
+    def decode_move(self, sprite, move):
+        if move == 'l':
+            x2 = sprite.x - 1
+            y2 = sprite.y
+        elif move == 'r':
+            x2 = sprite.x + 1
+            y2 = sprite.y
+        elif move == 'u':
+            x2 = sprite.x
+            y2 = sprite.y - 1
+        elif move == 'd':
+            x2 = sprite.x
+            y2 = sprite.y + 2
+        
+        return x2, y2
         
