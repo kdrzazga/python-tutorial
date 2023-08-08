@@ -1,5 +1,9 @@
-player_moves1 = ['l', 'u', 'u', 'u', 'u', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l']
-enemy_moves1 = ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'u', 'u', 'u', 'u', 'u', 'l']
+player_moves1 = ['l', 'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'r', 'r', 'r', 'l', 'r', 'r', 'r',
+                 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l',
+                 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'r', 'r', 'r', 'r', 'r', 'u', 'u', 'l']
+# enemy_moves1 = ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'u', 'u', 'u', 'u', 'u', 'l']
+enemy_moves1 = ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'l', 'l', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r',
+                'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'd', 'd']
 
 
 def create_player_moves():
@@ -16,7 +20,7 @@ def create_platforms(size_y):
     for x in range(size_y // 2 - 3):
         platforms.append((x, 3))
 
-    for x in range(size_y // 2 - 2, size_y):
+    for x in range(size_y // 2 - 1, size_y):
         platforms.append((x, 5))
 
     for x in range(size_y // 5):

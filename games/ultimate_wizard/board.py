@@ -31,8 +31,8 @@ class Board:
 
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-        self.player = Player(16, 9)
-        self.enemy = Enemy(9, 3)
+        self.player = Player(16, 6)
+        self.enemy = Enemy(0, 3)
 
         self.platforms = create_platforms(Board.sizeX)
         self.ladders = create_ladders(Board.sizeY)
@@ -81,14 +81,17 @@ class Board:
         current_content = self.get_field(sprite.x, sprite.y)
         target_content = self.get_field(target_x, target_y)
 
+        # ladder -> ladder
         if 'ladder' in current_content and 'ladder' in target_content:
             logging.info('Ladders are present.Move sprite (%d, %d) -> (%d, %d)', sprite.x, sprite.y, target_x, target_y)
             sprite.x, sprite.y = target_x, target_y
 
-        elif not any(['platform' in content for content in target_content]):
-            logging.info('Move sprite and check for free fall')
-            self.free_fall(sprite)
-        else:
+        # platform -> nothing (and free fall)
+        # elif not any(['platform' in content for content in target_content]):
+        #    logging.info('Move sprite and check for free fall')
+        #    if sprite.y < Board.sizeY - 1:
+        #        sprite.y += 1
+        else:  # platform -> platform
             sprite.x, sprite.y = target_x, target_y
 
     def free_fall(self, sprite):
