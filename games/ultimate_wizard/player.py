@@ -6,7 +6,6 @@ class Player(Sprite):
     initial_spells = 10
 
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        Sprite.__init__(self, x, y)
         self.score = 0
         self.spells = Player.initial_spells

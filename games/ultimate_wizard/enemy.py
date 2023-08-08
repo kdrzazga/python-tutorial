@@ -5,5 +5,4 @@ class Enemy(Sprite):
     sprite_path = "resources/knight.png"
 
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        Sprite.__init__(self, x, y)

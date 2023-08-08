@@ -96,3 +96,24 @@ class Drawer:
 
         pygame.display.update()
         self.clock.tick(150)
+
+    def main_loop_auto(self, board, player_sequence, enemy_sequence):
+        running = True
+        FPS = 2
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+        
+            if len(player_sequence) > 0:
+                move = player_sequence.pop(0)
+                logging.info("PLAYER's move: %s", move)
+                
+            if len(enemy_sequence) > 0:
+                move = enemy_sequence.pop(0)
+                logging.info("ENEMY's move: %s", move)
+
+            pygame.display.update()
+            self.clock.tick(FPS)
+
+        print("BYE!")

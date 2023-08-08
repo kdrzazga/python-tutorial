@@ -1,7 +1,9 @@
 import logging
 
-from player import Player
 from enemy import Enemy
+from player import Player
+
+from factory import create_platforms, create_ladders
 
 class Board:
 
@@ -15,29 +17,8 @@ class Board:
         self.player = Player(16, 9)
         self.enemy = Enemy(9, 3)
     
-        self.platforms = []
-        
-        for x in range(Board.sizeX // 2 - 3):
-            self.platforms.append((x, 3))
-            
-        for x in range(Board.sizeX // 2 - 2, Board.sizeX):
-            self.platforms.append((x, 5))
-            
-        for x in range(Board.sizeX // 5):
-            self.platforms.append((x, x + 6))
-            self.platforms.append((Board.sizeX - x - 1, x + 6))
-        
-        for x in range(Board.sizeX):
-            self.platforms.append((x, 9))       
-            self.platforms.append((x, 1))       
-        
-        self.ladders = []
-        for y in range(Board.sizeY):
-            self.ladders.append((3, y))
-            self.ladders.append((15, y))
-
-        for y in range(2 * Board.sizeY//3, Board.sizeY):
-            self.ladders.append((8, y))
+        self.platforms = create_platforms(Board.sizeX)
+        self.ladders = create_ladders(Board.sizeY)
 
     def get_field(self, x, y):
         content = []
@@ -62,6 +43,26 @@ class Board:
                     break                
             
         return content
+
+    def move_sprite(self, sprite, target_x, target_y):
+        if (
+            abs(target_x - sprite.x) > 1
+            or abs(target_y - sprite.y) > 1
+            or target_x < 0
+            or target_x >= Board.sizeX
+            or target_y < 0
+            or target_y >= Board.sizeY
+        ):
+            return  # Invalid move, do nothing
+
+        current_content = self.get_field(sprite.x, sprite.y)
+        target_content = self.get_field(target_x, target_y)
+
+        if 'ladder' in current_content and 'ladder' in target_content:
+            sprite.x, sprite.y = target_x, target_y  # Move sprite up or down if ladders are present
+
+        elif not any(['platform' in content for content in target_content]):
+            self.free_fall(sprite)  # Move sprite and check for free fall
 
     def free_fall(self, sprite):
         if sprite.y < Board.sizeY - 1 and not self.has_platform_below(sprite.x, sprite.y):
