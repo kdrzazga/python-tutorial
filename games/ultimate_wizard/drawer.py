@@ -73,21 +73,21 @@ class Drawer:
         self.window.blit(sprite_bitmap, (x, y))
         pygame.display.update()    
 
-    def draw_info(self, info):
+    def draw_info(self, player):
         caption_image = Image.new("RGB", (self.width, self.caption_text_height), self.caption_text_background)
 
         draw = ImageDraw.Draw(caption_image)
-        draw.text((10, 0), info.title, font=self.caption_font2, fill=self.caption_text_color1)
+        draw.text((10, 0), Drawer.title, font=self.caption_font2, fill=self.caption_text_color1)
         draw.text((85 * Drawer.width // 100, 0), "SCORE:", font=self.caption_font, fill=self.caption_text_color2)
-        draw.text((85 * Drawer.width // 100, 15), str(info.score), font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((85 * Drawer.width // 100, 15), str(player.score), font=self.caption_font, fill=self.caption_text_color2)
         draw.text((50 * Drawer.width // 100, 0), "SPELLS:", font=self.caption_font, fill=self.caption_text_color3)
-        draw.text((50 * Drawer.width // 100, 15), str(info.spells), font=self.caption_font, fill=self.caption_text_color3)
+        draw.text((50 * Drawer.width // 100, 15), str(player.spells), font=self.caption_font, fill=self.caption_text_color3)
 
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
         self.window.blit(caption_surface, (0, Drawer.board_height))
         pygame.display.update()
 
-    def main_loop(self, board, info):
+    def main_loop(self, board):
         running = True
         while running:
             for event in pygame.event.get():
