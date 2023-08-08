@@ -39,6 +39,10 @@ class Drawer:
 
         pygame.display.set_caption(Drawer.title)
 
+    def clear(self, board):
+        rect_dimensions = pygame.Rect(0, 0, Drawer.width, Drawer.board_height)
+        pygame.draw.rect(self.window, BLACK, rect_dimensions)
+    
     def draw_board(self, board):
         self.draw_sprite(Player.sprite_path, board.player.x, board.player.y)
         self.draw_sprite(Enemy.sprite_path, board.enemy.x, board.enemy.y)
@@ -116,7 +120,7 @@ class Drawer:
             board.free_fall(board.player)
             board.free_fall(board.enemy)
 
-            self.window.fill(BLACK)
+            self.clear(board)
             self.draw_board(board)
             self.draw_info(board.player)
             pygame.display.update()
