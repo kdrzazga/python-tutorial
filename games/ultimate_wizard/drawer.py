@@ -49,6 +49,9 @@ class Drawer:
         for cell_x, cell_y in board.platforms:
             print("Platform:", str(cell_x), str(cell_y))
             self.draw_platform(cell_x, cell_y)
+            
+        board.move_down(board.player)
+        board.move_down(board.enemy)
 
     def draw_platform(self, x, y):
         platform_bitmap = pygame.image.load(Drawer.platform_path)

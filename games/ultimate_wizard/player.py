@@ -1,4 +1,6 @@
-class Player:
+from sprite import Sprite
+
+class Player(Sprite):
     
     sprite_path = "resources/wizard.png"
     initial_spells = 10

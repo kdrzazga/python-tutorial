@@ -1,4 +1,6 @@
-class Enemy:
+from sprite import Sprite
+
+class Enemy(Sprite):
     
     sprite_path = "resources/knight.png"
     
