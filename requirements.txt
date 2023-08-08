@@ -7,3 +7,5 @@ pytest>=7.3.0
 Flask>=2.2.3
 loguru>=0.7.0
 flask_httpauth
+pygame==2.5.0
+pillow>=10.0.0
