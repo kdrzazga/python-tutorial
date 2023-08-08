@@ -16,13 +16,13 @@ class Drawer:
 
     platform_path = "resources/floor.png"
     ladder_path = "resources/ladder.png"
-    
+
     width = 800
     window_height = 600
     board_height = window_height * 90 //100
     cell_width = width // Board.sizeX
     cell_height = board_height // Board.sizeY
-    
+
     title = "ULTIMATE WIZARD"
 
     def __init__(self):
@@ -47,35 +47,35 @@ class Drawer:
         for cell_x, cell_y in board.ladders:
             logging.info("Ladder: %d, %d", cell_x, cell_y)
             self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)        
-        
+
         for cell_x, cell_y in board.platforms:
             logging.info("Platform: %d, %d", cell_x, cell_y)
             self.draw_platform(cell_x, cell_y)
-            
+
         board.free_fall(board.player)
         board.free_fall(board.enemy)
 
     def draw_platform(self, x, y):
         platform_bitmap = pygame.image.load(Drawer.platform_path)
-    
+
         x = x * Drawer.cell_width
         y = (y + 1) * Drawer.cell_height - 8 #height of platform is supposed to be drawn on the bottom of cell
-    
+
         self.window.blit(platform_bitmap, (x, y))
         pygame.display.update() 
-    
+
     def draw_sprite(self, sprite_path, x, y):
         sprite_bitmap = pygame.image.load(sprite_path).convert_alpha()
-    
+
         x = x * Drawer.cell_width
         y = y * Drawer.cell_height
-    
+
         self.window.blit(sprite_bitmap, (x, y))
         pygame.display.update()    
 
     def draw_info(self, info):
         caption_image = Image.new("RGB", (self.width, self.caption_text_height), self.caption_text_background)
-        
+
         draw = ImageDraw.Draw(caption_image)
         draw.text((10, 0), info.title, font=self.caption_font2, fill=self.caption_text_color1)
         draw.text((85 * Drawer.width // 100, 0), "SCORE:", font=self.caption_font, fill=self.caption_text_color2)
@@ -86,14 +86,13 @@ class Drawer:
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
         self.window.blit(caption_surface, (0, Drawer.board_height))
         pygame.display.update()
-    
+
     def main_loop(self, board, info):
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-        
+
         pygame.display.update()
         self.clock.tick(150)
-        
