@@ -52,6 +52,7 @@ class Drawer:
         for enemy in board.enemies:
             self.draw_sprite(Enemy.sprite_path, enemy.x, enemy.y)
 
+
         for cell_x, cell_y in board.ladders:
             logging.debug("Ladder: %d, %d", cell_x, cell_y)
             self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)
@@ -134,6 +135,7 @@ class Drawer:
                 board.free_fall(enemy)
                 
             board.free_fall(board.player)
+
 
             self.draw_board(board)
             self.draw_info(board.player)
