@@ -2,6 +2,7 @@ import logging
 import pygame
 import os
 
+from helper import random_move, random_move_mostly_up
 from player import Player
 from enemy import Enemy
 from board import Board
@@ -48,7 +49,9 @@ class Drawer:
     
     def draw_board(self, board):
         self.draw_sprite(Player.sprite_path, board.player.x, board.player.y)
-        self.draw_sprite(Enemy.sprite_path, board.enemy.x, board.enemy.y)
+        for enemy in board.enemies:
+            self.draw_sprite(Enemy.sprite_path, enemy.x, enemy.y)
+
 
         for cell_x, cell_y in board.ladders:
             logging.debug("Ladder: %d, %d", cell_x, cell_y)
@@ -111,20 +114,28 @@ class Drawer:
                     running = False
 
             self.clear(board.player)
-            self.clear(board.enemy)
+            for enemy in board.enemies:
+                self.clear(enemy)
 
             if len(player_sequence) > 0:
                 player_move = player_sequence.pop(0)
-                logging.debug("PLAYER's player_move: %s", player_move)
-                board.move_sprite(board.player, player_move)
-
-            if len(enemy_sequence) > 0:
-                enemy_move = enemy_sequence.pop(0)
+            else:
+                player_move = random_move()
+                
+            logging.debug("PLAYER's player_move: %s", player_move)
+            board.move_sprite(board.player, player_move)                           
+            for enemy in board.enemies:
+                if len(enemy_sequence) > 0:
+                    enemy_move = enemy_sequence.pop(0)
+                else:
+                    enemy_move = random_move_mostly_up()            
+            
                 logging.debug("ENEMY's player_move: %s", enemy_move)
-                board.move_sprite(board.enemy, enemy_move)
-
+                board.move_sprite(enemy, enemy_move)
+                board.free_fall(enemy)
+                
             board.free_fall(board.player)
-            board.free_fall(board.enemy)
+
 
             self.draw_board(board)
             self.draw_info(board.player)

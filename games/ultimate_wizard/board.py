@@ -32,9 +32,9 @@ class Board:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
         self.player = Player(16, 6)
-        self.enemy = Enemy(0, 3)
+        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(10, 1), Enemy(15, 1)]
 
-        self.platforms = create_platforms(Board.sizeX)
+        self.platforms = create_platforms(Board.sizeX, Board.sizeY)
         self.ladders = create_ladders(Board.sizeY)
 
     def get_field(self, x, y):
@@ -46,7 +46,7 @@ class Board:
         else:
             if x == self.player.x and y == self.player.y:
                 content.append('player')
-            if x == self.enemy.x and y == self.enemy.y:
+            if any(x == enemy.x and y == enemy.y for enemy in self.enemies):
                 content.append('enemy')
 
             for ladder_x, ladder_y in self.ladders:
