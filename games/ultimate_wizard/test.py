@@ -8,7 +8,7 @@ class BoardTest(unittest.TestCase):
         self.board = Board()
 
     def test_get_field_enemy(self):
-        field_content = self.board.get_field(self.board.enemy.x, self.board.enemy.y)
+        field_content = self.board.get_field(self.board.enemies[0].x, self.board.enemies[0].y)
         self.assertListEqual(field_content, ['enemy'])
 
     def test_get_field_player_plaftorm(self):
@@ -17,17 +17,17 @@ class BoardTest(unittest.TestCase):
 
     def test_get_field_empty(self):
         #assert that enemy does not have platform beneath its feet
-        below_enemy_x = self.board.enemy.x
-        below_enemy_y = self.board.enemy.y + 1
+        enemy = self.board.enemies[0]
+        below_enemy_x = enemy.x
+        below_enemy_y = enemy.y + 1
 
         field_content = self.board.get_field(below_enemy_x, below_enemy_y)
         self.assertListEqual(field_content, [])
 
     def test_no_platform_below_enemy(self):
-        enemy_x = self.board.enemy.x
-        enemy_y = self.board.enemy.y
+        enemy = self.board.enemies[0]
 
-        self.assertFalse(self.board.has_platform_below(enemy_x, enemy_y))
+        self.assertFalse(self.board.has_platform_below(enemy.x, enemy.y))
 
     def test_free_fall(self):
         field_content = self.board.get_field(9, 3)
