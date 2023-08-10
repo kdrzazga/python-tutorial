@@ -57,8 +57,8 @@ class BallsHelper:
     def create_ball():
         x = 0 if random.random() < 0.5 else BallsHelper.screen_width
         y = BallsHelper.HEIGHT - BallsHelper.offset_y  # Adjust y position based on offset
-        angle = random.uniform(30, 45)
-        initial_speed = random.uniform(80, 130) - angle  # suntracting angle allows to avoid high altitudes and lobs
+        angle = random.uniform(35, 42)
+        initial_speed = random.uniform(80, 130) - angle  # subtracting angle allows to avoid high altitudes and lobs
         trajectory = BallsHelper.calculate_trajectory(angle, initial_speed)
         color = random.choice(BallsHelper.ball_colors)
         ball = Ball(x, y, trajectory, color)

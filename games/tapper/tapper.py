@@ -5,13 +5,14 @@ import sys
 
 #from balls import BallsHelper, Ball
 #from info import info
-#from player import Player
+from bartender import Player
 from drawer import Drawer
 
 def main():
 
     pygame.init()
     screen = pygame.display.set_mode((Drawer.width, Drawer.window_height))
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
     clock = pygame.time.Clock()
 
@@ -22,8 +23,8 @@ def main():
     running = True
     screen.fill((0,0,0))  # Clear the screen
     drawer = Drawer()
-    #player = Player()
-    #drawer.draw_sprite(player)
+    player = Player()
+    drawer.draw_sprite(player)
     drawer.draw_background()
     #info(screen)
     
@@ -34,19 +35,13 @@ def main():
                     running = False
                     pygame.mixer.music.stop()
             
-            
- #           if len(BallsHelper.balls) < BallsHelper.BALL_COUNT:  # Create fewer balls
- #               BallsHelper.create_ball()
- #   
- #           keys = pygame.key.get_pressed()
- #           if keys[pygame.K_LEFT] or keys[ord('a')]:
- #               player.set_direction('left')
- #           elif keys[pygame.K_RIGHT] or keys[ord('d')]:
- #               player.set_direction('right')
- #           elif keys[ord('q')]:
- #               player.set_direction('top left')
- #           elif keys[ord('e')]:
- #               player.set_direction('top right')
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_UP] or keys[ord('w')]:
+                player.move_up()
+            elif keys[pygame.K_DOWN] or keys[ord('s')]:
+                player.move_down()
+            elif keys[pygame.K_LEFT] or keys[ord('a')]:
+                player.move_left()
  #           
  #           BallsHelper.draw_balls(screen)
  #           pygame.display.flip()  # Update the screen
@@ -54,25 +49,9 @@ def main():
  #           time.sleep(0.005)
  #           BallsHelper.clear_balls(screen)
  #           drawer.clear_sprite()
- #           drawer.draw_sprite(player)
- #           
- #           for ball in BallsHelper.balls:
- #               roll_speed = -3 if ball.id % 3 == 0 else 3 
- #               if ball.index < len(ball.trajectory):
- #                   x, ball.y = ball.trajectory[ball.index]
- #                   ball.x = BallsHelper.screen_width - x  if ball.id % 3 == 0 else x 
- #                   ball.index += 1
- #               else:
- #                   if not ball.rolling:
- #                       ball.rolling = True
- #                       ball.trajectory = [(ball.x, ball.y)]
- #                   else:
- #                       ball.x += roll_speed 
- #                       
- #                       if ball.x >= BallsHelper.screen_width + BallsHelper.ball_diameter or ball.x < 0:
- #                           BallsHelper.balls.remove(ball)
- #           clock.tick(140)  # Limit the frame rate to 60 FPS
-            
+            drawer.draw_sprite(player)           
+
+            clock.tick(4)  # Limit the frame rate to 60 FPS
 
     except KeyboardInterrupt:
         pygame.mixer.music.stop()

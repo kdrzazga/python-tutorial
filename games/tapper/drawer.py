@@ -10,7 +10,6 @@ WHITE = (250, 250, 250)
 YELLOW = (238, 238, 119)
 BACKGROUND = (74, 74, 73)
 
-
 class Drawer:
 
     width = 1280
@@ -38,8 +37,8 @@ class Drawer:
     def draw_sprite(self, player):
         self.sprite_bitmap = pygame.image.load(player.sprite_path).convert_alpha()
 
-        x = Drawer.width/2 - self.sprite_bitmap.get_width()/2
-        y = Drawer.initial_sprite_pos - self.sprite_bitmap.get_height()/2
+        x = self.sprite_bitmap.get_width()/2 - 5
+        y = Drawer.initial_sprite_pos - self.sprite_bitmap.get_height()/2 + 5
         
         self.window.blit(self.sprite_bitmap, (x, y))
         pygame.display.update()
