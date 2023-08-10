@@ -6,3 +6,6 @@ class Enemy(Sprite):
 
     def __init__(self, x, y):
         Sprite.__init__(self, x, y, "knight")
+
+    def get_sprite_path(self):
+        return Enemy.sprite_path

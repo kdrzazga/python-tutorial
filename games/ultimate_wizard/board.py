@@ -32,7 +32,7 @@ class Board:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
         self.player = Player(16, 6)
-        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(10, 1), Enemy(15, 1)]
+        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(3, 0), Enemy(7, 1), Enemy(8, 1), Enemy(9, 1), Enemy(10, 1), Enemy(15, 0)]
 
         self.platforms = create_platforms(Board.sizeX, Board.sizeY)
         self.ladders = create_ladders(Board.sizeY)
@@ -93,6 +93,10 @@ class Board:
         #        sprite.y += 1
         else:  # platform -> platform
             sprite.x, sprite.y = target_x, target_y
+
+    def detect_player_collision(self, enemy):
+        if enemy.x == self.player.x and enemy.y == self.player.y: 
+            self.player.energy -= 1
 
     def free_fall(self, sprite):
         if sprite.y < Board.sizeY - 1 and not self.has_platform_below(sprite.x, sprite.y):

@@ -16,7 +16,7 @@ YELLOW = (238, 238, 119)
 
 class Drawer:
     platform_path = "resources/floor.png"
-    ladder_path = "resources/ladder.png"
+    #ladder_path = "resources/ladder.png"
 
     width = 800
     window_height = 600
@@ -32,7 +32,7 @@ class Drawer:
         self.font_path = os.path.join("resources", "font.ttf")
         self.caption_font = ImageFont.truetype(self.font_path, 12)
         self.caption_font2 = ImageFont.truetype(self.font_path, 16)
-        self.caption_text_height = 12 * 3
+        self.caption_text_height = 16 * 3
         self.caption_text_background = BLACK
         self.caption_text_color1 = YELLOW
         self.caption_text_color3 = WHITE
@@ -48,14 +48,13 @@ class Drawer:
         pygame.draw.rect(self.window, BLACK, empty_cell)
     
     def draw_board(self, board):
-        self.draw_sprite(Player.sprite_path, board.player.x, board.player.y)
+        self.draw_sprite(board.player.get_sprite_path(), board.player.x, board.player.y)
         for enemy in board.enemies:
             self.draw_sprite(Enemy.sprite_path, enemy.x, enemy.y)
 
-
-        for cell_x, cell_y in board.ladders:
-            logging.debug("Ladder: %d, %d", cell_x, cell_y)
-            self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)
+        #for cell_x, cell_y in board.ladders:
+        #    logging.debug("Ladder: %d, %d", cell_x, cell_y)
+        #    self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)
 
         for cell_x, cell_y in board.platforms:
             logging.debug("Platform: %d, %d", cell_x, cell_y)
@@ -84,12 +83,18 @@ class Drawer:
 
         draw = ImageDraw.Draw(caption_image)
         draw.text((10, 0), Drawer.title, font=self.caption_font2, fill=self.caption_text_color1)
-        draw.text((85 * Drawer.width // 100, 0), "SCORE:", font=self.caption_font, fill=self.caption_text_color2)
-        draw.text((85 * Drawer.width // 100, 15), str(player.score), font=self.caption_font,
-                  fill=self.caption_text_color2)
-        draw.text((50 * Drawer.width // 100, 0), "SPELLS:", font=self.caption_font, fill=self.caption_text_color3)
-        draw.text((50 * Drawer.width // 100, 15), str(player.spells), font=self.caption_font,
+        draw.text((50 * Drawer.width // 100, 0), "energy:", font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((50 * Drawer.width // 100, 15), str(player.energy), font=self.caption_font,
                   fill=self.caption_text_color3)
+        draw.text((69 * Drawer.width // 100, 0), "score:", font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((69 * Drawer.width // 100, 15), str(player.score), font=self.caption_font,
+                  fill=self.caption_text_color3)
+        draw.text((87 * Drawer.width // 100, 0), "SPELLS:", font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((87 * Drawer.width // 100, 15), str(player.spells), font=self.caption_font,
+                  fill=self.caption_text_color3)
+        if player.energy <= 0:
+            draw.text((30 * Drawer.width // 100, 31), "Whoa, bro! You are DEAD man", font=self.caption_font,
+                  fill=self.caption_text_color2)
 
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
         self.window.blit(caption_surface, (0, Drawer.board_height))
@@ -122,8 +127,10 @@ class Drawer:
             else:
                 player_move = random_move()
                 
-            logging.debug("PLAYER's player_move: %s", player_move)
-            board.move_sprite(board.player, player_move)                           
+            logging.debug("PLAYER's player_move: %s (if he is still alive).", player_move)
+            if board.player.energy > 0:
+                board.move_sprite(board.player, player_move)
+                board.player.score += 1
             for enemy in board.enemies:
                 if len(enemy_sequence) > 0:
                     enemy_move = enemy_sequence.pop(0)
@@ -133,10 +140,9 @@ class Drawer:
                 logging.debug("ENEMY's player_move: %s", enemy_move)
                 board.move_sprite(enemy, enemy_move)
                 board.free_fall(enemy)
+                board.detect_player_collision(enemy)
                 
             board.free_fall(board.player)
-
-
             self.draw_board(board)
             self.draw_info(board.player)
             pygame.display.update()

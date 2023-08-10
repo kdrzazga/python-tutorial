@@ -4,7 +4,7 @@ import time
 import sys
 
 from balls import BallsHelper, Ball
-from scrolling import info
+from info import info
 from player import Player
 from drawer import Drawer
 
