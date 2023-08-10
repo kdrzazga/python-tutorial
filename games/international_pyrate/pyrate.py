@@ -5,6 +5,7 @@ import sys
 from scrolling import scroll
 from drawer import Drawer
 from player import Player
+from balls import BallsHelper # ,init_balls
 
 log_level = logging.INFO
 if len(sys.argv) > 1 and (sys.argv[1] == "--debug" or sys.argv[1] == "-d"):
@@ -25,13 +26,19 @@ pygame.mixer.music.play(-1)  # -1: infinite loop
 
 drawer = Drawer()
 player = Player()
+drawer.draw_sprite(player)
 
 clock = pygame.time.Clock()
+drawer.draw_background()
+#init_balls()
+
+running = True
 
 try:
-    while True:
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                running = False
                 pygame.mixer.music.stop()
                 pygame.quit()
 
@@ -45,11 +52,13 @@ try:
         elif keys[ord('e')]:
             player.set_direction('top right')
 
-        drawer.draw_background()
+        BallsHelper.clear_balls(drawer.window)
+        BallsHelper.draw_balls(drawer.window)
+        drawer.clear_sprite()
         drawer.draw_sprite(player)
         pygame.display.update()
         scroll(drawer.window)
-        clock.tick(10)
+        clock.tick(40)
 
 except KeyboardInterrupt:
     pygame.mixer.music.stop()

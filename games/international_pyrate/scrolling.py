@@ -6,22 +6,26 @@ from PIL import Image, ImageDraw, ImageFont
 global background_x
 
 BLACK = (0, 0, 0)
-CYAN = (0, 255, 255)
+ORANGE = (255, 128, 64)
 WHITE = (250, 250, 250)
 YELLOW = (238, 238, 119)
+
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
 
 def scroll(screen):
     #screen.fill((0, 0, 0))  # Black background
     font_path = os.path.join("resources", "karate.ttf")
-    caption_font = ImageFont.truetype(font_path, 12)
+    caption_font = ImageFont.truetype(font_path, 15)
     caption_text_height = 13
     caption_text_background = BLACK
     caption_text_color1 = YELLOW
-    caption_text_color2 = CYAN
+    caption_text_color2 = ORANGE
     
-    caption_text = "INTERNATIONAL PYRATE is python tribute to c64 ik+. constrols: QAED or arrow keys."
+    caption_text = "INTERNATIONAL PYRATE is python tribute to c64 IK plus. controls: QAED or arrow keys."
     
-    caption_image = Image.new("RGB", (600, caption_text_height), caption_text_background)
+    caption_image = Image.new("RGB", (750, caption_text_height), caption_text_background)
     
     draw = ImageDraw.Draw(caption_image)
     draw.text((0, 0), caption_text, font=caption_font, fill=caption_text_color2)

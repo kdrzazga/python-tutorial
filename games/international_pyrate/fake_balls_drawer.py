@@ -1,0 +1,57 @@
+import pygame
+import time
+
+from balls import BallsHelper, Ball
+from drawer import Drawer
+
+def main():
+
+    pygame.init()
+    screen = pygame.display.set_mode((BallsHelper.screen_width, BallsHelper.screen_height))
+
+    clock = pygame.time.Clock()
+
+    running = True
+    screen.fill(BallsHelper.BACKGROUND_COLOR)  # Clear the screen
+    drawer = Drawer()
+    drawer.draw_background()
+    
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False       
+        
+        
+        if len(BallsHelper.balls) < BallsHelper.BALL_COUNT:  # Create fewer balls
+            BallsHelper.create_ball()
+        
+        BallsHelper.draw_balls(screen)
+        pygame.display.flip()  # Update the screen
+        
+        time.sleep(0.01)
+        BallsHelper.clear_balls(screen)
+        
+        for ball in BallsHelper.balls:
+            roll_speed = -3 if ball.id % 3 == 0 else 3 
+            if ball.index < len(ball.trajectory):
+                x, ball.y = ball.trajectory[ball.index]
+                ball.x = BallsHelper.screen_width - x  if ball.id % 3 == 0 else x 
+                ball.index += 1
+            else:
+                if not ball.rolling:
+                    ball.rolling = True
+                    ball.trajectory = [(ball.x, ball.y)]
+                else:
+                    ball.x += roll_speed 
+                    
+                    if ball.x >= BallsHelper.screen_width + BallsHelper.ball_diameter or ball.x < 0:
+                        BallsHelper.balls.remove(ball)
+        
+        
+        
+        clock.tick(140)  # Limit the frame rate to 60 FPS
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
