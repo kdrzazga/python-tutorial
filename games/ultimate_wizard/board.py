@@ -38,6 +38,8 @@ class Board:
 
         self.platforms = create_platforms(Board.sizeX, Board.sizeY)
         self.ladders = create_ladders(Board.sizeY)
+        
+        self.status = 'running'
 
     def get_field(self, x, y):
         content = []
@@ -126,7 +128,7 @@ class Board:
             
     def detect_enemy_fb_collision(self, enemy):
         for fb in self.fireballs:
-            if enemy.x == self.player.x and enemy.y == self.player.y: 
+            if enemy.x == fb.x and enemy.y == fb.y: 
                 enemy.active = False
                 logging.debug('Enemy hit at (%d, %d)', enemy.x, enemy.y)
                 self.player.score += Enemy.score

@@ -85,24 +85,35 @@ class Drawer:
         self.window.blit(sprite_bitmap, (x, y))
         pygame.display.update()
 
-    def draw_info(self, player):
+    def draw_info(self, board):
         caption_image = Image.new("RGB", (self.width, self.caption_text_height), self.caption_text_background)
 
         draw = ImageDraw.Draw(caption_image)
         draw.text((10, 0), Drawer.title, font=self.caption_font2, fill=self.caption_text_color1)
-        draw.text((50 * Drawer.width // 100, 0), "energy:", font=self.caption_font, fill=self.caption_text_color2)
-        draw.text((50 * Drawer.width // 100, 15), str(player.energy), font=self.caption_font,
+        draw.text((39 * Drawer.width // 100, 0), "score:", font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((39 * Drawer.width // 100, 15), str(board.player.score), font=self.caption_font,
                   fill=self.caption_text_color3)
-        draw.text((69 * Drawer.width // 100, 0), "score:", font=self.caption_font, fill=self.caption_text_color2)
-        draw.text((69 * Drawer.width // 100, 15), str(player.score), font=self.caption_font,
+        draw.text((53 * Drawer.width // 100, 0), "energy:", font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((53 * Drawer.width // 100, 15), str(board.player.energy), font=self.caption_font,
+                  fill=self.caption_text_color3)
+        draw.text((69 * Drawer.width // 100, 0), "enemies:", font=self.caption_font, fill=self.caption_text_color2)
+        draw.text((69 * Drawer.width // 100, 15), str(len(board.enemies)), font=self.caption_font,
                   fill=self.caption_text_color3)
         draw.text((87 * Drawer.width // 100, 0), "SPELLS:", font=self.caption_font, fill=self.caption_text_color2)
-        draw.text((87 * Drawer.width // 100, 15), str(player.spells), font=self.caption_font,
+        draw.text((87 * Drawer.width // 100, 15), str(board.player.spells), font=self.caption_font,
                   fill=self.caption_text_color3)
         #GAME OVER
-        if player.energy <= 0:
-            player.active = False
+        if board.player.energy <= 0:
+            board.player.active = False
             draw.text((30 * Drawer.width // 100, 31), "Whoa, bro! You are DEAD man", font=self.caption_font,
+                  fill=self.caption_text_color2)
+        elif board.player.spells <= 0 and any(enemy.active for enemy in board.enemies):
+            board.player.active = False
+            draw.text((30 * Drawer.width // 100, 31), "No spells to beat remaining foes", font=self.caption_font,
+                  fill=self.caption_text_color2)
+        elif all(not enemy.active for enemy in board.enemies):
+            board.player.active = False
+            draw.text((30 * Drawer.width // 100, 31), "VICTORY !!!!!!!!!", font=self.caption_font,
                   fill=self.caption_text_color2)
 
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
@@ -118,7 +129,7 @@ class Drawer:
 
         pygame.display.update()
         self.clock.tick(150)
- 
+
     def main_loop_auto(self, board, player_sequence, enemy_sequence):
         running = True
         FPS = 3
@@ -149,7 +160,7 @@ class Drawer:
                 player_move = random_move()
                 
             logging.debug("PLAYER's player_move: %s (if he is still alive).", player_move)
-            if board.player.energy > 0:
+            if board.player.active > 0:
                 board.move_sprite(board.player, player_move)
                 board.player.score += 1
             #MOVE enemy
@@ -170,12 +181,11 @@ class Drawer:
                 for enemy in board.enemies:
                     board.detect_enemy_fb_collision(enemy)
             
-            
             board.free_fall(board.player)
             
             #DRAW
             self.draw_board(board)
-            self.draw_info(board.player)
+            self.draw_info(board)
             pygame.display.update()
             self.clock.tick(FPS)
 
