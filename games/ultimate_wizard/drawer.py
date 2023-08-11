@@ -3,6 +3,7 @@ import pygame
 import os
 
 from helper import random_move, random_move_mostly_up
+from fireball import Fireball
 from player import Player
 from enemy import Enemy
 from board import Board
@@ -16,7 +17,6 @@ YELLOW = (238, 238, 119)
 
 class Drawer:
     platform_path = "resources/floor.png"
-    #ladder_path = "resources/ladder.png"
 
     width = 800
     window_height = 600
@@ -38,6 +38,8 @@ class Drawer:
         self.caption_text_color3 = WHITE
         self.caption_text_color2 = CYAN
 
+        self.animating_fireball = False
+
         pygame.display.set_caption(Drawer.title)
 
     def clear(self, sprite):
@@ -48,14 +50,19 @@ class Drawer:
         pygame.draw.rect(self.window, BLACK, empty_cell)
     
     def draw_board(self, board):
+        #PLAYER
         self.draw_sprite(board.player.get_sprite_path(), board.player.x, board.player.y)
+        
+        #ENEMIES
         for enemy in board.enemies:
             self.draw_sprite(Enemy.sprite_path, enemy.x, enemy.y)
 
-        #for cell_x, cell_y in board.ladders:
-        #    logging.debug("Ladder: %d, %d", cell_x, cell_y)
-        #    self.draw_sprite(Drawer.ladder_path, cell_x, cell_y)
-
+        #FIREBALLs
+        if self.animating_fireball:
+            for fb in board.fireballs:
+                self.draw_sprite(Fireball.sprite_path, fb.x, fb.y)
+                
+        #PLATFORMS
         for cell_x, cell_y in board.platforms:
             logging.debug("Platform: %d, %d", cell_x, cell_y)
             self.draw_platform(cell_x, cell_y)
@@ -92,7 +99,9 @@ class Drawer:
         draw.text((87 * Drawer.width // 100, 0), "SPELLS:", font=self.caption_font, fill=self.caption_text_color2)
         draw.text((87 * Drawer.width // 100, 15), str(player.spells), font=self.caption_font,
                   fill=self.caption_text_color3)
+        #GAME OVER
         if player.energy <= 0:
+            player.active = False
             draw.text((30 * Drawer.width // 100, 31), "Whoa, bro! You are DEAD man", font=self.caption_font,
                   fill=self.caption_text_color2)
 
@@ -118,10 +127,22 @@ class Drawer:
                 if event.type == pygame.QUIT:
                     running = False
 
+            # CLEAR
             self.clear(board.player)
             for enemy in board.enemies:
                 self.clear(enemy)
+            for fb in board.fireballs:
+                self.clear(fb)
 
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_RETURN] or keys[pygame.K_SPACE] or keys[pygame.K_RSHIFT] or keys[pygame.K_RALT] or keys[pygame.K_RCTRL]:
+                logging.info("FIREBALL key pressed")
+                if not self.animating_fireball and board.player.active and board.player.spells > 0:
+                    logging.info("Launching FIREBALL")
+                    self.animating_fireball = True
+                    board.start_fireballs()
+
+            #MOVE player
             if len(player_sequence) > 0:
                 player_move = player_sequence.pop(0)
             else:
@@ -131,6 +152,7 @@ class Drawer:
             if board.player.energy > 0:
                 board.move_sprite(board.player, player_move)
                 board.player.score += 1
+            #MOVE enemy
             for enemy in board.enemies:
                 if len(enemy_sequence) > 0:
                     enemy_move = enemy_sequence.pop(0)
@@ -141,8 +163,17 @@ class Drawer:
                 board.move_sprite(enemy, enemy_move)
                 board.free_fall(enemy)
                 board.detect_player_collision(enemy)
-                
+            
+            #MOVE fireballs
+            if self.animating_fireball:
+                self.animating_fireball = board.move_fireballs()
+                for enemy in board.enemies:
+                    board.detect_enemy_fb_collision(enemy)
+            
+            
             board.free_fall(board.player)
+            
+            #DRAW
             self.draw_board(board)
             self.draw_info(board.player)
             pygame.display.update()
