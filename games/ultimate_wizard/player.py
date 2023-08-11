@@ -3,8 +3,8 @@ from sprite import Sprite
 class Player(Sprite):
 
     sprite_path = "resources/wizard.png"
-    tobmstone_path = "resources/tombstone.png"
-    initial_spells = 10
+    tobmstone_path = "resources/tombstone2.png"
+    initial_spells = 20
 
     def __init__(self, x, y):
         Sprite.__init__(self, x, y, "wizard")

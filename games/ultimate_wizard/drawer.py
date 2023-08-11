@@ -50,12 +50,12 @@ class Drawer:
         pygame.draw.rect(self.window, BLACK, empty_cell)
     
     def draw_board(self, board):
-        #PLAYER
-        self.draw_sprite(board.player.get_sprite_path(), board.player.x, board.player.y)
-        
         #ENEMIES
         for enemy in board.enemies:
-            self.draw_sprite(Enemy.sprite_path, enemy.x, enemy.y)
+            self.draw_sprite(enemy.get_sprite_path(), enemy.x, enemy.y)
+            
+        #PLAYER
+        self.draw_sprite(board.player.get_sprite_path(), board.player.x, board.player.y)
 
         #FIREBALLs
         if self.animating_fireball:
@@ -118,7 +118,7 @@ class Drawer:
 
         pygame.display.update()
         self.clock.tick(150)
-
+ 
     def main_loop_auto(self, board, player_sequence, enemy_sequence):
         running = True
         FPS = 3
@@ -136,9 +136,9 @@ class Drawer:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_RETURN] or keys[pygame.K_SPACE] or keys[pygame.K_RSHIFT] or keys[pygame.K_RALT] or keys[pygame.K_RCTRL]:
-                logging.info("FIREBALL key pressed")
+                logging.debug("FIREBALL key pressed")
                 if not self.animating_fireball and board.player.active and board.player.spells > 0:
-                    logging.info("Launching FIREBALL")
+                    logging.debug("Launching FIREBALL")
                     self.animating_fireball = True
                     board.start_fireballs()
 

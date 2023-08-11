@@ -65,7 +65,7 @@ class Board:
 
     def move_sprite(self, sprite, direction):
         if not sprite.active:
-            logging.info("Sprite INACTIVE. Won't be moved")
+            logging.debug("Sprite INACTIVE. Won't be moved")
         
         else:
             target_x, target_y = decode_move(sprite, direction)
@@ -119,7 +119,7 @@ class Board:
         self.player.spells -= 1
 
     def detect_player_collision(self, enemy):
-        if enemy.x == self.player.x and enemy.y == self.player.y and self.player.active: 
+        if enemy.x == self.player.x and enemy.y == self.player.y and self.player.active and enemy.active: 
             self.player.energy -= 1
             if self.player.energy <=0:
                 self.player.active = False
@@ -128,7 +128,8 @@ class Board:
         for fb in self.fireballs:
             if enemy.x == self.player.x and enemy.y == self.player.y: 
                 enemy.active = False
-                logging.info('Enemy hit at (%d, %d)', enemy.x, enemy.y)
+                logging.debug('Enemy hit at (%d, %d)', enemy.x, enemy.y)
+                self.player.score += Enemy.score
 
     def free_fall(self, sprite):
         if sprite.y < Board.sizeY - 1 and not self.has_platform_below(sprite.x, sprite.y):
