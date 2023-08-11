@@ -4,7 +4,7 @@ import time
 import sys
 
 #from balls import BallsHelper, Ball
-#from info import info
+from board import Board
 from bartender import Player
 from drawer import Drawer
 
@@ -22,34 +22,44 @@ def main():
 
     running = True
     screen.fill((0,0,0))  # Clear the screen
-    drawer = Drawer()
-    player = Player()
-    drawer.draw_sprite(player)
+    
+    board = Board()
+    drawer = Drawer(board.player)
+    drawer.draw_sprite(board.player)
     drawer.draw_background()
     #info(screen)
-    
+
     try:
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                     pygame.mixer.music.stop()
-            
+
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP] or keys[ord('w')]:
-                player.move_up()
+                drawer.clear_bartender(board.player)
+                board.move_player_up()
+                drawer.draw_sprite(board.player)
             elif keys[pygame.K_DOWN] or keys[ord('s')]:
-                player.move_down()
+                drawer.clear_bartender(board.player)
+                board.move_player_down()
+                drawer.draw_sprite(board.player)
             elif keys[pygame.K_LEFT] or keys[ord('a')]:
-                player.move_left()
+                drawer.clear_bartender(board.player)
+                board.move_player_left()
+                drawer.draw_sprite(board.player)
+            elif keys[pygame.K_RIGHT] or keys[ord('d')]:
+                drawer.clear_bartender(board.player)
+                board.move_player_right()
+                drawer.draw_sprite(board.player)
  #           
  #           BallsHelper.draw_balls(screen)
- #           pygame.display.flip()  # Update the screen
- #           
+ #           pygame.display.flip()  # Update the screen #           
  #           time.sleep(0.005)
  #           BallsHelper.clear_balls(screen)
  #           drawer.clear_sprite()
-            drawer.draw_sprite(player)           
+            drawer.draw_sprite(board.player)           
 
             clock.tick(4)  # Limit the frame rate to 60 FPS
 
