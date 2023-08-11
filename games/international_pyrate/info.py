@@ -22,9 +22,9 @@ def info(screen):
     caption_text_color1 = YELLOW
     caption_text_color2 = ORANGE
     
-    caption_text = "INTERNATIONAL PYRATE is python tribute to c64 IK plus. controls: QAED or arrow keys."
+    caption_text = "INTERNATIONAL PYRATE is python tribute to c64 IK plus." + 37 * ' ' + "controls: QAED or arrow keys."
     
-    caption_image = Image.new("RGB", (750, caption_text_height), caption_text_background)
+    caption_image = Image.new("RGB", (799, caption_text_height), caption_text_background)
     
     draw = ImageDraw.Draw(caption_image)
     draw.text((0, 0), caption_text, font=caption_font, fill=caption_text_color2)

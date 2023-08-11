@@ -1,8 +1,5 @@
-player_moves1 = ['l', 'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'r', 'r', 'r', 'l', 'r', 'r', 'r',
-                 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'l',
-                 'l', 'l', 'l', 'l', 'l', 'l', 'l', 'r', 'r', 'r', 'r', 'r', 'u', 'u', 'l', 'l', 'u','u','u','u','u','u','u','u']
-enemy_moves1 = ['r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'r', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u', 'u']
-
+player_moves1 = ['l', 'r'] + ['l'] * 11 + ['r'] * 12 + ['l'] * 18 + ['r', 'r', 'r', 'r', 'r', 'u', 'u', 'l', 'l'] + ['u'] * 8
+enemy_moves1 = ['r'] * 15 + ['u'] * 10
 
 
 def create_player_moves():

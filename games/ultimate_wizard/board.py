@@ -3,6 +3,7 @@ import logging
 from enemy import Enemy
 from player import Player
 
+from fireball import Fireball
 from factory import create_platforms, create_ladders
 
 
@@ -32,10 +33,13 @@ class Board:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
         self.player = Player(16, 6)
-        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(10, 1), Enemy(15, 1)]
+        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(3, 0), Enemy(7, 1), Enemy(8, 1), Enemy(9, 1), Enemy(10, 1), Enemy(15, 0)]
+        self.fireballs = [Fireball(0,0), Fireball(0,0)]
 
         self.platforms = create_platforms(Board.sizeX, Board.sizeY)
         self.ladders = create_ladders(Board.sizeY)
+        
+        self.status = 'running'
 
     def get_field(self, x, y):
         content = []
@@ -62,9 +66,13 @@ class Board:
         return content
 
     def move_sprite(self, sprite, direction):
-        target_x, target_y = decode_move(sprite, direction)
-        logging.debug('Moving sprite %s : (%d, %d) -> (%d, %d)', sprite.name, sprite.x, sprite.y, target_x, target_y)
-        self._perform_sprite_move(sprite, target_x, target_y)
+        if not sprite.active:
+            logging.debug("Sprite INACTIVE. Won't be moved")
+        
+        else:
+            target_x, target_y = decode_move(sprite, direction)
+            logging.debug('Moving sprite %s : (%d, %d) -> (%d, %d)', sprite.name, sprite.x, sprite.y, target_x, target_y)
+            self._perform_sprite_move(sprite, target_x, target_y)
 
     def _perform_sprite_move(self, sprite, target_x, target_y):
         if (
@@ -93,6 +101,37 @@ class Board:
         #        sprite.y += 1
         else:  # platform -> platform
             sprite.x, sprite.y = target_x, target_y
+
+    def move_fireballs(self):
+        if self.fireballs[0].x > 0:
+            self.fireballs[0].x -= 1
+        if self.fireballs[1].x < Board.sizeX - 1:
+            self.fireballs[1].x += 1
+        
+        if self.fireballs[0].x <= 0 and self.fireballs[1].x >= Board.sizeX -1:
+            return False
+        
+        return True
+
+    def start_fireballs(self):
+        self.fireballs[0].x = self.player.x - 1
+        self.fireballs[0].y = self.player.y
+        self.fireballs[1].x = self.player.x + 1
+        self.fireballs[1].y = self.player.y
+        self.player.spells -= 1
+
+    def detect_player_collision(self, enemy):
+        if enemy.x == self.player.x and enemy.y == self.player.y and self.player.active and enemy.active: 
+            self.player.energy -= 1
+            if self.player.energy <=0:
+                self.player.active = False
+            
+    def detect_enemy_fb_collision(self, enemy):
+        for fb in self.fireballs:
+            if enemy.x == fb.x and enemy.y == fb.y: 
+                enemy.active = False
+                logging.debug('Enemy hit at (%d, %d)', enemy.x, enemy.y)
+                self.player.score += Enemy.score
 
     def free_fall(self, sprite):
         if sprite.y < Board.sizeY - 1 and not self.has_platform_below(sprite.x, sprite.y):
