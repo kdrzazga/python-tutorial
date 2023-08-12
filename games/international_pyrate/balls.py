@@ -37,22 +37,43 @@ class BallsHelper:
     HEIGHT = screen_height - ball_diameter
 
     @staticmethod
-    def calculate_trajectory(angle_degrees, initial_speed):
+    def calculate_trajectory(angle_degrees, initial_speed, deflect_x=None): # TODO deflect_x does not work
         angle_radians = math.radians(angle_degrees)
         time_of_flight = (2 * initial_speed * math.sin(angle_radians)) / BallsHelper.GRAVITY
 
+        if deflect_x is None:
+            start_time = 0.0
+            end_time = time_of_flight
+        else:
+            deflect_time = deflect_x / (initial_speed * math.cos(angle_radians))
+            start_time = 0.0
+            end_time = time_of_flight + deflect_time
+
         trajectory_points = []
         time_interval = 0.05
-        t = 0.0
 
-        while t <= time_of_flight:
-            x = initial_speed * math.cos(angle_radians) * t
-            y = BallsHelper.HEIGHT - (initial_speed * math.sin(angle_radians) * t - 0.5 * BallsHelper.GRAVITY * t ** 2)
+        for t in BallsHelper._frange(start_time, end_time, time_interval):
+            if t <= time_of_flight:
+                x = initial_speed * math.cos(angle_radians) * t
+                y = BallsHelper.HEIGHT - (initial_speed * math.sin(angle_radians) * t - 0.5 * BallsHelper.GRAVITY * t ** 2)
+            else:
+                deflected_t = t - time_of_flight
+                x = deflect_x + initial_speed * math.cos(angle_radians) * deflected_t
+                y = BallsHelper.HEIGHT - (initial_speed * math.sin(angle_radians) * time_of_flight -
+                                          0.5 * BallsHelper.GRAVITY * time_of_flight ** 2 +
+                                          initial_speed * math.sin(angle_radians) * deflected_t -
+                                          0.5 * BallsHelper.GRAVITY * deflected_t ** 2)
+
             trajectory_points.append((x, y))
-            t += time_interval
 
         return trajectory_points
 
+    @staticmethod
+    def _frange(start, end, step):
+        while start <= end:
+            yield start
+            start += step
+    
     @staticmethod
     def create_ball():
         x = 0 if random.random() < 0.5 else BallsHelper.screen_width
