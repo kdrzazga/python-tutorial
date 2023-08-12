@@ -1,4 +1,5 @@
-player_moves1 = ['l', 'r'] + ['l'] * 11 + ['r'] * 12 + ['l'] * 18 + ['r', 'r', 'r', 'r', 'r', 'u', 'u', 'l', 'l'] + ['u'] * 8
+player_moves1 = ['l', 'r'] + ['l'] * 11 + ['r'] * 12 + ['l'] * 18 + ['r', 'r', 'r', 'r', 'r', 'u', 'u', 'l', 'l'] + [
+    'u'] * 8
 enemy_moves1 = ['r'] * 15 + ['u'] * 10
 
 
@@ -29,16 +30,16 @@ def create_platforms(size_x, size_y):
     for x in range(size_x):
         platforms.append((x, 9))
         platforms.append((x, 1))
-        
+
     for y in range(size_y - 1):
         platforms.append((3, y))
         platforms.append((15, y))
-    
+
     for y in range(2 * size_y // 3, size_y):
         platforms.append((8, y))
 
     return platforms
 
+
 def create_ladders(size_y):
     return []
-
