@@ -1,6 +1,20 @@
+import logging
 import pygame
 
+from player_sprite import Player
+
+BACKGROUND = (0, 0, 0)
+PLAYER_COLOR = (12, 222, 222)
+
+def get_color(x, y):
+    screenshot = pygame.Surface(screen.get_size())
+    screenshot.blit(screen, (0, 0))
+    return screenshot.get_at((x, y))
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
 pygame.init()
+pygame.key.set_repeat(0, 0)
 
 canvas_width = 800
 canvas_height = 200
@@ -16,38 +30,41 @@ double_bitmap.blit(background_bitmap, (background_bitmap.get_width(), 0))
 
 background_x = 0
 
-def get_color(x, y):
-    screenshot = pygame.Surface(screen.get_size())
-    screenshot.blit(screen, (0, 0))
-    return screenshot.get_at((x, y))
+player = Player()
 
 running = True
 clock = pygame.time.Clock()
-scroll_speed = 5
-soldier_anim_counter = 0
+scroll_speed = 8
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-    #GET KEY
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_RETURN] or keys[pygame.K_SPACE] or keys[pygame.K_RSHIFT] or keys[pygame.K_RALT] or keys[pygame.K_RCTRL]:
-        print("JUMP to other side")
 
-    #DRAW
-    screen.fill((0, 0, 0))  # Black background
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP] or keys[ord('w')]:
+        player.up()
+    elif keys[pygame.K_DOWN] or keys[ord('s')]:
+        player.down()
+
+    screen.fill(BACKGROUND)
 
     screen.blit(double_bitmap, (background_x, 0))
+
+    y = 0 if player.position == 'up' else double_bitmap.get_height() - player.height - 4
+
+    pygame.draw.rect(screen, PLAYER_COLOR, (0, y, player.width, player.height))
 
     background_x -= scroll_speed
     if background_x <= -background_bitmap.get_width():
         background_x = 0
 
-    # Example of getting the color at (0, 0)
-    pixel_color = get_color(0, 0)
-    print("Pixel Color:", pixel_color)
+    y = 0 if player.position == 'up' else double_bitmap.get_height() - 4
+
+    pixel_color = get_color(player.width, y)
+    
+    if get_color(player.width + 1, y) != BACKGROUND:
+        logging.info("COLLISION")   
 
     pygame.display.flip()
     clock.tick(60)

@@ -96,12 +96,19 @@ class Drawer:
         draw.text((53 * Drawer.width // 100, 15), str(board.player.energy), font=self.caption_font,
                   fill=self.caption_text_color3)
         draw.text((69 * Drawer.width // 100, 0), "enemies:", font=self.caption_font, fill=self.caption_text_color2)
-        draw.text((69 * Drawer.width // 100, 15), str(len(board.enemies)), font=self.caption_font,
+        draw.text((69 * Drawer.width // 100, 15), str(len([enemy for enemy in board.enemies if enemy.active])), font=self.caption_font,
                   fill=self.caption_text_color3)
         draw.text((87 * Drawer.width // 100, 0), "SPELLS:", font=self.caption_font, fill=self.caption_text_color2)
         draw.text((87 * Drawer.width // 100, 15), str(board.player.spells), font=self.caption_font,
                   fill=self.caption_text_color3)
-        # GAME OVER
+       
+        self.check_game_over(board, draw)
+
+        caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
+        self.window.blit(caption_surface, (0, Drawer.board_height))
+        pygame.display.update()
+
+    def check_game_over(self, board, draw):
         if board.player.energy <= 0:
             board.player.active = False
             draw.text((30 * Drawer.width // 100, 31), "Whoa, bro! You are DEAD man", font=self.caption_font,
@@ -114,10 +121,6 @@ class Drawer:
             board.player.active = False
             draw.text((30 * Drawer.width // 100, 31), "VICTORY !!!!!!!!!", font=self.caption_font,
                       fill=self.caption_text_color2)
-
-        caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
-        self.window.blit(caption_surface, (0, Drawer.board_height))
-        pygame.display.update()
 
     def main_loop(self):
         running = True
