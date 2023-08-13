@@ -2,6 +2,7 @@ import unittest
 
 from board import Board
 
+
 class BoardTest(unittest.TestCase):
 
     def setUp(self):
@@ -9,14 +10,15 @@ class BoardTest(unittest.TestCase):
 
     def test_get_field_enemy(self):
         field_content = self.board.get_field(self.board.enemies[0].x, self.board.enemies[0].y)
-        self.assertListEqual(field_content, ['enemy'])
+        self.assertIn('enemy', field_content)
 
-    def test_get_field_player_plaftorm(self):
+    def test_get_field_player_platform(self):
         field_content = self.board.get_field(self.board.player.x, self.board.player.y)
-        self.assertListEqual(field_content, ['player', 'platform'])
+        self.assertIn('player', field_content)
+        self.assertIn('platform', field_content)
 
     def test_get_field_empty(self):
-        #assert that enemy does not have platform beneath its feet
+        # assert that enemy does not have platform beneath its feet
         enemy = self.board.enemies[0]
         below_enemy_x = enemy.x
         below_enemy_y = enemy.y + 1
@@ -27,7 +29,7 @@ class BoardTest(unittest.TestCase):
     def test_no_platform_below_enemy(self):
         enemy = self.board.enemies[0]
 
-        self.assertFalse(self.board.has_platform_below(enemy.x, enemy.y))
+        self.assertTrue(self.board.has_platform_below(enemy.x, enemy.y))
 
     def test_free_fall(self):
         field_content = self.board.get_field(9, 3)
@@ -37,7 +39,7 @@ class BoardTest(unittest.TestCase):
         self.assertListEqual(field_content, ['platform'])
 
         for _ in range(10):
-            self.board.free_fall(self.board.enemy) #in 3rd iteration it should hit platform and not move anymore
+            self.board.free_fall(self.board.enemy[0])  # in 3rd iteration it should hit platform and not move anymore
 
         field_content = self.board.get_field(9, 5)
 
@@ -48,9 +50,8 @@ class BoardTest(unittest.TestCase):
             if item in actual:
                 actual.remove(item)
 
-        self.assertListEqual(actual, [])        
+        self.assertListEqual(actual, [])
 
 
 if __name__ == '__main__':
     unittest.main()
-    

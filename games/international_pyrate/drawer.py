@@ -2,10 +2,6 @@ import logging
 import pygame
 import os
 
-#from helper import random_move, random_move_mostly_up
-#from player import Player
-#from enemy import Enemy
-#from board import Board
 from PIL import Image, ImageDraw, ImageFont
 
 BLACK = (0, 0, 0)
@@ -47,9 +43,8 @@ class Drawer:
         
         self.window.blit(self.sprite_bitmap, (x, y))
         pygame.display.update()
-    
+
     def clear_sprite(self):
         x = Drawer.width/2 - self.sprite_bitmap.get_width()/2
         y = Drawer.initial_sprite_pos - self.sprite_bitmap.get_height()/2
         pygame.draw.rect(self.window, BACKGROUND, (x, y, self.sprite_bitmap.get_width(), self.sprite_bitmap.get_height()))
-        

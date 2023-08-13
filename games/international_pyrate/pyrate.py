@@ -26,7 +26,7 @@ def main():
     drawer.draw_sprite(player)
     drawer.draw_background()
     info(screen)
-    
+
     try:
         while running:
             for event in pygame.event.get():
@@ -34,10 +34,9 @@ def main():
                     running = False
                     pygame.mixer.music.stop()
             
-            
             if len(BallsHelper.balls) < BallsHelper.BALL_COUNT:  # Create fewer balls
                 BallsHelper.create_ball()
-    
+
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] or keys[ord('a')]:
                 player.set_direction('left')
@@ -47,7 +46,7 @@ def main():
                 player.set_direction('top left')
             elif keys[ord('e')]:
                 player.set_direction('top right')
-            
+
             BallsHelper.draw_balls(screen)
             pygame.display.flip()  # Update the screen
             
@@ -55,7 +54,7 @@ def main():
             BallsHelper.clear_balls(screen)
             drawer.clear_sprite()
             drawer.draw_sprite(player)
-            
+
             for ball in BallsHelper.balls:
                 roll_speed = -3 if ball.id % 3 == 0 else 3 
                 if ball.index < len(ball.trajectory):
@@ -71,7 +70,7 @@ def main():
                         
                         if ball.x >= BallsHelper.screen_width + BallsHelper.ball_diameter or ball.x < 0:
                             BallsHelper.balls.remove(ball)
-            
+
             clock.tick(140)  # Limit the frame rate to 60 FPS
 
     except KeyboardInterrupt:
