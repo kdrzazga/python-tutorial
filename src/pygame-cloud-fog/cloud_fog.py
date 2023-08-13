@@ -8,6 +8,7 @@ screen_width = 800
 screen_height = 600
 
 BLACK = (0,0,0)
+WHITE = (255, 255, 255)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Pygame Cloud Effect")
@@ -36,7 +37,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill(white)
+    screen.fill(BLACK)
 
     for particle in particles:
         particle.move()
@@ -44,7 +45,7 @@ while running:
 
     pygame.display.flip()
 
-    clock.tick(90)
+    clock.tick(170)
 
 pygame.quit()
 sys.exit()
