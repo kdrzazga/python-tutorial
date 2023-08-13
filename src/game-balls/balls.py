@@ -27,9 +27,10 @@ BACKGROUND_COLOR = (74, 74, 73)
 GRAVITY = 9.8
 HEIGHT = screen_height - ball_diameter  # Adjust for ball's size
 
+
 class Ball:
     count = 0
-    
+
     def __init__(self, x, y, trajectory, color, rolling=False):
         self.x = x
         self.y = y
@@ -39,6 +40,7 @@ class Ball:
         self.rolling = rolling
         self.id = Ball.count
         Ball.count += 1
+
 
 def calculate_trajectory(angle_degrees, initial_speed):
     angle_radians = math.radians(angle_degrees)
@@ -56,6 +58,7 @@ def calculate_trajectory(angle_degrees, initial_speed):
 
     return trajectory_points
 
+
 def create_ball():
     x = 0 if random.random() < 0.5 else screen_width
     y = HEIGHT - offset_y  # Adjust y position based on offset
@@ -66,13 +69,16 @@ def create_ball():
     ball = Ball(x, y, trajectory, color)
     balls.append(ball)
 
+
 def draw_balls():
     for ball in balls:
         pygame.draw.circle(screen, ball.color, (int(ball.x), int(ball.y + offset_y)), ball_radius)
-        
+
+
 def clear_balls():
     for ball in balls:
         pygame.draw.circle(screen, BACKGROUND_COLOR, (int(ball.x), int(ball.y + offset_y)), ball_radius)
+
 
 def main():
     running = True
@@ -80,37 +86,38 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        
+
         screen.fill(BACKGROUND_COLOR)  # Clear the screen
-        
+
         if len(balls) < BALL_COUNT:  # Create fewer balls
             create_ball()
-        
+
         draw_balls()
-        
+
         for ball in balls:
-            roll_speed = -3 if ball.id % 3 == 0 else 3 
+            roll_speed = -3 if ball.id % 3 == 0 else 3
             if ball.index < len(ball.trajectory):
                 x, ball.y = ball.trajectory[ball.index]
-                ball.x = screen_width - x  if ball.id % 3 == 0 else x 
+                ball.x = screen_width - x if ball.id % 3 == 0 else x
                 ball.index += 1
             else:
                 if not ball.rolling:
                     ball.rolling = True
                     ball.trajectory = [(ball.x, ball.y)]
                 else:
-                    ball.x += roll_speed 
-                    
+                    ball.x += roll_speed
+
                     if ball.x >= screen_width + ball_diameter or ball.x < 0:
                         balls.remove(ball)
-        
+
         pygame.display.flip()  # Update the screen
-        
+
         time.sleep(0.001)
         clear_balls()
         clock.tick(140)  # Limit the frame rate to 60 FPS
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()

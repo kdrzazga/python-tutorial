@@ -33,12 +33,13 @@ class Board:
         logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
         self.player = Player(16, 6)
-        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(3, 0), Enemy(7, 1), Enemy(8, 1), Enemy(9, 1), Enemy(10, 1), Enemy(15, 0)]
-        self.fireballs = [Fireball(0,0), Fireball(0,0)]
+        self.enemies = [Enemy(0, 3), Enemy(4, 3), Enemy(3, 0), Enemy(7, 1), Enemy(8, 1), Enemy(9, 1), Enemy(10, 1),
+                        Enemy(15, 0)]
+        self.fireballs = [Fireball(0, 0), Fireball(0, 0)]
 
         self.platforms = create_platforms(Board.sizeX, Board.sizeY)
         self.ladders = create_ladders(Board.sizeY)
-        
+
         self.status = 'running'
 
     def get_field(self, x, y):
@@ -68,10 +69,11 @@ class Board:
     def move_sprite(self, sprite, direction):
         if not sprite.active:
             logging.debug("Sprite INACTIVE. Won't be moved")
-        
+
         else:
             target_x, target_y = decode_move(sprite, direction)
-            logging.debug('Moving sprite %s : (%d, %d) -> (%d, %d)', sprite.name, sprite.x, sprite.y, target_x, target_y)
+            logging.debug('Moving sprite %s : (%d, %d) -> (%d, %d)', sprite.name, sprite.x, sprite.y, target_x,
+                          target_y)
             self._perform_sprite_move(sprite, target_x, target_y)
 
     def _perform_sprite_move(self, sprite, target_x, target_y):
@@ -91,7 +93,8 @@ class Board:
 
         # ladder -> ladder
         if 'ladder' in current_content and 'ladder' in target_content:
-            logging.debug('Ladders are present.Move sprite (%d, %d) -> (%d, %d)', sprite.x, sprite.y, target_x, target_y)
+            logging.debug('Ladders are present.Move sprite (%d, %d) -> (%d, %d)', sprite.x, sprite.y, target_x,
+                          target_y)
             sprite.x, sprite.y = target_x, target_y
 
         # platform -> nothing (and free fall)
@@ -107,10 +110,10 @@ class Board:
             self.fireballs[0].x -= 1
         if self.fireballs[1].x < Board.sizeX - 1:
             self.fireballs[1].x += 1
-        
-        if self.fireballs[0].x <= 0 and self.fireballs[1].x >= Board.sizeX -1:
+
+        if self.fireballs[0].x <= 0 and self.fireballs[1].x >= Board.sizeX - 1:
             return False
-        
+
         return True
 
     def start_fireballs(self):
@@ -121,14 +124,14 @@ class Board:
         self.player.spells -= 1
 
     def detect_player_collision(self, enemy):
-        if enemy.x == self.player.x and enemy.y == self.player.y and self.player.active and enemy.active: 
+        if enemy.x == self.player.x and enemy.y == self.player.y and self.player.active and enemy.active:
             self.player.energy -= 1
-            if self.player.energy <=0:
+            if self.player.energy <= 0:
                 self.player.active = False
-            
+
     def detect_enemy_fb_collision(self, enemy):
         for fb in self.fireballs:
-            if enemy.x == fb.x and enemy.y == fb.y: 
+            if enemy.x == fb.x and enemy.y == fb.y:
                 enemy.active = False
                 logging.debug('Enemy hit at (%d, %d)', enemy.x, enemy.y)
                 self.player.score += Enemy.score

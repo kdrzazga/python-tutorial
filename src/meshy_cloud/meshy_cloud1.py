@@ -1,6 +1,6 @@
-import pygame
 import sys
-import math
+
+import pygame
 
 pygame.init()
 
@@ -19,8 +19,10 @@ ellipse_height = 100
 running = True
 clock = pygame.time.Clock()
 
+
 def is_inside_ellipse(x, y):
     return ((x - ellipse_center[0]) / ellipse_width) ** 2 + ((y - ellipse_center[1]) / ellipse_height) ** 2 <= 1
+
 
 while running:
     for event in pygame.event.get():

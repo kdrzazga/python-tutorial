@@ -10,9 +10,6 @@ ORANGE = (255, 128, 64)
 WHITE = (250, 250, 250)
 YELLOW = (238, 238, 119)
 
-#screen_width = 800
-#screen_height = 600
-#screen = pygame.display.set_mode((screen_width, screen_height))
 
 def info(screen):
     font_path = os.path.join("resources", "karate.ttf")

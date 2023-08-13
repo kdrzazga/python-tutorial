@@ -6,10 +6,12 @@ from player_sprite import Player
 BACKGROUND = (0, 0, 0)
 PLAYER_COLOR = (12, 222, 222)
 
+
 def get_color(x, y):
     screenshot = pygame.Surface(screen.get_size())
     screenshot.blit(screen, (0, 0))
     return screenshot.get_at((x, y))
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -62,9 +64,9 @@ while running:
     y = 0 if player.position == 'up' else double_bitmap.get_height() - 4
 
     pixel_color = get_color(player.width, y)
-    
+
     if get_color(player.width + 1, y) != BACKGROUND:
-        logging.info("COLLISION")   
+        logging.info("COLLISION")
 
     pygame.display.flip()
     clock.tick(60)

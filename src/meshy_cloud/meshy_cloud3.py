@@ -39,10 +39,10 @@ while running:
     screen.fill(BACKGROUND)
 
     clouds[cloud_index].draw()
-    
+
     clouds[0].move_left(5)
-    
-    cloud_index = (cloud_index + 1 ) % len(clouds)
+
+    cloud_index = (cloud_index + 1) % len(clouds)
 
     clock.tick(2)
 
