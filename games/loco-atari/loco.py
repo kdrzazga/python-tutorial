@@ -4,6 +4,22 @@ import pygame
 from level_manager import LevelManager
 from cloud import Cloud
 
+BLACK = (0, 0, 0)
+BLUE = (1, 1, 254)
+
+pygame.init()
+
+mp3_file = "resources/audio/steam-locomotive.mp3"
+pygame.mixer.music.load(mp3_file)
+pygame.mixer.music.play(-1)  # -1: infinite loop
+
+whistle_path = "resources/audio/whistle.mp3"
+whistle = pygame.mixer.Sound(whistle_path)
+        
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+level_mgr = LevelManager()
+
 def keys_input():
     keys = pygame.key.get_pressed()
     if keys[pygame.K_RETURN] or keys[pygame.K_SPACE] or keys[pygame.K_RSHIFT] or keys[pygame.K_RALT] \
@@ -11,14 +27,7 @@ def keys_input():
         logging.info("key pressed")
         cloud = Cloud(canvas_width // 2, 100, 100, 50, screen, canvas_width, canvas_height)
         cloud.draw()
-
-BLACK = (0, 0, 0)
-BLUE = (1, 1, 254)
-
-pygame.init()
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-level_mgr = LevelManager()
+        whistle.play()
 
 canvas_width = 1202
 canvas_height = 600
