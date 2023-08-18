@@ -4,7 +4,7 @@ from enemy import Enemy
 from player import Player
 
 from fireball import Fireball
-from factory import create_platforms, create_ladders
+from bin.factory import create_platforms, create_ladders
 
 
 def decode_move(sprite, move):

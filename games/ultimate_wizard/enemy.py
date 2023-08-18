@@ -1,4 +1,4 @@
-from sprite import Sprite
+from bin.sprite import Sprite
 
 
 class Enemy(Sprite):

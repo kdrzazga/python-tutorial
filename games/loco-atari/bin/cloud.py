@@ -1,6 +1,6 @@
 import pygame
 
-from constants import Constants
+from bin.constants import Constants
 
 class Cloud:
 

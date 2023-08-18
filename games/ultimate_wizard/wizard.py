@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from factory import create_player_moves, create_enemy_moves
+from bin.factory import create_player_moves, create_enemy_moves
 from drawer import Drawer
 from board import Board
 
