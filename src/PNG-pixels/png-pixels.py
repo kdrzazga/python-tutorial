@@ -22,9 +22,9 @@ while running:
     if image_rect.collidepoint(mouse_x, mouse_y):
         pixel_color = image.get_at((mouse_x - image_rect.x, mouse_y - image_rect.y))
         if pixel_color.a == 0:
-            print("Pixel [", mouse_x, mouse_y,"] is transparent")
+            print("Pixel [", mouse_x, mouse_y, "] is transparent")
         else:
-            print("Pixel [", mouse_x, mouse_y,"] is NOT transparent")
+            print("Pixel [", mouse_x, mouse_y, "] is NOT transparent")
 
     screen.fill((0, 0, 0))
     screen.blit(image, image_rect)

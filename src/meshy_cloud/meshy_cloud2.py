@@ -6,7 +6,6 @@ from PIL import Image, ImageDraw, ImageFont
 
 pygame.init()
 
-
 screen_width = 800
 screen_height = 600
 
@@ -33,8 +32,8 @@ def is_inside_ellipse(x, y):
 def draw_mesh_rect():
     for x in range(ellipse_center[0] - ellipse_width, ellipse_center[0] + ellipse_width + 1, rectangle_size):
         for y in range(ellipse_center[1] - ellipse_height, ellipse_center[1] + ellipse_height + 1, rectangle_size):
-                if (x + y) % 2 == 0:
-                    pygame.draw.rect(screen, WHITE, (x, y + ellipse_height, rectangle_size, rectangle_size))
+            if (x + y) % 2 == 0:
+                pygame.draw.rect(screen, WHITE, (x, y + ellipse_height, rectangle_size, rectangle_size))
 
 
 def meshy_ellipse_high():
@@ -52,7 +51,7 @@ def meshy_ellipse_high():
 
 def meshy_ellipse_low():
     draw_mesh_rect()
-    
+
     for x in range(ellipse_center[0] - ellipse_width, ellipse_center[0] + ellipse_width + 1, rectangle_size):
         for y in range(ellipse_center[1] - ellipse_height, ellipse_center[1] + ellipse_height + 1, rectangle_size):
             if not is_inside_ellipse(x, y):
@@ -69,6 +68,7 @@ def write_rect_size(rectangle_size):
     screen.blit(text_surface, (50, 50))
     pygame.display.flip()
 
+
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -76,11 +76,11 @@ while running:
 
     screen.fill(BLACK)
 
-    meshy_ellipse_high()    
+    meshy_ellipse_high()
     meshy_ellipse_low()
 
     write_rect_size(rectangle_size)
-    
+
     rectangle_size = (rectangle_size + 1) % 28 + 1
     clock.tick(1)
 

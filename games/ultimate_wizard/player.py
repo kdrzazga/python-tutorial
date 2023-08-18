@@ -1,7 +1,7 @@
 from sprite import Sprite
 
-class Player(Sprite):
 
+class Player(Sprite):
     sprite_path = "resources/wizard.png"
     tobmstone_path = "resources/tombstone2.png"
     initial_spells = 11
@@ -11,6 +11,6 @@ class Player(Sprite):
         self.score = 0
         self.energy = 6
         self.spells = Player.initial_spells
-    
+
     def get_sprite_path(self):
         return Player.sprite_path if self.energy > 0 else Player.tobmstone_path

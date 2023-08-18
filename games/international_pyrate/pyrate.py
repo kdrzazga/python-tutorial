@@ -8,8 +8,8 @@ from info import info
 from player import Player
 from drawer import Drawer
 
-def main():
 
+def main():
     pygame.init()
     screen = pygame.display.set_mode((BallsHelper.screen_width, BallsHelper.screen_height))
 
@@ -33,7 +33,7 @@ def main():
                 if event.type == pygame.QUIT:
                     running = False
                     pygame.mixer.music.stop()
-            
+
             if len(BallsHelper.balls) < BallsHelper.BALL_COUNT:  # Create fewer balls
                 BallsHelper.create_ball()
 
@@ -49,25 +49,25 @@ def main():
 
             BallsHelper.draw_balls(screen)
             pygame.display.flip()  # Update the screen
-            
+
             time.sleep(0.005)
             BallsHelper.clear_balls(screen)
             drawer.clear_sprite()
             drawer.draw_sprite(player)
 
             for ball in BallsHelper.balls:
-                roll_speed = -3 if ball.id % 3 == 0 else 3 
+                roll_speed = -3 if ball.id % 3 == 0 else 3
                 if ball.index < len(ball.trajectory):
                     x, ball.y = ball.trajectory[ball.index]
-                    ball.x = BallsHelper.screen_width - x  if ball.id % 3 == 0 else x 
+                    ball.x = BallsHelper.screen_width - x if ball.id % 3 == 0 else x
                     ball.index += 1
                 else:
                     if not ball.rolling:
                         ball.rolling = True
                         ball.trajectory = [(ball.x, ball.y)]
                     else:
-                        ball.x += roll_speed 
-                        
+                        ball.x += roll_speed
+
                         if ball.x >= BallsHelper.screen_width + BallsHelper.ball_diameter or ball.x < 0:
                             BallsHelper.balls.remove(ball)
 
@@ -76,6 +76,7 @@ def main():
     except KeyboardInterrupt:
         pygame.mixer.music.stop()
         pygame.quit()
+
 
 if __name__ == "__main__":
     main()

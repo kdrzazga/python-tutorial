@@ -1,7 +1,7 @@
 from sprite import Sprite
 
-class Fireball(Sprite):
 
+class Fireball(Sprite):
     sprite_path = "resources/fb.png"
 
     def __init__(self, x, y):
