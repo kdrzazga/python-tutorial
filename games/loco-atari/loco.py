@@ -1,6 +1,8 @@
+import threading
 import logging
 import pygame
 import math
+import time
 
 from level_manager import LevelManager
 from constants import Constants
@@ -67,16 +69,23 @@ class Loco:
         double_bitmap.blit(railroad_bitmap, (0, 0))  # constant background
         double_bitmap.blit(railroad_bitmap, (railroad_bitmap.get_width(), 0))  # animated background
         
+        cloud_thread = threading.Thread(target=self._clear_cloud)
+        cloud_thread.start()
+        
         background_x = 0
         self.running = True
         self.clock = pygame.time.Clock()
         scroll_speed = 5
         
         self.screen.fill(Constants.BLACK)
+        blue_rectOL = pygame.Rect(530, 0, 200, 134)
         blue_rectLB = pygame.Rect(0, 91, 530, 183)
+        pygame.draw.rect(self.screen, Constants.SKY, blue_rectOL)        
         pygame.draw.rect(self.screen, Constants.SKY, blue_rectLB)
+        
         blue_rectR = pygame.Rect(Constants.canvas_width - 472, 0, Constants.canvas_width, 294)
         pygame.draw.rect(self.screen, Constants.SKY, blue_rectR)
+        pygame.display.update()
         
         while self.running:
             for event in pygame.event.get():
@@ -94,21 +103,22 @@ class Loco:
             self.rotate_wheels()
         
             self.keys_input()
-            
-            if self.cloud != None:
-                self.cloud.counter += 1
-            
-                if self.cloud.check_limit():
-                    self.cloud.clear()
-                    self.cloud.counter = 0
-
-                print(self.cloud.counter)
 
             pygame.display.flip()
             self.clock.tick(60)
 
         pygame.quit()
+        cloud_thread.stop()
         
+        
+    def _clear_cloud(self):
+        while True:
+            blue_rectOL = pygame.Rect(530, 0, 200, 134)
+            pygame.draw.rect(self.screen, Constants.SKY, blue_rectOL)
+            pygame.display.update()
+            time.sleep(3)
+
+
 if __name__ == '__main__':
     loco = Loco()
     loco.main()
