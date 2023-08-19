@@ -71,7 +71,7 @@ def main():
                         if ball.x >= BallsHelper.screen_width + BallsHelper.ball_diameter or ball.x < 0:
                             BallsHelper.balls.remove(ball)
 
-            clock.tick(140)  # Limit the frame rate to 60 FPS
+            clock.tick(140)
 
     except KeyboardInterrupt:
         pygame.mixer.music.stop()

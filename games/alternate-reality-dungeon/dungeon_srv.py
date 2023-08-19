@@ -8,13 +8,19 @@ from datetime import datetime
 app = Flask(__name__)
 
 
-class Data:    
+class ChamberData:    
     def __init__(self):
         with open('resources/descriptions.yml', 'r') as file:
             self.descriptions = yaml.safe_load(file)
 
 
-class Response:    
+class MonsterData:
+    def __init__(self):
+        with open('resources/enemies/monsters.yml', 'r') as file:
+            self.data = yaml.safe_load(file)
+
+
+class ChamberResponse:    
     def __init__(self, filename, description, path):
         self.mode = 'standard'
         self.filename = filename
@@ -25,10 +31,29 @@ class Response:
     def to_string(self):
         return "filename = " + self.filename + " description = " + self.description + " path = " + self.path
 
+
 # curl http://localhost:9991/
 @app.route('/', methods=['GET'])
 def get_info():
     return 'dungeon service', 200
+
+
+# curl http://localhost:9991/dungeon/monster/gremlin
+@app.route('/dungeon/monster/<name>', methods=['GET'])
+def get_monster(name):
+    logging.info("Fetching info about monster ", name)    
+    data = MonsterData()
+    
+    entry = next((d for d in data.data if d['id'] == name), None)
+    
+    return jsonify(
+            filename=entry['file'],
+            hp=entry['hp'],
+            attack=entry['attack'],
+            defense=entry['defense'],
+            magic= entry['magic'],
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        ), 200
 
 
 # curl http://localhost:9991/dungeon/chamber/1
@@ -38,13 +63,13 @@ def get_chamber(index):
     file_path = "resources/" + str(index) + "*" + ".PNG"
     matching_files = glob.glob(file_path)
 
-    data = Data()
+    data = ChamberData()
 
-    logging.info("Response:")
+    logging.info("Chamber Response:")
 
     if matching_files:
         entry = next((d for d in data.descriptions if d['id'] == index), None)
-        response = Response(matching_files[0], entry['description'], entry['file'])
+        response = ChamberResponse(matching_files[0], entry['description'], entry['file'])
         
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
