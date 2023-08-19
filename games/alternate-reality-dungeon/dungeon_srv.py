@@ -1,14 +1,14 @@
-import os
 import glob
-import yaml
 import logging
-from flask import Flask, jsonify
 from datetime import datetime
+
+import yaml
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
 
-class ChamberData:    
+class ChamberData:
     def __init__(self):
         with open('resources/descriptions.yml', 'r') as file:
             self.descriptions = yaml.safe_load(file)
@@ -20,7 +20,7 @@ class MonsterData:
             self.data = yaml.safe_load(file)
 
 
-class ChamberResponse:    
+class ChamberResponse:
     def __init__(self, filename, description, path):
         self.mode = 'standard'
         self.filename = filename
@@ -41,19 +41,19 @@ def get_info():
 # curl http://localhost:9991/dungeon/monster/gremlin
 @app.route('/dungeon/monster/<name>', methods=['GET'])
 def get_monster(name):
-    logging.info("Fetching info about monster ", name)    
+    logging.info("Fetching info about monster ", name)
     data = MonsterData()
-    
+
     entry = next((d for d in data.data if d['id'] == name), None)
-    
+
     return jsonify(
-            filename=entry['file'],
-            hp=entry['hp'],
-            attack=entry['attack'],
-            defense=entry['defense'],
-            magic= entry['magic'],
-            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        ), 200
+        filename=entry['file'],
+        hp=entry['hp'],
+        attack=entry['attack'],
+        defense=entry['defense'],
+        magic=entry['magic'],
+        timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    ), 200
 
 
 # curl http://localhost:9991/dungeon/chamber/1
@@ -70,21 +70,21 @@ def get_chamber(index):
     if matching_files:
         entry = next((d for d in data.descriptions if d['id'] == index), None)
         response = ChamberResponse(matching_files[0], entry['description'], entry['file'])
-        
+
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
+
         logging.info(response.to_string())
-        
+
         return jsonify(
             filename=response.filename,
             description=response.description,
             path=response.path,
             mode=response.mode,
-            timestamp = timestamp,
-            validated= response.validated
+            timestamp=timestamp,
+            validated=response.validated
         ), 200
     else:
-        info="No matching files found"
+        info = "No matching files found"
         logging.info(info)
         return jsonify(message=info), 404
 

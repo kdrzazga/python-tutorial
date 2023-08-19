@@ -2,6 +2,7 @@ import pygame
 
 from bin.constants import Constants
 
+
 class Cloud:
 
     def __init__(self, x, y, width, height, screen, screen_width, screen_height):
@@ -14,11 +15,9 @@ class Cloud:
 
         self.rectangle_size = 13
 
-
     def is_inside_ellipse(self, x, y):
         return ((x - self.ellipse_center[0]) / self.ellipse_width) ** 2 + (
                 (y - self.ellipse_center[1]) / self.ellipse_height) ** 2 <= 1
-
 
     def draw_mesh_rect(self):
         for x in range(self.ellipse_center[0] - self.ellipse_width, self.ellipse_center[0] + self.ellipse_width + 1,
@@ -28,7 +27,6 @@ class Cloud:
                 if (x + y) % 2 == 0:
                     pygame.draw.rect(self.screen, Constants.WHITE,
                                      (x, y - self.ellipse_height, self.rectangle_size, self.rectangle_size))
-
 
     def draw(self):
         self.draw_mesh_rect()
@@ -44,18 +42,18 @@ class Cloud:
                     continue
         pygame.display.flip()
 
-
     def clear(self):
-       pygame.draw.ellipse(self.screen, Constants.SKY, (self.ellipse_center[0] - self.ellipse_width / 2, self.ellipse_center[1] - self.ellipse_height / 2, self.ellipse_width, self.ellipse_height))
+        pygame.draw.ellipse(self.screen, Constants.SKY, (
+            self.ellipse_center[0] - self.ellipse_width / 2, self.ellipse_center[1] - self.ellipse_height / 2,
+            self.ellipse_width, self.ellipse_height))
 
-       blue_rectLT = pygame.Rect(0, 0, 530, 91)
-       blue_rectOL = pygame.Rect(530, 134, 248, 48)
-       pygame.draw.rect(self.screen, Constants.SKY, blue_rectLT)
-       pygame.draw.rect(self.screen, Constants.SKY, blue_rectOL)
+        blue_rect_lt = pygame.Rect(0, 0, 530, 91)
+        blue_rect_ol = pygame.Rect(530, 134, 248, 48)
+        pygame.draw.rect(self.screen, Constants.SKY, blue_rect_lt)
+        pygame.draw.rect(self.screen, Constants.SKY, blue_rect_ol)
 
     def move_left(self, shift):
         self.ellipse_center = (self.ellipse_center[0] + shift, self.ellipse_center[1])
-
 
     def check_limit(self):
         return self.counter < self.counter_limit

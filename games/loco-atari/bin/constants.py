@@ -1,5 +1,4 @@
 class Constants:
-
     BLACK = (0, 0, 0)
     SKY = (1, 1, 254)
     BACKGROUND = (1, 1, 254)

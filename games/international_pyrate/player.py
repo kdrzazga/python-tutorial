@@ -11,7 +11,7 @@ class Player:
         self.sprite_path = "resources/sprite.png"
         self.direction = 'none'
 
-    def set_direction(self, dir):
-        self.direction = dir
-        logging.debug("Direction: " + dir)
-        self.sprite_path = "resources/" + Player.direction_file_dict[dir]
+    def set_direction(self, new_dir):
+        self.direction = new_dir
+        logging.debug("Direction: " + new_dir)
+        self.sprite_path = "resources/" + Player.direction_file_dict[new_dir]

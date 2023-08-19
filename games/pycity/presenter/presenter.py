@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 class Presenter:
     def __init__(self, board, view):
         self.board = board

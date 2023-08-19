@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font
 
+
 class InfoPanel(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master, bg="green", relief="sunken", bd=3)
@@ -12,6 +13,7 @@ class InfoPanel(tk.Frame):
             label = tk.Label(self, text=label_name, font=font.Font(size=12), bg="green")
             label.grid(row=i - 1, column=0, padx=10, pady=5, sticky="w")
             self.labels[f"label{i}"] = label
+
 
 class PyCityView(tk.Tk):
     def __init__(self):
@@ -34,11 +36,12 @@ class PyCityView(tk.Tk):
         for col in range(4):
             self.columnconfigure(col, weight=1, minsize=75)
 
+
 def main():
     """Create the game's board and run its main loop."""
     board = PyCityView()
     board.mainloop()
 
+
 if __name__ == "__main__":
     main()
-
