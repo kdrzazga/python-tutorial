@@ -3,8 +3,8 @@ import pygame
 import time
 import sys
 
-from bin.balls import BallsHelper, Ball
-from bin.info import info
+from lib.balls import BallsHelper, Ball
+from lib.info import info
 from player import Player
 from drawer import Drawer
 

@@ -4,6 +4,7 @@ from datetime import datetime
 
 import yaml
 from flask import Flask, jsonify
+from modules.random_points import get_random_target
 
 app = Flask(__name__)
 
@@ -37,6 +38,17 @@ class ChamberResponse:
 def get_info():
     return 'dungeon service', 200
 
+
+@app.route('/dungeon/random-hit', methods=['GET'])
+def random_hit():
+    point = get_random_target()
+    
+    return jsonify(
+        filepath='resources/enemies/hit.png',
+        point=point,
+        timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    )
+    
 
 # curl http://localhost:9991/dungeon/monster/gremlin
 @app.route('/dungeon/monster/<name>', methods=['GET'])

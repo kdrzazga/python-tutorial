@@ -21,6 +21,8 @@ class Viewer:
         self.clock = pygame.time.Clock()
         self.bitmap = None
         self.enemy_bitmap = None
+        self.hit_bitmap = None
+        self.hit_point = (0,0)
         self.description = ''
         self.picture_count = 7
         self.current_pic = 0
@@ -44,6 +46,19 @@ class Viewer:
             logging.info("hp: %d\nattack: %d\ndefense: %d\nmagic: %d", data['hp'], data['attack'], data['defense'],
                          data['magic'])
 
+        else:
+            logging.info("Image load error")
+            
+    def load_hit(self):
+        url = "http://localhost:9991/dungeon/random-hit"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            data = response.json()
+            logging.info("Read path: %s", data['filepath'])
+
+            self.hit_bitmap = pygame.image.load(data['filepath'])
+            self.hit_point = data['point']
         else:
             logging.info("Image load error")
 
@@ -80,11 +95,7 @@ class Viewer:
                 if event.type == pygame.QUIT:
                     self.running = False
 
-            if self.arrow_keys_input():
-                self.load_dungeon_room(self.current_pic)
-            if self.letter_keys_input():
-                self.load_dungeon_room(self.current_pic)
-                self.load_enemy(self.monster_pic)
+            self.keys_input()
 
             self._display()
             self._write_info(self.description)
@@ -92,40 +103,50 @@ class Viewer:
 
         pygame.quit()
 
-    def letter_keys_input(self):
-        keys = pygame.key.get_pressed()
-        if keys[ord('g')]:
-            self.monster_pic = 'gremlin'
-            return True
-        elif keys[ord('o')]:
-            self.monster_pic = 'orc'
-            return True
-        else:
-            return False
 
-    def arrow_keys_input(self):
+    def keys_input(self):
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_RIGHT] or keys[ord('d')]:
-            self.current_pic = (self.current_pic % self.picture_count) + 1
-            self.enemy_bitmap = None
-            return True
+        
+        if keys[ord('g')]:
+            self._change_monster('gremlin')
+        elif keys[ord('o')]:
+            self._change_monster('orc')
+        elif keys[pygame.K_RIGHT] or keys[ord('d')]:
+            self._change_dungeon_room(1)
         elif keys[pygame.K_LEFT] or keys[ord('a')]:
-            self.current_pic = (self.current_pic - 2) % self.picture_count + 1
-            self.enemy_bitmap = None
-            return True
-        else:
-            return False
+            self._change_dungeon_room(-1)
+        elif keys[ord('h')]:
+            if self.enemy_bitmap is not None:
+                self.load_hit()
+            else:
+                logging.error("Cannot hit when enemy is not present")
+
+    
+    def _change_monster(self, monster_pic):
+        self.monster_pic = monster_pic
+        self.load_dungeon_room(self.current_pic)
+        self.load_enemy(self.monster_pic)
+
+    
+    def _change_dungeon_room(self, direction):
+        self.current_pic = (self.current_pic + direction - 1) % self.picture_count + 1
+        self.enemy_bitmap = None
+        self.hit_bitmap = None
+        self.load_dungeon_room(self.current_pic)
+
 
     def _display(self):
+        x = self.canvas_width // 2 - self.bitmap.get_width() / 2
+        y = self.canvas_height // 10
+            
         if self.bitmap is not None:
-            x = self.canvas_width // 2 - self.bitmap.get_width() / 2
-            y = self.canvas_height // 10
             self.screen.blit(self.bitmap, (x, y))
 
         if self.enemy_bitmap is not None:
-            x = self.canvas_width // 2 - self.bitmap.get_width() / 2
-            y = self.canvas_height // 10
             self.screen.blit(self.enemy_bitmap, (x, y))
+
+        if self.hit_bitmap is not None and self.enemy_bitmap is not None:
+            self.screen.blit(self.hit_bitmap, (x + self.hit_point[0], y + self.hit_point[1]))
 
         pygame.display.update()
 
@@ -142,7 +163,7 @@ class Viewer:
             y_position += 13
 
         draw.text((1, y_position), "<-  ->  to browse thru images", font=self.caption_font, fill=Viewer.BACKGROUND)
-        draw.text((1, y_position + 13), "KEYS o g  - load orc/gremlin", font=self.caption_font, fill=Viewer.BACKGROUND)
+        draw.text((1, y_position + 13), "KEYS o g - load orc/gremlin  h - attack", font=self.caption_font, fill=Viewer.BACKGROUND)
 
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
         self.screen.blit(caption_surface, (10, 310))

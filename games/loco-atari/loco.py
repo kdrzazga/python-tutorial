@@ -5,8 +5,8 @@ import math
 import time
 
 from level_manager import LevelManager
-from bin.constants import Constants
-from bin.cloud import Cloud
+from modules.constants import Constants
+from modules.cloud import Cloud
 
 
 class Loco:
