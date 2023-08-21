@@ -13,7 +13,7 @@ class Cloud:
         self.counter = 0
         self.counter_limit = 12
 
-        self.rectangle_size = 13
+        self.rectangle_size = 3 #13
 
     def is_inside_ellipse(self, x, y):
         return ((x - self.ellipse_center[0]) / self.ellipse_width) ** 2 + (

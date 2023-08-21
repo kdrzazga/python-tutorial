@@ -29,6 +29,8 @@ class Loco:
         self.wheels_angle_deg = 0
         self.wheels_bitmap = pygame.image.load("resources/wheels.png")
         self.loco_y = 182
+        self.blue_rect_ol = pygame.Rect(530, 0, 200, 154)
+        self.blue_rect_ol2 = pygame.Rect(530, 154, 200, 28)
 
     def keys_input(self):
         keys = pygame.key.get_pressed()
@@ -57,7 +59,7 @@ class Loco:
     def main(self):
         self.screen = pygame.display.set_mode((Constants.canvas_width, Constants.canvas_height))
         pygame.display.set_caption("atari LOCO")
-        self.cloud = Cloud(Constants.canvas_width // 2, 100, 100, 50, self.screen, Constants.canvas_width,
+        self.cloud = Cloud(Constants.canvas_width // 2, 150, 120, 70, self.screen, Constants.canvas_width,
                            Constants.canvas_height)
 
         railroad_bitmap = pygame.image.load("resources/railroad.png")
@@ -77,15 +79,15 @@ class Loco:
         scroll_speed = 5
 
         self.screen.fill(Constants.BLACK)
-        blue_rectOL = pygame.Rect(530, 0, 200, 134)
-        blue_rectLB = pygame.Rect(0, 91, 530, 183)
-        pygame.draw.rect(self.screen, Constants.SKY, blue_rectOL)
-        pygame.draw.rect(self.screen, Constants.SKY, blue_rectLB)
-
+        blue_rect_lt = pygame.Rect(0, 0, 530, 91)
+        blue_rect_lb = pygame.Rect(0, 91, 530, 183)
         blue_rectR = pygame.Rect(Constants.canvas_width - 472, 0, Constants.canvas_width, 294)
-        pygame.draw.rect(self.screen, Constants.SKY, blue_rectR)
+        
+        for blue_rect in [blue_rect_lt, blue_rect_lb, self.blue_rect_ol, self.blue_rect_ol2, blue_rectR]:
+            pygame.draw.rect(self.screen, Constants.SKY, blue_rect)
+            
         pygame.display.update()
-
+            
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -111,8 +113,8 @@ class Loco:
 
     def _clear_cloud(self):
         while True:
-            blue_rectOL = pygame.Rect(530, 0, 200, 134)
-            pygame.draw.rect(self.screen, Constants.SKY, blue_rectOL)
+            blue_rect_ol = pygame.Rect(530, 0, 200, 134)
+            pygame.draw.rect(self.screen, Constants.SKY, self.blue_rect_ol)
             pygame.display.update()
             time.sleep(3)
 

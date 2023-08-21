@@ -86,8 +86,8 @@ class Viewer:
         pygame.display.set_caption("Chamber Viewer")
 
         self.screen.fill(Viewer.BACKGROUND)
-        blue_rect_lb = pygame.Rect(0, 300, self.canvas_width, self.canvas_height)
-        pygame.draw.rect(self.screen, Viewer.BLACK, blue_rect_lb)
+        black_rect_lb = pygame.Rect(0, 300, self.canvas_width, self.canvas_height)
+        pygame.draw.rect(self.screen, Viewer.BLACK, black_rect_lb)
 
     def main_loop(self):
         while self.running:
