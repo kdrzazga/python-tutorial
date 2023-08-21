@@ -1,0 +1,31 @@
+- id: 0
+  file: resources/0.intro.png
+  description: On a level stone expanse, a modest pit harbors gently sloping stairs, guiding to the dungeon's threshold. Hidden by a dimly cast rectangular ceiling, the entrance's nature remains veiled within the shadowy dusk.
+  
+- id: 1
+  file: resources/1.door.png
+  description: You find yourself before a strong door embedded within the ancient brick-stone walls. The door stands tall and imposing, a testament to forgotten eras. A small, iron-barred window is set into its center, revealing a glimpse of the ominous chamber beyond. Rusty hinges groan under the weight of secrets and history. Conjuring visions of the mysteries that lie on the other side are beckoning you to push forward into the heart of the dungeon's enigma.
+  
+- id: 2
+  file: resources/2.turn_left.png
+  description: Venturing onward, the corridor gracefully curves left, adorned in rustic brick and stone. A sense of anticipation lingers as the path's secrets lie veiled around the corner, inviting intrepid souls to unravel the enigma that awaits amidst the dimly lit passage.
+  
+- id: 3
+  file: resources/3.chamber.png
+  description: Amid the labyrinthine passages, an empty chamber stands, its essence etched in stone and brick. The expanse hints at purpose, veiled in the stronghold's heart, waiting to be unveiled.
+  
+- id: 4
+  file: resources/4.corridor.png
+  description: Just corridor and crossroads. Which way will you choose?
+  
+- id: 5
+  file: resources/5.corridor2.png
+  description: corridor 2
+  
+- id: 6
+  file: resources/6.corridor3.png
+  description: corridor 3
+  
+- id: 7
+  file: resources/7.corridor_door.png
+  description: Stretching ahead, a lengthy corridor enveloped in brick and stone emerges. Along the left wall, a door beckons with an air of mystery. Concealed by the corridor's embrace, the destination remains shrouded in uncertainty.

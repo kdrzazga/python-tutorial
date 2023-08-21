@@ -1,0 +1,13 @@
+- id: gremlin
+  file: resources/enemies/gremlin.png
+  hp: 5
+  attack: 1
+  defense: 1
+  magic: 0
+
+- id: orc
+  file: resources/enemies/orc.png
+  hp: 17
+  attack: 5
+  defense: 3
+  magic: 0
