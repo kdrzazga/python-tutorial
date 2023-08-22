@@ -5,7 +5,7 @@ import sys
 print("\nUse cursor keys to move the light point")
 
 WIDTH, HEIGHT = 800, 600
-CENTER_X, CENTER_Y = WIDTH // 10, HEIGHT // 10
+CENTER_X, CENTER_Y = WIDTH // 4, HEIGHT // 3
 RADIUS = 1
 NUM_CIRCLES = 450
 BG_COLOR = (0, 0, 0)
@@ -16,7 +16,7 @@ bitmap = pygame.image.load('resources/pb2.png')
 
 def draw_circle(screen, color, center, radius, transparency):
     thickness = 2 #radius // 6    
-    pygame.draw.circle(screen, WHITE, (CENTER_X, CENTER_Y), 7)
+    #pygame.draw.circle(screen, LIGHT_YELLOW, (100 + CENTER_X, 50 + CENTER_Y), 3)
     
     for angle in range(0, 360, 2):
         x = radius * math.sin(math.radians(angle)) + center[0]
@@ -36,7 +36,7 @@ def draw_circle(screen, color, center, radius, transparency):
         new_color = (r, g, b, transparency)
         
         if bitmap_color != (0, 0, 0):
-            pygame.draw.rect(screen, new_color, (x_int, y_int, thickness, thickness))
+            pygame.draw.rect(screen, new_color, (100 + x_int, 50 + y_int, thickness, thickness))
 
 pygame.init()
 
@@ -48,15 +48,18 @@ light_point.fill(WHITE)
 
 running = True
 clock = pygame.time.Clock()
+alpha = 0
 while running:
-    screen.blit(bitmap, (0, 0))
+    screen.blit(bitmap, (100, 50))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    keys = pygame.key.get_pressed()
-    dx = (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * 3.5
-    dy = (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * 3.5
+    alpha = (alpha + 3) % 360
+    horiz_radius = 7
+    vert_radius = 3
+    dx = horiz_radius * math.sin(math.radians(alpha))
+    dy = vert_radius * math.cos(math.radians(alpha))
 
     CENTER_X += dx
     CENTER_Y += dy
@@ -76,7 +79,7 @@ while running:
 
     pygame.display.flip()
 
-    clock.tick(99)
+    clock.tick(199)
 
 pygame.quit()
 sys.exit()
