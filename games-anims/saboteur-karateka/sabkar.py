@@ -42,8 +42,8 @@ def main():
         
             keys = pygame.key.get_pressed()
         
-            dx = (keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]) * 3.5
-            dy = (keys[pygame.K_DOWN] - keys[pygame.K_UP]) * 3.5
+            dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
+            dy = keys[pygame.K_DOWN] - keys[pygame.K_UP]
 
             redraw = True
  
@@ -57,6 +57,10 @@ def main():
                     walking = False
                     #sprites[0].stand()
                     #sprites[1].stand()
+        
+            if dy < 0 :
+                sprites[0].kick()
+                sprites[1].kick()
         
             pygame.display.flip()
             

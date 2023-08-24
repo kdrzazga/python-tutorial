@@ -9,16 +9,22 @@ class Sprite:
         self.y = y
         self.active = True
         self.name = name
+        self.kick_phase = ''
         self.walk_phase = ''
         self.walk_phases = deque(['w1', 'w2', 'w3'], maxlen=3)
         self._cyclic_iterator = cycle(self.walk_phases)
 
 
     def stand(self):
+        self.kick_phase = ''
         self.walk_phase = ''
-
+    
+    def kick(self):
+        self.kick_phase = '_kick'
+        self.walk_phase = '_kick'
 
     def step_right(self):
+        self.kick_phase = ''
         self.x += 4
         self.walk_phase = next(self._cyclic_iterator)
 
