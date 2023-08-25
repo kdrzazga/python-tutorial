@@ -8,7 +8,7 @@ from src.constants import Constants
 from src.sprite import Sprite
 from src.saboteur import Saboteur
 from src.karateka import Karateka
-from src.factory import create_saboteur, create_karateka
+from src.factory import create_saboteur, create_karateka, create_kong
 
 class SaboteurKarateka():
 
@@ -17,7 +17,7 @@ class SaboteurKarateka():
         self.walking = False        
         self.running = True
         self.grapher = Grapher()        
-        self.sprites = [create_saboteur(), create_karateka()]
+        self.sprites = [create_saboteur(), create_karateka(), create_kong()]
 
 
     def handle_keyboard(self):
