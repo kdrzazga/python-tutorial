@@ -23,6 +23,10 @@ class Sprite:
         self.kick_phase = '_kick'
         self.walk_phase = '_kick'
 
+    def punch(self):
+        self.kick_phase = '_punch'
+        self.walk_phase = '_punch'
+
     def step_right(self):
         self.kick_phase = ''
         self.x += 4
