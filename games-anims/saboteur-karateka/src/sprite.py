@@ -13,6 +13,8 @@ class Sprite:
         self.walk_phase = ''
         self.walk_phases = deque(['w1', 'w2', 'w3'], maxlen=3)
         self._cyclic_iterator = cycle(self.walk_phases)
+        self.counter = 0
+        self.anim_counter_threshold = 1
 
 
     def stand(self):
@@ -32,6 +34,26 @@ class Sprite:
         self.x += 4
         self.walk_phase = next(self._cyclic_iterator)
 
+    def reset(self):
+        pass
+        
+    def move(self):
+        pass
+    
+    def step_left(self):
+        self.x -= 4
+        
+    def step_down(self):
+        self.y += 4
+
+    def turn_left(self):
+        pass
+        
+    def turn_right(self):
+        pass
+    
+    def activate(self):
+        self.active = True
 
     def get_sprite_path(self):
         return ""

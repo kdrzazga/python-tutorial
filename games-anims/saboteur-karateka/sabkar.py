@@ -8,7 +8,7 @@ from src.constants import Constants
 from src.sprite import Sprite
 from src.saboteur import Saboteur
 from src.karateka import Karateka
-from src.factory import create_saboteur, create_karateka, create_kong
+from src.factory import create_saboteur, create_karateka, create_kong, create_barrel
 
 class SaboteurKarateka():
 
@@ -17,8 +17,16 @@ class SaboteurKarateka():
         self.walking = False        
         self.running = True
         self.grapher = Grapher()        
-        self.sprites = [create_saboteur(), create_karateka(), create_kong()]
+        self.sprites = [create_saboteur(), create_karateka(), create_kong(), create_barrel()]
+        
+        for info_line in self.info():
+            print(info_line)
 
+    def animate(self):
+        self.sprites[3].move()
+        if self.sprites[3].y > Constants.screen_height or self.sprites[3].x < 0:
+            self.sprites[3] = create_barrel() #creating new object to reset
+            self.sprites[2].turn_right()
 
     def handle_keyboard(self):
         keys = pygame.key.get_pressed()
@@ -26,6 +34,7 @@ class SaboteurKarateka():
         dx = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
         dy = keys[pygame.K_DOWN] - keys[pygame.K_UP]
         dp = keys[ord('p')] - keys[ord('o')]
+        ddonkey = keys[ord('k')] - keys[ord('l')]
 
         self.redraw = True
 
@@ -47,10 +56,16 @@ class SaboteurKarateka():
         if dp > 0 :
             self.sprites[0].punch()
             self.sprites[1].punch()
+            
+        if ddonkey > 0:
+            self.sprites[2].turn_left()
+            self.sprites[3].activate()
+            
+        elif ddonkey < 0:
+            self.sprites[2].turn_right()
+            
 
-    def display(self):
-        pygame.display.flip()
-                
+    def display(self):                
         time.sleep(0.005)
         if self.redraw:
             self.redraw = False
@@ -58,6 +73,8 @@ class SaboteurKarateka():
 
         for sprite in self.sprites:    
             self.grapher.draw_sprite(sprite)
+        
+        pygame.display.flip()
 
             
     def play_music(self):
@@ -88,15 +105,19 @@ class SaboteurKarateka():
                         self.running = False
                         pygame.mixer.music.stop()
                 
+                self.animate()                
                 self.handle_keyboard()
                 self.display()    
                 
-                clock.tick(20)
+                clock.tick(Constants.fps)
     
         except KeyboardInterrupt:
             pygame.mixer.music.stop()
             pygame.quit()
 
+
+    def info(self):
+        return ["left keys - moving sprites", "p - punch", "k l - donkey kong control"]
 
 if __name__ == "__main__":
     SaboteurKarateka().main()

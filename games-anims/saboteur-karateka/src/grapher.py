@@ -35,14 +35,16 @@ class Grapher:
         pygame.display.flip()
 
     def draw_sprite(self, sprite):
-        path = sprite.get_sprite_path()
-        self.sprite_bitmap = pygame.image.load(path).convert_alpha()
+        if sprite.active:
 
-        x = sprite.x - self.sprite_bitmap.get_width()/2
-        y = sprite.y - self.sprite_bitmap.get_height()/2
-        
-        self.window.blit(self.sprite_bitmap, (x, y))
-        pygame.display.update()
+            path = sprite.get_sprite_path()
+            self.sprite_bitmap = pygame.image.load(path).convert_alpha()
+    
+            x = sprite.x - self.sprite_bitmap.get_width()/2
+            y = sprite.y - self.sprite_bitmap.get_height()/2
+            
+            self.window.blit(self.sprite_bitmap, (x, y))
+            pygame.display.update()
 
     def clear_sprite(self):
         pass
