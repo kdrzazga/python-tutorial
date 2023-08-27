@@ -1,9 +1,9 @@
 import pygame
 
 from src.constants import Constants
-from src.sabkar import SaboteurKarateka
 from src.intro import LightPointAnimation
 from src.loader import Loader
+from src.sabkar import SaboteurKarateka
 
 if __name__ == "__main__":
     pygame.init()

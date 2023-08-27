@@ -4,6 +4,7 @@ from datetime import datetime
 
 import yaml
 from flask import Flask, jsonify
+
 from modules.random_points import get_random_target
 
 app = Flask(__name__)

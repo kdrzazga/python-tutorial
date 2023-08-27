@@ -1,40 +1,43 @@
-import pygame
 import math
 import sys
+
+import pygame
 
 WIDTH, HEIGHT = 800, 600
 CENTER_X, CENTER_Y = WIDTH // 4, HEIGHT // 3
 RADIUS = 0.05
 NUM_CIRCLES = 450
-LOW_LIMIT = HEIGHT * 60 //100
+LOW_LIMIT = HEIGHT * 60 // 100
 BG_COLOR = (0, 0, 0)
 WHITE = (255, 255, 255)
 LIGHT_YELLOW = (255, 255, 150)
 
 bitmap = pygame.image.load('resources/bkgnd.png')
 
+
 def draw_ray_ring(screen, color, center, radius, transparency):
     thickness = 2
-    
+
     for angle in range(0, 360, 1):
         x = radius * math.sin(math.radians(angle)) + center[0]
         y = radius * math.cos(math.radians(angle)) + center[1]
 
         x_int, y_int = int(round(x)), int(round(y))
-        
+
         bitmap_color = None
-        
+
         if 0 <= x_int < bitmap.get_width() and 0 <= y_int < bitmap.get_height():
             bitmap_color = bitmap.get_at((x_int, y_int))
-        
+
         r = int(color[0])
         g = int(color[1])
         b = int(color[2])
-        
+
         new_color = (r, g, b, transparency)
-        
+
         if bitmap_color != (0, 0, 0) and y_int < LOW_LIMIT:
             pygame.draw.rect(screen, new_color, (100 + x_int, 50 + y_int, thickness, thickness))
+
 
 pygame.init()
 

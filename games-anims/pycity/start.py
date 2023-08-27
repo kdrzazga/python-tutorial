@@ -1,8 +1,8 @@
 import subprocess
 
 from model.board import Board
-from view.screen import PyCityView
 from presenter.presenter import Presenter
+from view.screen import PyCityView
 
 try:
     print("starting REST server in background...")

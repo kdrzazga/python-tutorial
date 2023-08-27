@@ -1,7 +1,8 @@
-import pygame
-import random
 import math
+import random
 import time
+
+import pygame
 
 pygame.init()
 

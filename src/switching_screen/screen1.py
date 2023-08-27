@@ -5,7 +5,13 @@ class Screen1:
         self.screen_height = 600
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         
-    def main(self):
+    @staticmethod
+    @staticmethod
+    @staticmethod
+    @staticmethod
+    @staticmethod
+    @staticmethod
+    def main():
         running = True
         clock = pygame.time.Clock()
         while running:

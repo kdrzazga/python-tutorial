@@ -1,8 +1,9 @@
-import pygame
 import math
 import sys
 
+import pygame
 from src.constants import Constants
+
 
 class LightPointAnimation:
     def __init__(self, screen):
@@ -25,29 +26,29 @@ class LightPointAnimation:
 
         self.clock = pygame.time.Clock()
         self.alpha = 0
-        
+
         self.running = True
 
     def draw_ray_ring(self, color, center, radius, transparency):
         thickness = 2
-        
+
         for angle in range(0, 360, 1):
             x = radius * math.sin(math.radians(angle)) + center[0]
             y = radius * math.cos(math.radians(angle)) + center[1]
 
             x_int, y_int = int(round(x)), int(round(y))
-            
+
             bitmap_color = None
-            
+
             if 0 <= x_int < self.bitmap.get_width() and 0 <= y_int < self.bitmap.get_height():
                 bitmap_color = self.bitmap.get_at((x_int, y_int))
-            
+
             r = int(color[0])
             g = int(color[1])
             b = int(color[2])
-            
+
             new_color = (r, g, b, transparency)
-            
+
             if bitmap_color != (0, 0, 0) and y_int < self.LOW_LIMIT:
                 pygame.draw.rect(self.screen, new_color, (100 + x_int, 50 + y_int, thickness, thickness))
 
@@ -83,10 +84,10 @@ class LightPointAnimation:
             pygame.display.flip()
 
             self.clock.tick(199)
-            
+
             if self.counter == 100:
                 self.running = False
-            
+
             self.counter += 1
 
 
@@ -97,4 +98,3 @@ if __name__ == "__main__":
     animation.run()
     pygame.quit()
     sys.exit()
-    

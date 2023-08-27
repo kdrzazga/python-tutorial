@@ -2,8 +2,8 @@ import logging
 import sys
 
 from bin.factory import create_player_moves, create_enemy_moves
-from drawer import Drawer
 from board import Board
+from drawer import Drawer
 
 log_level = logging.INFO
 if len(sys.argv) > 1 and (sys.argv[1] == "--debug" or sys.argv[1] == "-d"):

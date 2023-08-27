@@ -1,8 +1,9 @@
 from collections import deque
 from itertools import cycle
 
+
 class Sprite:
-    
+
     def __init__(self, x, y, name):
         self.path = ""
         self.x = x
@@ -16,11 +17,10 @@ class Sprite:
         self.counter = 0
         self.anim_counter_threshold = 1
 
-
     def stand(self):
         self.kick_phase = ''
         self.walk_phase = ''
-    
+
     def kick(self):
         self.kick_phase = '_kick'
         self.walk_phase = '_kick'
@@ -36,22 +36,22 @@ class Sprite:
 
     def reset(self):
         pass
-        
+
     def move(self):
         pass
-    
+
     def step_left(self):
         self.x -= 4
-        
+
     def step_down(self):
         self.y += 4
 
     def turn_left(self):
         pass
-        
+
     def turn_right(self):
         pass
-    
+
     def activate(self):
         self.active = True
 

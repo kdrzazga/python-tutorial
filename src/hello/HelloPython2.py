@@ -1,8 +1,7 @@
 import string
 
-from person import Person
-
 from person import Employee
+from person import Person
 
 
 def get_data_as_tuple(p: Person) -> tuple[string, int]:

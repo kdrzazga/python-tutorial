@@ -1,9 +1,10 @@
-import pygame
 import random
 import time
-import sys
+
+import pygame
 
 from constants import Constants
+
 
 class BitmapPiece:
     

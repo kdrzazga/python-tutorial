@@ -5,7 +5,7 @@ from modules.constants import Constants
 
 class Cloud:
 
-    def __init__(self, x, y, width, height, screen, screen_width, screen_height):
+    def __init__(self, x, y, width, height, screen):
         self.screen = screen
         self.ellipse_center = (x, y)
         self.ellipse_width = width
@@ -13,7 +13,7 @@ class Cloud:
         self.counter = 0
         self.counter_limit = 12
 
-        self.rectangle_size = 3 #13
+        self.rectangle_size = 3  # 13
 
     def is_inside_ellipse(self, x, y):
         return ((x - self.ellipse_center[0]) / self.ellipse_width) ** 2 + (

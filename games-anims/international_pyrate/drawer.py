@@ -1,8 +1,4 @@
-import logging
 import pygame
-import os
-
-from PIL import Image, ImageDraw, ImageFont
 
 BLACK = (0, 0, 0)
 CYAN = (0, 255, 255)

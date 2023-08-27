@@ -1,6 +1,6 @@
+from counter import Counter
 from person import Person
 from temperature_converter import TemperatureConverter
-from counter import Counter
 
 print('Hello')
 

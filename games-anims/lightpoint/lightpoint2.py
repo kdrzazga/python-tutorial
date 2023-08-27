@@ -1,6 +1,7 @@
-import pygame
 import math
 import sys
+
+import pygame
 
 print("\nUse cursor keys to move the light point")
 
@@ -14,29 +15,31 @@ LIGHT_YELLOW = (255, 255, 150)
 
 bitmap = pygame.image.load('resources/pb2.png')
 
+
 def draw_circle(screen, color, center, radius, transparency):
-    thickness = 2 #radius // 6    
+    thickness = 2  # radius // 6
     pygame.draw.circle(screen, WHITE, (CENTER_X, CENTER_Y), 7)
-    
+
     for angle in range(0, 360, 2):
         x = radius * math.sin(math.radians(angle)) + center[0]
         y = radius * math.cos(math.radians(angle)) + center[1]
 
         x_int, y_int = int(round(x)), int(round(y))
-        
+
         bitmap_color = None
-        
+
         if 0 <= x_int < bitmap.get_width() and 0 <= y_int < bitmap.get_height():
             bitmap_color = bitmap.get_at((x_int, y_int))
-        
+
         r = int(color[0])
         g = int(color[1])
         b = int(color[2])
-        
+
         new_color = (r, g, b, transparency)
-        
+
         if bitmap_color != (0, 0, 0):
             pygame.draw.rect(screen, new_color, (x_int, y_int, thickness, thickness))
+
 
 pygame.init()
 

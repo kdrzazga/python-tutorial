@@ -1,12 +1,11 @@
-import logging
-import pygame
 import time
-import sys
 
-from lib.balls import BallsHelper, Ball
+import pygame
+from lib.balls import BallsHelper
 from lib.info import info
-from player import Player
+
 from drawer import Drawer
+from player import Player
 
 
 def main():
