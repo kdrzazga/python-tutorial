@@ -12,7 +12,8 @@ from src.factory import create_saboteur, create_karateka, create_kong, create_ba
 
 class SaboteurKarateka():
 
-    def __init__(self):
+    def __init__(self, screen):
+        self.screen = screen
         self.redraw = False
         self.walking = False        
         self.running = True
@@ -84,12 +85,8 @@ class SaboteurKarateka():
 
 
     def main(self):
-        pygame.init()
-        
         self.play_music()
-        
-        screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
-        screen.fill(Constants.BACKGROUND_COLOR)
+        self.screen.fill(Constants.BACKGROUND_COLOR)
         
         self.grapher.draw_background()
     
@@ -113,11 +110,13 @@ class SaboteurKarateka():
     
         except KeyboardInterrupt:
             pygame.mixer.music.stop()
-            pygame.quit()
 
 
     def info(self):
         return ["left keys - moving sprites", "p - punch", "k l - donkey kong control"]
 
 if __name__ == "__main__":
-    SaboteurKarateka().main()
+    pygame.init()
+    screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
+    SaboteurKarateka(screen).main()    
+    pygame.quit()
