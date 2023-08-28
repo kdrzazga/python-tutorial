@@ -25,6 +25,7 @@ class LightPointAnimation:
 
         self.clock = pygame.time.Clock()
         self.alpha = 0
+        self.font = pygame.font.Font(None, 15)
         self.running = True
 
     def draw_ray_ring(self, color, center, radius, transparency):
@@ -66,7 +67,9 @@ class LightPointAnimation:
             self.CENTER_Y += dy
 
             self.screen.fill(self.BG_COLOR)
-
+            
+            self.screen.blit(self.font.render("LOADING ...", True, (188, 188, 0)), (Constants.WIDTH - self.CENTER_X, 400 + 4 * math.sin(self.CENTER_X / (5*3.14))))
+        
             for i in range(self.NUM_CIRCLES, 0, -1):
                 r = max(0, self.LIGHT_YELLOW[0] - i * 0.6)
                 g = max(0, self.LIGHT_YELLOW[1] - i * 0.9)

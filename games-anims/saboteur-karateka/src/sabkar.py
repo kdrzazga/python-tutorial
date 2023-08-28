@@ -19,8 +19,15 @@ class SaboteurKarateka:
         for info_line in self.info():
             print(info_line)
 
+    def check_collisions(self):
+        pass # TODO
+
     def animate(self):
         self.sprites[3].move()
+        
+        if self.sprites[1].x > Constants.board_limit_x:
+            self.sprites[1].step_down()
+        
         if self.sprites[3].y > Constants.screen_height or self.sprites[3].x < 0:
             self.sprites[3] = create_barrel()  # creating new object to reset
             self.sprites[2].turn_right()
@@ -79,7 +86,7 @@ class SaboteurKarateka:
         pygame.mixer.music.play(-1)
 
     def main(self):
-        self.play_music()
+        #self.play_music()
         self.screen.fill(Constants.BACKGROUND_COLOR)
 
         self.grapher.draw_background()
@@ -98,6 +105,7 @@ class SaboteurKarateka:
 
                 self.animate()
                 self.handle_keyboard()
+                self.check_collisions()
                 self.display()
 
                 clock.tick(Constants.fps)

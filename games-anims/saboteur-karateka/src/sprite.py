@@ -8,7 +8,10 @@ class Sprite:
         self.path = ""
         self.x = x
         self.y = y
+        self.width = 2
+        self.height = 2
         self.active = True
+        self.moveable = True
         self.name = name
         self.kick_phase = ''
         self.walk_phase = ''
@@ -22,17 +25,20 @@ class Sprite:
         self.walk_phase = ''
 
     def kick(self):
-        self.kick_phase = '_kick'
-        self.walk_phase = '_kick'
+        if self.moveable:
+            self.kick_phase = '_kick'
+            self.walk_phase = '_kick'
 
     def punch(self):
-        self.kick_phase = '_punch'
-        self.walk_phase = '_punch'
+        if self.moveable:
+            self.kick_phase = '_punch'
+            self.walk_phase = '_punch'
 
     def step_right(self):
-        self.kick_phase = ''
-        self.x += 4
-        self.walk_phase = next(self._cyclic_iterator)
+        if self.moveable:
+            self.kick_phase = ''
+            self.x += 4
+            self.walk_phase = next(self._cyclic_iterator)
 
     def reset(self):
         pass
@@ -41,7 +47,8 @@ class Sprite:
         pass
 
     def step_left(self):
-        self.x -= 4
+        if self.moveable:
+            self.x -= 4
 
     def step_down(self):
         self.y += 4
@@ -54,6 +61,9 @@ class Sprite:
 
     def activate(self):
         self.active = True
+
+    def disable_move(self):
+        self.moveable = False
 
     def get_sprite_path(self):
         return ""

@@ -36,7 +36,10 @@ class Grapher:
 
             x = sprite.x - self.sprite_bitmap.get_width() / 2
             y = sprite.y - self.sprite_bitmap.get_height() / 2
-
+            
+            sprite.width = self.sprite_bitmap.get_width()
+            sprite.height = self.sprite_bitmap.get_height()
+            
             self.window.blit(self.sprite_bitmap, (x, y))
             pygame.display.update()
 
