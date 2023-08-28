@@ -4,6 +4,7 @@ import pygame
 from src.constants import Constants
 from src.factory import create_saboteur, create_karateka, create_kong, create_barrel
 from src.grapher import Grapher
+from src.music import MusicPlayer
 
 
 class SaboteurKarateka:
@@ -79,14 +80,8 @@ class SaboteurKarateka:
 
         pygame.display.flip()
 
-    @staticmethod
-    def play_music():
-        mp3_file = "src/resources/RobH.mp3"
-        pygame.mixer.music.load(mp3_file)
-        pygame.mixer.music.play(-1)
-
     def main(self):
-        #self.play_music()
+        MusicPlayer().play()
         self.screen.fill(Constants.BACKGROUND_COLOR)
 
         self.grapher.draw_background()
