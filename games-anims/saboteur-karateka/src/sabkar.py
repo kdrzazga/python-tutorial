@@ -21,7 +21,10 @@ class SaboteurKarateka:
             print(info_line)
 
     def check_collisions(self):
-        pass # TODO
+        if False: # TODO fix condition
+            self.sprites[1].path = "src/resources/lying.png"
+            self.grapher.draw_sprite(self.sprites[1])
+            self.sprites[1].disable_move()
 
     def animate(self):
         self.sprites[3].move()
