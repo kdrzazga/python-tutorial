@@ -1,10 +1,6 @@
-import logging
 import pygame
-import os
 
 from src.constants import Constants
-
-from PIL import Image, ImageDraw, ImageFont
 
 BLACK = (0, 0, 0)
 CYAN = (0, 255, 255)
@@ -14,7 +10,6 @@ BACKGROUND = (74, 74, 73)
 
 
 class Grapher:
-
     initial_sprite_pos = (Constants.screen_height * 83) // 100
 
     title = "INTERNATIONAL PY-RATE"
@@ -36,18 +31,20 @@ class Grapher:
 
     def draw_sprite(self, sprite):
         if sprite.active:
-
             path = sprite.get_sprite_path()
             self.sprite_bitmap = pygame.image.load(path).convert_alpha()
-    
-            x = sprite.x - self.sprite_bitmap.get_width()/2
-            y = sprite.y - self.sprite_bitmap.get_height()/2
+
+            x = sprite.x - self.sprite_bitmap.get_width() / 2
+            y = sprite.y - self.sprite_bitmap.get_height() / 2
+            
+            sprite.width = self.sprite_bitmap.get_width()
+            sprite.height = self.sprite_bitmap.get_height()
             
             self.window.blit(self.sprite_bitmap, (x, y))
             pygame.display.update()
 
     def clear_sprite(self):
         pass
-        #x = Constants.screen_width/2 - self.sprite_bitmap.get_width()/2
-        #y = Constants.initial_sprite_pos - self.sprite_bitmap.get_height()/2
-        #pygame.draw.rect(self.window, Constants.BACKGROUND, (x, y, self.sprite_bitmap.get_width(), self.sprite_bitmap.get_height()))
+        # x = Constants.screen_width/2 - self.sprite_bitmap.get_width()/2
+        # y = Constants.initial_sprite_pos - self.sprite_bitmap.get_height()/2
+        # pygame.draw.rect(self.window, Constants.BACKGROUND, (x, y, self.sprite_bitmap.get_width(), self.sprite_bitmap.get_height()))

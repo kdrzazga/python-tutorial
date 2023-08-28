@@ -1,17 +1,22 @@
-import threading
 import logging
-import pygame
 import math
+import threading
 import time
 
+import pygame
+
 from level_manager import LevelManager
-from modules.constants import Constants
 from modules.cloud import Cloud
+from modules.constants import Constants
 
 
 class Loco:
 
     def __init__(self):
+        self.screen = None
+        self.cloud = None
+        self.running = True
+        self.clock = pygame.time.Clock()
 
         pygame.init()
 
@@ -59,8 +64,7 @@ class Loco:
     def main(self):
         self.screen = pygame.display.set_mode((Constants.canvas_width, Constants.canvas_height))
         pygame.display.set_caption("atari LOCO")
-        self.cloud = Cloud(Constants.canvas_width // 2, 150, 120, 70, self.screen, Constants.canvas_width,
-                           Constants.canvas_height)
+        self.cloud = Cloud(Constants.canvas_width // 2, 150, 120, 70, self.screen)
 
         railroad_bitmap = pygame.image.load("resources/railroad.png")
         loco_bitmap = pygame.image.load("resources/loco.png")
@@ -74,20 +78,19 @@ class Loco:
         cloud_thread.start()
 
         background_x = 0
-        self.running = True
-        self.clock = pygame.time.Clock()
+
         scroll_speed = 5
 
         self.screen.fill(Constants.BLACK)
         blue_rect_lt = pygame.Rect(0, 0, 530, 91)
         blue_rect_lb = pygame.Rect(0, 91, 530, 183)
         blue_rectR = pygame.Rect(Constants.canvas_width - 472, 0, Constants.canvas_width, 294)
-        
+
         for blue_rect in [blue_rect_lt, blue_rect_lb, self.blue_rect_ol, self.blue_rect_ol2, blue_rectR]:
             pygame.draw.rect(self.screen, Constants.SKY, blue_rect)
-            
+
         pygame.display.update()
-            
+
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

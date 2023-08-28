@@ -1,7 +1,7 @@
 import unittest
-import pytest
-
 from unittest.mock import patch
+
+import pytest
 
 from src.simple_mocks_testing.account import Account
 

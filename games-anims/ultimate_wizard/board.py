@@ -1,10 +1,9 @@
 import logging
 
-from enemy import Enemy
-from player import Player
-
-from fireball import Fireball
 from bin.factory import create_platforms, create_ladders
+from enemy import Enemy
+from fireball import Fireball
+from player import Player
 
 
 def decode_move(sprite, move):

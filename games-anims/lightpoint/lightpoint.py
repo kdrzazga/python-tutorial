@@ -1,6 +1,7 @@
-import pygame
 import math
 import sys
+
+import pygame
 
 WIDTH, HEIGHT = 800, 600
 CENTER_X, CENTER_Y = WIDTH // 2, HEIGHT // 2

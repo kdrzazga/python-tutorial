@@ -1,7 +1,8 @@
 import pygame
 
-from ui import UI
 from game import Game
+from ui import UI
+
 
 def main():
     game = Game(30, 30, 15, 15)

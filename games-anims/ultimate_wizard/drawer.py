@@ -4,9 +4,9 @@ import os
 import pygame
 from PIL import Image, ImageDraw, ImageFont
 
+from bin.helper import random_move, random_move_mostly_up
 from board import Board
 from fireball import Fireball
-from bin.helper import random_move, random_move_mostly_up
 
 BLACK = (0, 0, 0)
 CYAN = (0, 255, 255)

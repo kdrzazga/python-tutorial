@@ -1,5 +1,4 @@
 class LevelManager:
-
     level_filepath = "resources/level.txt"
 
     def __init__(self):

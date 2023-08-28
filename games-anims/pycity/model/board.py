@@ -2,6 +2,7 @@ from collections import deque
 
 from cell import Cell
 
+
 class Board:
 
     cell_types = ['soil', 'road', 'meadow']

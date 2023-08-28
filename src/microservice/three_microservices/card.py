@@ -1,7 +1,7 @@
 import yaml
-from loguru import logger
 from flask import Flask, jsonify, json, Response
 from flask_httpauth import HTTPBasicAuth
+from loguru import logger
 
 SERVICE_NAME = 'CARD'
 

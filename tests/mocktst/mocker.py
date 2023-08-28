@@ -1,9 +1,10 @@
 import logging
 import unittest
+from http import HTTPStatus
+
 import httpretty
 import pytest
 import requests
-from http import HTTPStatus
 
 from tests.wataut.config_reader import read_yml
 

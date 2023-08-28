@@ -1,8 +1,6 @@
-import pygame
 import sys
-import math
 
-from PIL import Image, ImageDraw, ImageFont
+import pygame
 
 from cloud import Cloud
 

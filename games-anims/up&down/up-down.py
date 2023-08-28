@@ -1,4 +1,5 @@
 import logging
+
 import pygame
 
 from player_sprite import Player
