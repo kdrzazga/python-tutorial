@@ -1,6 +1,5 @@
 from src.sprite import Sprite
 
-
 class Barrel(Sprite):
     initial_position = (813, 357)
 

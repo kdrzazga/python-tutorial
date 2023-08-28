@@ -16,3 +16,4 @@ class Screen2:
 
             screen.fill((0, 255, 255))
             clock.tick(1)
+

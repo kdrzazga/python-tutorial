@@ -6,12 +6,7 @@ class Screen1:
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         
     @staticmethod
-    @staticmethod
-    @staticmethod
-    @staticmethod
-    @staticmethod
-    @staticmethod
-    def main():
+    def main(self):
         running = True
         clock = pygame.time.Clock()
         while running:

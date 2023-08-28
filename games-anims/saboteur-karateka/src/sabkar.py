@@ -115,3 +115,4 @@ if __name__ == "__main__":
     screen = pygame.display.set_mode((Constants.screen_width, Constants.screen_height))
     SaboteurKarateka(screen).main()
     pygame.quit()
+

@@ -4,7 +4,6 @@ import sys
 import pygame
 from src.constants import Constants
 
-
 class LightPointAnimation:
     def __init__(self, screen):
         self.screen = screen
@@ -26,7 +25,6 @@ class LightPointAnimation:
 
         self.clock = pygame.time.Clock()
         self.alpha = 0
-
         self.running = True
 
     def draw_ray_ring(self, color, center, radius, transparency):
@@ -37,7 +35,6 @@ class LightPointAnimation:
             y = radius * math.cos(math.radians(angle)) + center[1]
 
             x_int, y_int = int(round(x)), int(round(y))
-
             bitmap_color = None
 
             if 0 <= x_int < self.bitmap.get_width() and 0 <= y_int < self.bitmap.get_height():
@@ -82,7 +79,6 @@ class LightPointAnimation:
             self.screen.blit(self.light_point, (self.CENTER_X, self.CENTER_Y))
 
             pygame.display.flip()
-
             self.clock.tick(199)
 
             if self.counter == 100:

@@ -5,7 +5,6 @@ import pygame
 
 from constants import Constants
 
-
 class BitmapPiece:
     
     def __init__(self, x, y, surface):
