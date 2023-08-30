@@ -2,7 +2,7 @@ import pygame
 import math
 import sys
 
-from lib3d import Rotation
+from src.lib3d import Rotation
 
 class CubeRotation:
     def __init__(self, screen):
@@ -83,14 +83,3 @@ class CubeRotation:
             self.rotation_procedure(1000)
     
         self.rotation_procedure(5000)
-
-if __name__ == "__main__":
-    pygame.init()
-    WIDTH, HEIGHT = 800, 600
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Cube Rotation")
-    
-    app = CubeRotation(screen)
-    app.run()
-    pygame.quit()
-    sys.exit()
