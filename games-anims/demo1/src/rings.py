@@ -76,8 +76,6 @@ class Animation:
                 self.dots.append((int(self.WIDTH * random.uniform(0, 1.0)), int(self.HEIGHT * random.uniform(0, 1.0))))
                 
     def run(self):
-        #tiles = self.create_screen_tiles()
-        
         while self.fill_counter < 420:  # Approximately 7 seconds at 60 FPS
             if not self.fill_screen:
                 self.screen.fill(self.BLACK)
@@ -99,11 +97,8 @@ class Animation:
                 if self.animation_progress > 1.85:
                     self.animation_progress = 0.0
 
-                if self.counter > 240:  # Start filling the screen after 4 seconds
+                if self.counter > 240:
                     break
-                #    self.tile_screen(self.WHITE)
-                    #self.fill_screen = True
-
             self.counter += 1
     
             pygame.display.flip()
