@@ -1,18 +1,18 @@
 import pygame
 
 from src.main.utils import Utils
+from src.main.computer import Computer
 
-class Amiga:
+class Amiga(Computer):
 
     def __init__(self, screen):
+        super().__init__()
         self.screen = screen
         
         self.h = 70        
         self.background_bitmap = Utils.load_background("src/main/resources/amiga.png")
         self.window_bitmap = pygame.image.load("src/main/resources/window2.png")
         self.superfrog_bitmap = pygame.image.load("src/main/resources/sf.png")
-        
-        self.clock = pygame.time.Clock()
         
     
     def draw_background(self):
@@ -56,17 +56,10 @@ class Amiga:
             self.clock.tick(36)
 
     
-    def window_on_bottom(self, duration_ms):
-        start_time = pygame.time.get_ticks()
-        while pygame.time.get_ticks() - start_time <= duration_ms: 
-        
-            self.clock.tick(60)
-
-    
     def activate_superfrog(self, duration_ms):
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms: 
-        
+            #TODO
             self.clock.tick(60)
 
 

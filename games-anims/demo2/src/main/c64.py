@@ -3,6 +3,7 @@ import pygame
 import logging
 
 from src.main.utils import Utils, Constants
+from src.main.computer import Computer
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -29,13 +30,13 @@ class Cursor:
         time.sleep(6)
         
 
-class C64:
+class C64(Computer):
 
     line_size = 18
 
     def __init__(self, screen):
+        super().__init__()
         self.screen = screen
-        self.clock = pygame.time.Clock()
         self.location = (52, 77)
         self.font_path = "src/main/resources/C64_Pro_Mono-STYLE.ttf"
         self.caption_font = ImageFont.truetype(self.font_path, 18)

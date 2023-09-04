@@ -30,7 +30,7 @@ class Demo:
         a = Amiga(self.screen)
         a.draw(2500)
         a.dropping(6500)
-        a.window_on_bottom(4000)
+        a.wait(4000)
 
 
     def phase4(self):
