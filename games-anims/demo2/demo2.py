@@ -18,18 +18,24 @@ class Demo:
         self.c64.handle_cursor(3500)
         for letter in "LOAD":
             logging.info(letter)
-            self.c64.writeline(letter)
+            #self.c64.writeline(letter)
+
         
     def phase2(self):
         print("phase 2")
+
         
     def phase3(self):
         print("phase 3")
         a = Amiga(self.screen)
-        a.run(3500)
-        
+        a.draw(2500)
+        a.dropping(6500)
+        a.window_on_bottom(4000)
+
+
     def phase4(self):
         print("phase 4")
+
 
     def run(self):
         pygame.init()

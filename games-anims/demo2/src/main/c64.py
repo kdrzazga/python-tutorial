@@ -91,4 +91,3 @@ class C64:
         self.screen.blit(caption_surface, self.cursor.get_screen_position())
         pygame.display.flip()
         self.cursor.move_right()
-        
