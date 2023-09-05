@@ -4,7 +4,6 @@ import logging
 
 from src.main.utils import Utils, Constants
 from src.main.computer import Computer
-from src.main.karateka import Karateka
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -28,36 +27,33 @@ class Cursor:
     def move_right(self):
         new_position = (self.position[0] + 1, self.position[1])
         self.position = new_position
-        time.sleep(1)
+        pygame.time.delay(1000)
 
 
     def move_down(self):
         new_position = (self.position[0], self.position[1] + 1)
         self.position = new_position
         logging.info("Cursor position %d, %d", new_position[0], new_position[1])
-        time.sleep(1)
-        
+
 
 class C64(Computer):
 
     line_size = 18
 
     def __init__(self, screen):
-        super().__init__()
+        super().__init__(Constants.BLUE, Constants.LIGHT_BLUE)
         self.screen = screen
         self.screenshot = None
         self.location = (52, 77)
-        self.sprite_bitmap = None
-        self.background_bitmap = Utils.load_background("src/main/resources/c64slim.png")
-        self.karateka = Karateka(90, 480)
+        self.background_bitmap = Utils.load_background("src/main/resources/c64slim.png")        
         self.font_path = "src/main/resources/C64_Pro_Mono-STYLE.ttf"
         self.caption_font = ImageFont.truetype(self.font_path, 18)
         self.cursor = Cursor(self.location)
         self.one_letter = Image.new("RGB", (C64.line_size, C64.line_size), Constants.BLUE)#Constants.LIGHT_BLUE)
         self.draw = ImageDraw.Draw(self.one_letter)
         self.caption_surface = pygame.image.fromstring(self.one_letter.tobytes(), self.one_letter.size, self.one_letter.mode)
-        
-    
+
+
     def draw_background(self):
         self.screen.fill(Constants.LIGHT_BLUE)        
         self.screen.blit(self.background_bitmap, self.location)
@@ -67,14 +63,14 @@ class C64(Computer):
     def blink_cursor(self):
         self.cursor.on = not self.cursor.on
         pygame.draw.rect(self.screen, self.cursor.blink_color(), (self.cursor.get_screen_position(), (C64.line_size, C64.line_size)))
-        
+
         pygame.display.flip()
 
 
     def handle_cursor(self, duration_ms):
         start_time = pygame.time.get_ticks()
         self.draw_background()
-        
+
         while pygame.time.get_ticks() - start_time <= duration_ms:            
             self.blink_cursor()
             
@@ -94,11 +90,11 @@ class C64(Computer):
     def take_screenshot(self):
         self.screenshot = pygame.Surface((self.screen.get_width(), self.screen.get_height()))
         self.screenshot.blit(self.screen, (0, 0))
-        
+
 
     def writeline(self, caption_text):
         caption_image = Image.new("RGB", (20 * len(caption_text), C64.line_size), Constants.BLUE)
-        
+
         draw = ImageDraw.Draw(caption_image)
         draw.text((0, 0), caption_text, font=self.caption_font, fill=Constants.LIGHT_BLUE)
 
@@ -108,39 +104,17 @@ class C64(Computer):
         self.cursor.move_down()
 
 
-    def walk_karateka1(self, duration_ms):
-        height = 76
-
-        start_time = pygame.time.get_ticks()
-        acceleration = 0
-        while pygame.time.get_ticks() - start_time <= duration_ms:        
-            self.karateka.step_right()
-            self.draw_sprite()
-            
-            pygame.draw.rect(self.screen, Constants.BLUE, ((self.location[0] + 2, self.location[1] + Constants.SCREEN_HEIGHT - 30), (Constants.SCREEN_WIDTH - 10, 71)))
-            
-            self.clock.tick(30)
-
-
-    def draw_sprite(self):
-        path = self.karateka.get_sprite_path()
-        self.sprite_bitmap = pygame.image.load(path).convert_alpha()
-        
-        x = self.karateka.x - self.sprite_bitmap.get_width() / 2
-        y = self.karateka.y - self.sprite_bitmap.get_height() / 2
-        
-        self.karateka.width = self.sprite_bitmap.get_width()
-        self.karateka.height = self.sprite_bitmap.get_height()
-        
-        self.screen.blit(self.sprite_bitmap, (x, y))
-        pygame.display.update()
+    def punch(self, duration_ms):
+        self.karateka.punch()
+        self.draw_sprite()
+        pygame.time.delay(duration_ms)
 
 
     def open_passage(self, duration_ms):
         height = 76
-        position = (self.location[0] + self.background_bitmap.get_width(), self.location[1] + self.background_bitmap.get_height() - height)
+        position = (self.location[0] + self.background_bitmap.get_width() - 10, self.location[1] + self.background_bitmap.get_height() - height)
         logging.info("Opening portal at %d, %d", position[0], position[1])
-        pygame.draw.rect(self.screen, Constants.BLUE, (position, (55, height)))
+        pygame.draw.rect(self.screen, Constants.BLUE, (position, (64, height)))
         pygame.display.flip()
-        pygame.time.delay(2000)
+        pygame.time.delay(duration_ms)
         

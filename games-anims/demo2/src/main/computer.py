@@ -1,7 +1,50 @@
 import pygame
 import time
 
+from src.main.karateka import Karateka
+from src.main.utils import Constants
+
 class Computer:
     
-    def __init__(self):
+    def __init__(self, bg_color1, bg_color2):
         self.clock = pygame.time.Clock()
+        self.bg_color = bg_color1
+        self.karateka = None
+        self.location = (0, 0)        
+        self.sprite_bitmap = None
+        self.qm_bitmap = pygame.image.load("src\main\resources\qm.png").convert_alpha()
+
+
+    def draw_sprite(self):
+        path = self.karateka.get_sprite_path()
+        self.sprite_bitmap = pygame.image.load(path).convert_alpha()
+        
+        x = self.karateka.x - self.sprite_bitmap.get_width() / 2
+        y = self.karateka.y - self.sprite_bitmap.get_height() / 2
+        
+        self.karateka.width = self.sprite_bitmap.get_width()
+        self.karateka.height = self.sprite_bitmap.get_height()
+        
+        self.screen.blit(self.sprite_bitmap, (x, y))
+        pygame.display.update()
+
+
+    def walk_karateka1(self, duration_ms, open_pass=False):
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time <= duration_ms:        
+            self.karateka.step_right()
+
+            y = self.karateka.y - self.sprite_bitmap.get_height() / 2
+            
+            pygame.draw.rect(self.screen, self.bg_color, ((self.location[0] + 2, y - 10), (Constants.SCREEN_WIDTH - 10, self.karateka.height + 10)))
+            
+            if open_pass:
+                self.open_passage(1)
+            self.draw_sprite()
+            self.clock.tick(32)
+
+
+    def kill_karateka(self):
+        self.karateka.y += 23
+        self.karateka.walk_phase = 'lying'
+        self.draw_sprite()

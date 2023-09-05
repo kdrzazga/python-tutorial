@@ -3,6 +3,7 @@ import pygame
 class Constants:
     LIGHT_BLUE = (96, 96, 192)
     BLUE = (32, 0, 128)
+    AMIGA_BLUE = (0, 96, 192)
     SCREEN_WIDTH = 800-2*52
     SCREEN_HEIGHT = 400
 
