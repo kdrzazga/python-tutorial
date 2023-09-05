@@ -2,6 +2,7 @@ import pygame
 
 from src.main.utils import Utils
 from src.main.computer import Computer
+from src.main.karateka import Karateka
 
 class Amiga(Computer):
 
@@ -25,7 +26,7 @@ class Amiga(Computer):
         pygame.display.flip()
 
 
-    def draw_superfrog(self):
+    def draw_superfrog_icon(self):
         self.screen.blit(self.superfrog_bitmap, (91, self.h + 27))
         pygame.display.flip()
 
@@ -34,7 +35,7 @@ class Amiga(Computer):
         start_time = pygame.time.get_ticks()
         self.draw_background()
         self.draw_window()
-        self.draw_superfrog()
+        self.draw_superfrog_icon()
 
         while pygame.time.get_ticks() - start_time <= duration_ms:
             pass
@@ -46,7 +47,7 @@ class Amiga(Computer):
         while pygame.time.get_ticks() - start_time <= duration_ms:        
             self.draw_background()
             self.draw_window()
-            self.draw_superfrog()
+            self.draw_superfrog_icon()
             acceleration += 0.3
             self.h += int(1 + acceleration)
             

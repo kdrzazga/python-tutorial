@@ -15,10 +15,19 @@ class Demo:
         
     def phase1(self):
         print("phase 1")
-        self.c64.handle_cursor(3500)
-        for letter in "LOAD":
-            logging.info(letter)
-            #self.c64.writeline(letter)
+        self.c64.handle_cursor(35)
+        for line in ("LOAD", " ", "PRESS PLAY ON TAPE"):
+            self.c64.writeline(line)
+        
+        self.c64.toggle_screen(25)
+        
+        for line in ("LOADING", "READY", "RUN"):
+            self.c64.writeline(line)
+        
+        self.c64.draw_sprite()
+        pygame.time.delay(1000)
+        self.c64.walk_karateka1(5000)
+        self.c64.open_passage(2500)
 
         
     def phase2(self):
@@ -30,7 +39,7 @@ class Demo:
         a = Amiga(self.screen)
         a.draw(2500)
         a.dropping(6500)
-        a.wait(4000)
+        pygame.time.delay(4000)
 
 
     def phase4(self):
