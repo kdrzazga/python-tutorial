@@ -19,26 +19,59 @@ class Sprite:
         self._cyclic_iterator = cycle(self.walk_phases)
         self.counter = 0
         self.anim_counter_threshold = 1
+        self.step_delay_counter = 0
+        self.looking_right = True
+
 
     def stand(self):
         self.kick_phase = ''
         self.walk_phase = ''
+
 
     def kick(self):
         if self.moveable:
             self.kick_phase = '_kick'
             self.walk_phase = '_kick'
 
+
     def punch(self):
         if self.moveable:
             self.kick_phase = '_punch'
             self.walk_phase = '_punch'
 
+
+    def step(self):
+        if self.looking_right:
+            self.step_right()
+        else:
+            self.step_left()
+
+
     def step_right(self):
-        if self.moveable:
-            self.kick_phase = ''
+        self.looking_right = True
+        
+        if self.moveable:            
             self.x += 4
+            self.step_common()
+
+
+    def step_left(self):
+        self.looking_right = False
+        
+        if self.moveable:            
+            self.x -= 4
+            self.step_common()
+
+
+    def step_common(self):
+        self.kick_phase = ''
+        self.step_delay_counter += 1
+        if self.step_delay_counter % 3 == 0:
             self.walk_phase = next(self._cyclic_iterator)
+            
+        if self.step_delay_counter > 300:
+            self.step_delay_counter = 0        
+
 
     def reset(self):
         pass
@@ -46,9 +79,6 @@ class Sprite:
     def move(self):
         pass
 
-    def step_left(self):
-        if self.moveable:
-            self.x -= 4
 
     def step_down(self):
         self.y += 4

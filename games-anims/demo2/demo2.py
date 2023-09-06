@@ -42,10 +42,21 @@ class Demo:
         pygame.time.delay(1000)
         self.c64.question_mark(False)
         pygame.time.delay(1000)
-        self.c64.walk_karateka(4950)
+
+        self.c64.walk_karateka(1950)
+        self.c64.question_mark(False)
+        pygame.time.delay(1000)
+
+        self.c64.karateka.step_left()
+        self.c64.walk_karateka(1000)
+        self.c64.question_mark(False)
+        pygame.time.delay(1000)
+
+        self.c64.karateka.step_right()
+        self.c64.walk_karateka(4000)
         self.c64.clear_sprite()
         self.c64.punch(1000)
-        self.c64.walk_karateka(670, True)
+        self.c64.walk_karateka(1000, True)
 
 
     def phase2(self):
@@ -70,7 +81,7 @@ class Demo:
 
     def phase4(self):
         print("phase 4 - yet another bouncing ball")
-        ball_animation = BallAnimation(self.screen, self.amiga.get_catwalk_rect(), Constants.AMIGA_BLUE, 137)
+        ball_animation = BallAnimation(self.screen, self.amiga.get_catwalk_rect(), Constants.AMIGA_BLUE, 147)
         ball_animation.bounce()        
         pygame.time.delay(4000)
 

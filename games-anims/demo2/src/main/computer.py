@@ -23,7 +23,10 @@ class Computer:
 
     def draw_sprite(self):
         path = self.karateka.get_sprite_path()
-        self.sprite_bitmap = pygame.image.load(path).convert_alpha()
+        normal_sprite_bitmap = pygame.image.load(path).convert_alpha()
+        flipped_sprite_bitmap = pygame.transform.flip(normal_sprite_bitmap, True, False)
+        
+        self.sprite_bitmap = normal_sprite_bitmap if self.karateka.looking_right else flipped_sprite_bitmap
         
         x = self.karateka.x - self.sprite_bitmap.get_width() / 2
         y = self.karateka.y - self.sprite_bitmap.get_height() / 2
@@ -38,7 +41,7 @@ class Computer:
     def walk_karateka(self, duration_ms, open_pass=False):
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:        
-            self.karateka.step_right()
+            self.karateka.step()
 
             y = self.karateka.y - self.sprite_bitmap.get_height() / 2
             

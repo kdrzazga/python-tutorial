@@ -33,6 +33,7 @@ class Ball:
 
         if self.x >= self.bounce_wall_x:
             self.vector *= -1
+            logging.info("deflect")
 
     def reset(self):
         self.x = self.rect.x + self.radius

@@ -80,7 +80,7 @@ class Amiga(Computer):
     def get_catwalk_rect(self):
         x = -10 
         y = self.background_bitmap.get_height() - 88
-        width = self.window_x - 7
+        width = self.window_x + 3
         height = 88
         
         return pygame.Rect(x, y, width, height)
