@@ -118,3 +118,11 @@ class C64(Computer):
         pygame.display.flip()
         pygame.time.delay(duration_ms)
         
+    
+    def get_catwalk_rect(self):
+        x1 = self.location[0]
+        y1 = self.location[1] + self.background_bitmap.get_height() - 80
+        x2 = 2 * self.location[0] + self.background_bitmap.get_width() + 5
+        y2 = 80
+
+        return pygame.Rect(x1, y1, x2, y2)

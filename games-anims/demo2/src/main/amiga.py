@@ -1,3 +1,4 @@
+import logging
 import pygame
 
 from src.main.utils import Utils, Constants
@@ -12,6 +13,7 @@ class Amiga(Computer):
         self.h = 70        
         self.background_bitmap = Utils.load_background("src/main/resources/amiga.png")
         self.window_bitmap = pygame.image.load("src/main/resources/window2.png")
+        self.window_x = 160-3
         self.superfrog_bitmap = pygame.image.load("src/main/resources/sf.png")
         
     
@@ -21,7 +23,7 @@ class Amiga(Computer):
         
 
     def draw_window(self):
-        self.screen.blit(self.window_bitmap, (160-3, self.h))
+        self.screen.blit(self.window_bitmap, (self.window_x, self.h))
         pygame.display.flip()
 
 
@@ -48,6 +50,8 @@ class Amiga(Computer):
             self.draw_sprite()
             self.draw_window()
             self.draw_superfrog_icon()
+            if pygame.time.get_ticks() - start_time <= duration_ms - 500:
+                self.question_mark(False)
             acceleration += 0.3
             self.h += int(1 + acceleration)
             
@@ -68,6 +72,15 @@ class Amiga(Computer):
         wh = self.window_bitmap.get_height()
         bh = self.background_bitmap.get_height()
         
-        print("self.h, self.h, bh = ", self.h, wh, bh)
+        logging.info("self.h = %d, window height = %d, bitmap height =  %d", self.h, wh, bh)
         
         return wh + self.h > bh - 22
+
+        
+    def get_catwalk_rect(self):
+        x = -10 
+        y = self.background_bitmap.get_height() - 88
+        width = self.window_x - 7
+        height = 88
+        
+        return pygame.Rect(x, y, width, height)

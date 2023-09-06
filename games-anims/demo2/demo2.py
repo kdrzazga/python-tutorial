@@ -4,7 +4,9 @@ import sys
 
 from src.main.amiga import Amiga
 from src.main.c64 import C64
+from src.main.bouncing_ball import BallAnimation
 from src.main.factory import create_computer
+from src.main.utils import Constants
 
 class Demo:
 
@@ -26,7 +28,7 @@ class Demo:
         
         self.c64.toggle_screen(1500)
         
-        for line, duration in (("FOUND INTER.KARATE+", 500), ("LOADING", 3500)):
+        for line, duration in (("FOUND INTER.KARATE+", 500), ("LOADING", 350)):
             self.c64.writeline(line)
             pygame.time.delay(duration)
         
@@ -38,31 +40,39 @@ class Demo:
         
         self.c64.draw_sprite()
         pygame.time.delay(1000)
-        self.c64.walk_karateka1(4850)
+        self.c64.question_mark(False)
+        pygame.time.delay(1000)
+        self.c64.walk_karateka(4950)
+        self.c64.clear_sprite()
         self.c64.punch(1000)
-        self.c64.walk_karateka1(600, True)
+        self.c64.walk_karateka(670, True)
 
 
     def phase2(self):
         print("phase 2 - bouncing ball")
-        
+        pygame.time.delay(1000)
+        ball_animation = BallAnimation(self.screen, self.c64.get_catwalk_rect(), Constants.BLUE, 1200)
+        ball_animation.bounce()
+
 
     def phase3(self):
         print("phase 3 - amiga")        
-        self.amiga.draw(2500)
+        self.amiga.draw(25)
         self.amiga.draw_sprite()
+        pygame.time.delay(500)
+        
+        self.amiga.walk_karateka(2400)
+        self.amiga.question_mark(off=False)
         pygame.time.delay(1000)
-        
-        self.amiga.walk_karateka1(2400)
-        self.amiga.dropping(3800)
+        self.amiga.dropping(1200)
         self.amiga.kill_karateka()
-        pygame.time.delay(4000)
 
 
-
-        
     def phase4(self):
-        print("phase 4")
+        print("phase 4 - yet another bouncing ball")
+        ball_animation = BallAnimation(self.screen, self.amiga.get_catwalk_rect(), Constants.AMIGA_BLUE, 137)
+        ball_animation.bounce()        
+        pygame.time.delay(4000)
 
 
     def run(self):
