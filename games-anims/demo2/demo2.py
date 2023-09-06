@@ -39,7 +39,7 @@ class Demo:
 
         self.c64.play_ik_sound()
         self.c64.draw_sprite()
-        pygame.time.delay(1000)
+        pygame.time.delay(2200)
         self.c64.question_mark(False)
         pygame.time.delay(1000)
 
@@ -82,6 +82,9 @@ class Demo:
         ball_animation.bounce()
         pygame.time.delay(4000)
 
+    def phase5(self):
+        print("phase 4 - superfrog arrives")
+
     def run(self):
         pygame.init()
 
@@ -89,6 +92,7 @@ class Demo:
         self.phase2()
         self.phase3()
         self.phase4()
+        self.phase5()
         print("BYE !")
 
         pygame.quit()

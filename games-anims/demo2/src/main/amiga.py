@@ -14,7 +14,9 @@ class Amiga(Computer):
         self.background_bitmap = Utils.load_background("src/main/resources/amiga.png")
         self.window_bitmap = pygame.image.load("src/main/resources/window2.png")
         self.window_x = 160-3
-        self.superfrog_bitmap = pygame.image.load("src/main/resources/sf.png")
+        self.superfrog_icon_bitmap = pygame.image.load("src/main/resources/sf.png")
+        self.superfrog_jump_bitmap = pygame.image.load("src/main/resources/sf-jump.png")
+        self.superfrog_stand_bitmap = pygame.image.load("src/main/resources/sf-stand.png")
         
     
     def draw_background(self):
@@ -28,7 +30,7 @@ class Amiga(Computer):
 
 
     def draw_superfrog_icon(self):
-        self.screen.blit(self.superfrog_bitmap, (191-3, self.h + 27))
+        self.screen.blit(self.superfrog_icon_bitmap, (191-3, self.h + 27))
         pygame.display.flip()
 
 

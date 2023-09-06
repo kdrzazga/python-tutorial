@@ -98,6 +98,8 @@ class C64(Computer):
     def punch(self, duration_ms):
         self.karateka.punch()
         self.draw_sprite()
+        punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
+        punch_sound.play()
         pygame.time.delay(duration_ms)
 
     def open_passage(self, duration_ms):
