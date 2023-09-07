@@ -16,6 +16,7 @@ class Demo:
         
         if fullscreen:
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT), pygame.FULLSCREEN)
+            pygame.mouse.set_pos((self.WIDTH - 1, self.HEIGHT - 1))
         else:
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Ni Komodor Ni Amiga Demo")
