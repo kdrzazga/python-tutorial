@@ -1,6 +1,6 @@
 import pygame
 
-from src.main.utils import Constants
+from src.main.utils import Constants, ClearScreen
 
 
 class Computer:
@@ -75,6 +75,9 @@ class Computer:
 
         if off:
             pass
+
+    def clear_screen(self, color):
+        ClearScreen.tile_screen(self.screen, color)
 
     def get_bg_color(self):
         return self.bg_color

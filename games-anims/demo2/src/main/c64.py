@@ -45,7 +45,7 @@ class C64(Computer):
         self.font_path = "src/main/resources/C64_Pro_Mono-STYLE.ttf"
         self.caption_font = ImageFont.truetype(self.font_path, 18)
         self.cursor = Cursor(self.location)
-        self.one_letter = Image.new("RGB", (C64.line_size, C64.line_size), Constants.BLUE)  # Constants.LIGHT_BLUE)
+        self.one_letter = Image.new("RGB", (C64.line_size, C64.line_size), Constants.BLUE)
         self.draw = ImageDraw.Draw(self.one_letter)
         self.caption_surface = pygame.image.fromstring(self.one_letter.tobytes(), self.one_letter.size,
                                                        self.one_letter.mode)

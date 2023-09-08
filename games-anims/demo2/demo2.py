@@ -4,6 +4,7 @@ import pygame
 import sys
 
 from src.main.bouncing_ball import BallAnimation
+from src.main.scroll import Scroll
 from src.main.factory import create_computer
 from src.main.utils import Constants
 
@@ -92,23 +93,32 @@ class Demo:
     def phase5(self):
         print("phase 4 - superfrog arrives")
 
-    def run(self):
-        pygame.init()
+    def phase_finish(self):
+        print("Final phase")
+        self.amiga.clear_screen(Scroll.BG_COLOR)
+        
+        scroll_instance = Scroll(self.screen, self.WIDTH, canvas_height = 368, scroll_speed=5)
+        scroll_instance.run(23000)
+
+    def run(self):       
 
         self.phase1()
         self.phase2()
         self.phase3()
         self.phase4()
         self.phase5()
+        self.phase_finish()
         print("BYE !")
-
-        pygame.quit()
 
 
 if __name__ == "__main__":
+    pygame.init()
+    
     if len(sys.argv) > 1:
         if sys.argv[1] == 'loop':
             while True:
-                Demo(True).run()
+                Demo(True).run()               
     else:
         Demo(fullscreen=False).run()
+
+    pygame.quit()
