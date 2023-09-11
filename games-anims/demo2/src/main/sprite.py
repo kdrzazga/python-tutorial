@@ -21,6 +21,7 @@ class Sprite:
         self.anim_counter_threshold = 1
         self.step_delay_counter = 0
         self.looking_right = True
+        self.color = (255, 0, 0)
 
 
     def stand(self):

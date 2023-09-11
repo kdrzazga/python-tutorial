@@ -1,6 +1,6 @@
 import pygame
 
-from src.main.utils import Constants, ClearScreen
+from src.main.utils import Constants, Utils, ClearScreen
 
 
 class Computer:
@@ -28,7 +28,9 @@ class Computer:
         flipped_sprite_bitmap = pygame.transform.flip(normal_sprite_bitmap, True, False)
 
         self.sprite_bitmap = normal_sprite_bitmap if sprite.looking_right else flipped_sprite_bitmap
-
+        if sprite.color != None:
+            self.sprite_bitmap = Utils.color_bitmap(self.sprite_bitmap, sprite.color)
+        
         x = sprite.x - self.sprite_bitmap.get_width() / 2
         y = sprite.y - self.sprite_bitmap.get_height() / 2
 

@@ -1,4 +1,5 @@
 import pygame
+import logging
 
 class Constants:
     LIGHT_BLUE = (96, 96, 192)
@@ -13,6 +14,20 @@ class Utils:
     def load_background(path):
         return pygame.image.load(path)
 
+    @staticmethod
+    def color_bitmap(bitmap, color):
+        logging.info("Coloring bitmap to %s", color)
+        old_color = (255, 255, 255)
+        new_image = bitmap.copy()
+        
+        width, height = bitmap.get_size()
+        
+        for x in range(width):
+            for y in range(height):
+                pixel_color = bitmap.get_at((x, y))
+                if pixel_color == old_color:
+                    new_image.set_at((x, y), color)
+        return new_image
 
 class ClearScreen:
 

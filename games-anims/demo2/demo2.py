@@ -6,10 +6,19 @@ import sys
 from src.main.bouncing_ball import BallAnimation
 from src.main.scroll import Scroll
 from src.main.factory import create_computer
-from src.main.utils import Constants
+from src.main.utils import Constants, ClearScreen
 
 
 class Demo:
+
+    color_index = 0
+    
+    @staticmethod
+    def get_next_color():
+        available_colors= ((0, 255, 0), (255, 255, 255), (255, 0, 0), (0, 255, 255), (255, 255, 0), (200, 130, 200))
+        
+        Demo.color_index = (Demo.color_index + 1) % len(available_colors)
+        return available_colors[Demo.color_index]
 
     def __init__(self, fullscreen=False):
         self.WIDTH, self.HEIGHT = 800, 600
@@ -21,12 +30,15 @@ class Demo:
         else:
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Ni Komodor Ni Amiga Demo")
-        self.c64 = create_computer("C64", self.screen)
-        self.amiga = create_computer("Amiga", self.screen)
+        karateka_color = Demo.get_next_color()
+        self.c64 = create_computer("C64", self.screen, karateka_color)
+        self.amiga = create_computer("Amiga", self.screen, karateka_color)
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def phase1(self):
         print("phase 1 - c64")
+        ClearScreen.tile_screen(self.screen, Constants.LIGHT_BLUE)
+        pygame.time.delay(3500)
         self.c64.handle_cursor(3500)
         for line, duration in (
         ("LOAD", 1000), (" ", 0), ("PRESS PLAY ON TAPE", 2000), ("OK", 200), (" ", 0), ("SEARCHING", 100)):
@@ -114,11 +126,16 @@ class Demo:
 if __name__ == "__main__":
     pygame.init()
     
+    fullscreen = False
+    
     if len(sys.argv) > 1:
-        if sys.argv[1] == 'loop':
+        looped = 'loop' in sys.argv
+        fullscreen = 'fullscreen' in sys.argv or 'fs' in sys.argv
+        
+        if looped:
             while True:
-                Demo(True).run()               
-    else:
-        Demo(fullscreen=False).run()
+                Demo(fullscreen).run()
+    
+    Demo(fullscreen).run()
 
     pygame.quit()
