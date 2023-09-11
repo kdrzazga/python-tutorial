@@ -7,8 +7,18 @@ class Constants:
     AMIGA_BLUE = (0, 96, 192)
     SCREEN_WIDTH = 800-2*52
     SCREEN_HEIGHT = 400
-
+    KARATEKA_Y = 480
+    
 class Utils:
+
+    color_index = 0
+    
+    @staticmethod
+    def get_next_color():
+        available_colors= ((0, 255, 0), (0, 255, 255), (255, 0, 0), (255, 255, 255), (255, 255, 0), (200, 130, 200))
+        
+        Utils.color_index = (Utils.color_index + 1) % len(available_colors)
+        return available_colors[Utils.color_index]
 
     @staticmethod
     def load_background(path):

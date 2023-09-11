@@ -10,6 +10,7 @@ class Sprite:
         self.y = y
         self.width = 2
         self.height = 2
+        self.visible = True
         self.active = True
         self.moveable = True
         self.name = name

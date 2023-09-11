@@ -1,9 +1,13 @@
 import pygame
 
 from src.main.utils import Constants, Utils, ClearScreen
-
+from src.main.karateka import Karateka
 
 class Computer:
+
+    karateka2 = Karateka(300, Constants.KARATEKA_Y, Utils.get_next_color())
+    karateka3 = Karateka(460, Constants.KARATEKA_Y, Utils.get_next_color())
+    karateka4 = Karateka(590, Constants.KARATEKA_Y, Utils.get_next_color())
 
     def __init__(self, bg_color1, bg_color2):
         self.clock = pygame.time.Clock()
@@ -16,11 +20,12 @@ class Computer:
         pygame.mixer.init()
         self.walking_sound = pygame.mixer.Sound("src/main/resources/steps.wav")
 
-    def clear_sprite(self):
-        y = self.karateka.y - self.sprite_bitmap.get_height() / 2
+    def clear_sprite(self, sprite_index):
+        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
+        y = karateka.y - self.sprite_bitmap.get_height() / 2
 
         pygame.draw.rect(self.screen, self.bg_color,
-                         ((self.location[0] + 2, y - 10), (Constants.SCREEN_WIDTH - 10, self.karateka.height + 10)))
+                             ((karateka.x - karateka.width //2 - 15, y - 10), (karateka.width + 20, karateka.height + 10)))
 
     def draw_sprite(self, sprite):
         path = sprite.get_sprite_path()
@@ -44,7 +49,9 @@ class Computer:
         self.draw_sprite(self.superfrog)
 
     def draw_karateka(self):
-        self.draw_sprite(self.karateka)
+        for karateka in [self.karateka, Computer.karateka2, Computer.karateka3, Computer.karateka4]:
+            if karateka.visible:
+                self.draw_sprite(karateka)
 
     def walk_karateka(self, duration_ms, open_pass=False):
         self.walking_sound.play(-1)
@@ -52,18 +59,15 @@ class Computer:
         while pygame.time.get_ticks() - start_time <= duration_ms:
             self.karateka.step()
 
-            y = self.karateka.y - self.sprite_bitmap.get_height() / 2
-
-            pygame.draw.rect(self.screen, self.bg_color,
-                             ((self.location[0] + 2, y - 10), (Constants.SCREEN_WIDTH - 10, self.karateka.height + 10)))
+            self.clear_sprite(0)
 
             if open_pass:
                 self.open_passage(1)
-            self.draw_sprite(self.karateka)
+            self.draw_karateka()
             self.clock.tick(32)
         self.walking_sound.stop()
 
-    def kill_karateka(self):
+    def kill_karateka(self, sprite_index):
         self.karateka.y += 23
         self.karateka.walk_phase = 'lying'
         self.draw_sprite(self.karateka)
@@ -77,6 +81,10 @@ class Computer:
 
         if off:
             pass
+
+    def toggle_karatekas(self):
+        for karateka in (self.karateka2, self.karateka3, self.karateka4):
+            karateka.visible = not karateka.visible
 
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)
