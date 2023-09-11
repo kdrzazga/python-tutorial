@@ -10,6 +10,7 @@ class Sprite:
         self.y = y
         self.width = 2
         self.height = 2
+        self.visible = True
         self.active = True
         self.moveable = True
         self.name = name
@@ -21,6 +22,7 @@ class Sprite:
         self.anim_counter_threshold = 1
         self.step_delay_counter = 0
         self.looking_right = True
+        self.color = (255, 0, 0)
 
 
     def stand(self):

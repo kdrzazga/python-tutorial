@@ -4,6 +4,7 @@ import logging
 
 from src.main.utils import Utils, Constants
 from src.main.computer import Computer
+from src.main.karateka import Karateka
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -45,7 +46,7 @@ class C64(Computer):
         self.font_path = "src/main/resources/C64_Pro_Mono-STYLE.ttf"
         self.caption_font = ImageFont.truetype(self.font_path, 18)
         self.cursor = Cursor(self.location)
-        self.one_letter = Image.new("RGB", (C64.line_size, C64.line_size), Constants.BLUE)  # Constants.LIGHT_BLUE)
+        self.one_letter = Image.new("RGB", (C64.line_size, C64.line_size), Constants.BLUE)
         self.draw = ImageDraw.Draw(self.one_letter)
         self.caption_surface = pygame.image.fromstring(self.one_letter.tobytes(), self.one_letter.size,
                                                        self.one_letter.mode)
@@ -95,19 +96,34 @@ class C64(Computer):
         pygame.display.flip()
         self.cursor.move_down()
 
-    def punch(self, duration_ms):
-        self.karateka.punch()
-        self.draw_sprite()
+    def punch(self, karateka_index, duration_ms):
+        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        k.punch()
+            
+        self.draw_karateka()
         punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
         punch_sound.play()
         pygame.time.delay(duration_ms)
+        self.clear_sprite(karateka_index)
+        k.stand()
+        
+    def kick(self, karateka_index, duration_ms):
+        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        k.kick()
+            
+        self.draw_karateka()
+        punch_sound = pygame.mixer.Sound("src/main/resources/hu-ua.mp3")
+        punch_sound.play()
+        pygame.time.delay(duration_ms)
+        self.clear_sprite(karateka_index)
+        k.stand()        
 
     def open_passage(self, duration_ms):
         height = 76
-        position = (self.location[0] + self.background_bitmap.get_width() - 10,
-                    self.location[1] + self.background_bitmap.get_height() - height)
+        position = (self.location[0] + self.background_bitmap.get_width(),
+                    self.location[1] + self.background_bitmap.get_height() - height - 8)
         logging.info("Opening portal at %d, %d", position[0], position[1])
-        pygame.draw.rect(self.screen, Constants.BLUE, (position, (64, height)))
+        pygame.draw.rect(self.screen, Constants.BLUE, (position, (99, height)))
         pygame.display.flip()
         pygame.time.delay(duration_ms)
 

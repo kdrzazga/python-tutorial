@@ -3,8 +3,9 @@ from src.main.sprite import Sprite
 class Karateka(Sprite):
 
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, color):
         super().__init__(x, y, "karateka")
+        self.color = color
         self.path = "src/main/resources/k.png"
 
 
