@@ -23,7 +23,7 @@ class Computer:
     def clear_sprite(self, sprite_index):
         karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
         y = karateka.y - self.sprite_bitmap.get_height() / 2
-
+       
         pygame.draw.rect(self.screen, self.bg_color,
                              ((karateka.x - karateka.width //2 - 15, y - 10), (karateka.width + 20, karateka.height + 10)))
 
@@ -53,13 +53,14 @@ class Computer:
             if karateka.visible:
                 self.draw_sprite(karateka)
 
-    def walk_karateka(self, duration_ms, open_pass=False):
+    def walk_karateka(self, index, duration_ms, open_pass=False):
+        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][index]
+
         self.walking_sound.play(-1)
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
-            self.karateka.step()
-
-            self.clear_sprite(0)
+            karateka.step()
+            self.clear_sprite(index)
 
             if open_pass:
                 self.open_passage(1)
@@ -68,9 +69,11 @@ class Computer:
         self.walking_sound.stop()
 
     def kill_karateka(self, sprite_index):
-        self.karateka.y += 23
-        self.karateka.walk_phase = 'lying'
-        self.draw_sprite(self.karateka)
+        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
+
+        karateka.walk_phase = 'lying'
+        karateka.y += 24
+        self.draw_sprite(karateka)
 
     def question_mark(self, off):
         x = self.karateka.x + self.sprite_bitmap.get_width() / 2
@@ -82,9 +85,10 @@ class Computer:
         if off:
             pass
 
-    def toggle_karatekas(self):
+    def toggle_karatekas(self, on_off):
+        visibility = on_off == 'on'
         for karateka in (self.karateka2, self.karateka3, self.karateka4):
-            karateka.visible = not karateka.visible
+            karateka.visible = visibility
 
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)

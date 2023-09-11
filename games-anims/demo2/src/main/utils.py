@@ -7,7 +7,7 @@ class Constants:
     AMIGA_BLUE = (0, 96, 192)
     SCREEN_WIDTH = 800-2*52
     SCREEN_HEIGHT = 400
-    KARATEKA_Y = 480
+    KARATEKA_Y = 483
     
 class Utils:
 

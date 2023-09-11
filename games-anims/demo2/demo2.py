@@ -53,29 +53,32 @@ class Demo:
 
             
     def phase2(self):
-        print("phase 2 - c64 fight")
-        self.c64.toggle_karatekas() #OFF
+        print("phase 2 - c64 - fighters come")
+        self.c64.toggle_karatekas('off')
         self.c64.play_ik_sound()
         self.c64.draw_karateka()
         pygame.time.delay(2200)
         self.c64.question_mark(False)
         pygame.time.delay(1000)
 
-        self.c64.walk_karateka(1950)
+        self.c64.walk_karateka(0 ,1950)
         self.c64.question_mark(False)
         pygame.time.delay(1000)
-        self.c64.walk_karateka(500)
+        self.c64.walk_karateka(0 ,500)
 
         self.c64.karateka.step_left()
         self.c64.karateka.step_left()
-        self.c64.walk_karateka(1900)
-        self.c64.toggle_karatekas() #ON
+        self.c64.walk_karateka(0 ,1900)
+        self.c64.toggle_karatekas('on')
         self.c64.draw_karateka()
             
         self.c64.play_ik_sound()
         self.c64.question_mark(False)
         pygame.time.delay(1000)
         
+
+    def phase3(self):
+        print("phase 3 - c64 fight")
         self.c64.clear_sprite(2)
         self.c64.karateka3.step_left()
         
@@ -83,23 +86,47 @@ class Demo:
         self.c64.karateka4.step_left()
         
         self.c64.karateka.step_right()
-        self.c64.walk_karateka(200)
+        self.c64.walk_karateka(0, 200)
         pygame.time.delay(200)
         self.c64.clear_sprite(0)
-        self.c64.kick(0,1200)
+        self.c64.kick(0, 1200)
         self.c64.karateka.step_right()
-        self.c64.walk_karateka(3900)
+        for _ in range(28):
+            self.c64.walk_karateka(2 ,580 // 28)
+            self.c64.walk_karateka(0 ,1800 // 28)
+        
+        self.c64.clear_sprite(2)
+        self.c64.kick(2, 1200)
+        pygame.time.delay(200)
+        self.c64.clear_sprite(2)
+        self.c64.clear_sprite(1)
+        self.c64.karateka2.step_left()
+        #self.c64.kill_karateka(1)
+        self.c64.draw_karateka()
         
         self.c64.clear_sprite(3)
         self.c64.punch(3, 500)
         self.c64.karateka4.stand()
 
         self.c64.clear_sprite(0)
-        self.c64.punch(0, 1000)
-        self.c64.walk_karateka(1000, True)
-
-    def phase3(self):
-        print("phase 3")
+        self.c64.kick(0, 1200)
+        #self.c64.kill_karateka(3)
+        self.c64.clear_sprite(3)
+        self.c64.draw_karateka()
+        pygame.time.delay(1000)
+        self.c64.walk_karateka(0, 1300)
+        self.c64.punch(0, 500)
+        self.c64.walk_karateka(0, 1200, True)
+        
+        pygame.time.delay(1500)
+        self.c64.clear_sprite(1)
+        self.c64.karateka2.visible = False
+        self.c64.draw_karateka()
+        
+        pygame.time.delay(700)
+        self.c64.clear_sprite(2)
+        self.c64.karateka3.visible = False
+        self.c64.draw_karateka()
 
     def phase4(self):
         print("phase 4 - bouncing ball")
@@ -110,11 +137,11 @@ class Demo:
     def phase5(self):
         print("phase 5 - amiga")
         self.amiga.draw(25)
-        self.amiga.toggle_karatekas()
+        self.amiga.toggle_karatekas('off')
         self.amiga.draw_karateka()
         pygame.time.delay(500)
 
-        self.amiga.walk_karateka(2400)
+        self.amiga.walk_karateka(0, 2400)
         self.amiga.question_mark(off=False)
         pygame.time.delay(1000)
         self.amiga.dropping(1200)
@@ -131,9 +158,9 @@ class Demo:
 
     def phase_finish(self):
         print("Final phase")
-        self.amiga.toggle_karatekas()
+        self.amiga.toggle_karatekas('off')
         self.amiga.clear_screen(Scroll.BG_COLOR)
-        
+
         scroll_instance = Scroll(self.screen, self.WIDTH, canvas_height = 368, scroll_speed=5)
         scroll_instance.run(23000)
 

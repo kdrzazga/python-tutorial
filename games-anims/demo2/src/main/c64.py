@@ -120,10 +120,10 @@ class C64(Computer):
 
     def open_passage(self, duration_ms):
         height = 76
-        position = (self.location[0] + self.background_bitmap.get_width() - 10,
-                    self.location[1] + self.background_bitmap.get_height() - height)
+        position = (self.location[0] + self.background_bitmap.get_width(),
+                    self.location[1] + self.background_bitmap.get_height() - height - 8)
         logging.info("Opening portal at %d, %d", position[0], position[1])
-        pygame.draw.rect(self.screen, Constants.BLUE, (position, (64, height)))
+        pygame.draw.rect(self.screen, Constants.BLUE, (position, (99, height)))
         pygame.display.flip()
         pygame.time.delay(duration_ms)
 
