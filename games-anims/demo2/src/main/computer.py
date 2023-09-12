@@ -49,7 +49,7 @@ class Computer:
         self.draw_sprite(self.superfrog)
 
     def draw_karateka(self):
-        for karateka in [self.karateka, Computer.karateka2, Computer.karateka3, Computer.karateka4]:
+        for karateka in [self.karateka, self.karateka2, self.karateka3, self.karateka4]:
             if karateka.visible:
                 self.draw_sprite(karateka)
 
@@ -68,6 +68,17 @@ class Computer:
             self.clock.tick(32)
         self.walking_sound.stop()
 
+    def punch(self, karateka_index, duration_ms):
+        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        k.punch()
+            
+        self.draw_karateka()
+        punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
+        punch_sound.play()
+        pygame.time.delay(duration_ms)
+        self.clear_sprite(karateka_index)
+        k.stand()
+        
     def kill_karateka(self, sprite_index):
         karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
 
@@ -75,15 +86,13 @@ class Computer:
         karateka.y += 24
         self.draw_sprite(karateka)
 
-    def question_mark(self, off):
+    def question_mark(self):
         x = self.karateka.x + self.sprite_bitmap.get_width() / 2
         y = self.karateka.y - self.sprite_bitmap.get_height() / 2
 
         self.screen.blit(self.qm_bitmap, (x, y))
         pygame.display.update()
 
-        if off:
-            pass
 
     def toggle_karatekas(self, on_off):
         visibility = on_off == 'on'

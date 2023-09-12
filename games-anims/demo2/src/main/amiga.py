@@ -50,10 +50,11 @@ class Amiga(Computer):
         while pygame.time.get_ticks() - start_time <= duration_ms:        
             self.draw_background()
             self.draw_sprite(self.karateka)
+            self.draw_sprite(self.karateka4)
             self.draw_window()
             self.draw_superfrog_icon()
             if pygame.time.get_ticks() - start_time <= duration_ms - 500:
-                self.question_mark(False)
+                self.question_mark()
             acceleration += 0.3
             self.h += int(1 + acceleration)
             

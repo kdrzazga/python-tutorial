@@ -31,13 +31,13 @@ class Sprite:
 
 
     def kick(self):
-        if self.moveable:
+        if self.moveable and self.visible:
             self.kick_phase = '_kick'
             self.walk_phase = '_kick'
 
 
     def punch(self):
-        if self.moveable:
+        if self.moveable and self.visible:
             self.kick_phase = '_punch'
             self.walk_phase = '_punch'
 
