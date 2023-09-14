@@ -1,11 +1,11 @@
 import logging
-
-import pygame
 import sys
 
+import pygame
+
 from src.main.bouncing_ball import BallAnimation
-from src.main.scroll import Scroll
 from src.main.factory import create_computer
+from src.main.scroll import Scroll
 from src.main.utils import Utils, Constants, ClearScreen
 
 
@@ -14,7 +14,7 @@ class Demo:
     def __init__(self, fullscreen=False):
         self.WIDTH, self.HEIGHT = 800, 600
         self.screen = None
-        
+
         if fullscreen:
             self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT), pygame.FULLSCREEN)
             pygame.mouse.set_pos((self.WIDTH - 1, self.HEIGHT - 1))
@@ -35,7 +35,7 @@ class Demo:
         pygame.time.delay(3500)
         self.c64.handle_cursor(3500)
         for line, duration in (
-        ("LOAD", 1000), (" ", 0), ("PRESS PLAY ON TAPE", 2000), ("OK", 200), (" ", 0), ("SEARCHING", 100)):
+                ("LOAD", 1000), (" ", 0), ("PRESS PLAY ON TAPE", 2000), ("OK", 200), (" ", 0), ("SEARCHING", 100)):
             self.c64.writeline(line)
             pygame.time.delay(duration)
 
@@ -51,7 +51,6 @@ class Demo:
             self.c64.writeline(line)
             pygame.time.delay(duration)
 
-            
     def phase2(self):
         print("phase 2 - c64 - fighters come")
         self.c64.toggle_karatekas('off')
@@ -61,51 +60,50 @@ class Demo:
         self.c64.question_mark()
         pygame.time.delay(1000)
 
-        self.c64.walk_karateka(0 ,1950)
+        self.c64.walk_karateka(0, 1950)
         self.c64.question_mark()
         pygame.time.delay(1000)
-        self.c64.walk_karateka(0 ,500)
+        self.c64.walk_karateka(0, 500)
 
         self.c64.karateka.step_left()
         self.c64.karateka.step_left()
-        self.c64.walk_karateka(0 ,1900)
+        self.c64.walk_karateka(0, 1900)
         self.c64.toggle_karatekas('on')
         self.c64.draw_karateka()
-            
+
         self.c64.play_ik_sound()
         self.c64.question_mark()
         pygame.time.delay(1000)
-        
 
     def phase3(self):
         print("phase 3 - c64 fight")
-        self.c64.clear_sprite(2) # karateka3, index 2 , RED
+        self.c64.clear_sprite(2)  # karateka3, index 2 , RED
         self.c64.karateka3.step_left()
-        
-        self.c64.clear_sprite(3) # karateka4, index 3 , YELLOW
+
+        self.c64.clear_sprite(3)  # karateka4, index 3 , YELLOW
         self.c64.karateka4.step_left()
-        
+
         self.c64.karateka.step_right()
-        self.c64.walk_karateka(0, 200) # karateka, index 0 , WHITE 
+        self.c64.walk_karateka(0, 200)  # karateka, index 0 , WHITE
         pygame.time.delay(200)
         self.c64.clear_sprite(0)
         self.c64.kick(0, 1200)
         self.c64.karateka.step_right()
         for _ in range(28):
-            self.c64.walk_karateka(2 ,580 // 28)
-            self.c64.walk_karateka(0 ,1800 // 28)
-        
+            self.c64.walk_karateka(2, 580 // 28)
+            self.c64.walk_karateka(0, 1800 // 28)
+
         self.c64.clear_sprite(2)
         self.c64.kick(2, 1200)
         pygame.time.delay(200)
         self.c64.clear_sprite(2)
         self.c64.clear_sprite(1)
-        self.c64.karateka2.step_left() # karateka2, index 1 , CYAN 
+        self.c64.karateka2.step_left()  # karateka2, index 1 , CYAN
         self.c64.kill_karateka(1)
         self.c64.draw_karateka()
         self.c64.karateka3.step_right()
         self.c64.walk_karateka(2, 500)
-        
+
         self.c64.clear_sprite(3)
         self.c64.punch(3, 500)
         self.c64.karateka4.stand()
@@ -117,7 +115,7 @@ class Demo:
         self.c64.kick(0, 1200)
         self.c64.clear_sprite(0)
         self.c64.karateka.stand()
-        #self.c64.draw_karateka()
+        # self.c64.draw_karateka()
         self.c64.karateka4.step_left()
         self.c64.clear_sprite(3)
         self.c64.clear_sprite(1)
@@ -125,24 +123,24 @@ class Demo:
         self.c64.clear_sprite(0)
         self.c64.karateka.step_left()
         for _ in range(18):
-            self.c64.walk_karateka(0, 1250//18)
-            self.c64.walk_karateka(3, 500//18)
-        
+            self.c64.walk_karateka(0, 1250 // 18)
+            self.c64.walk_karateka(3, 500 // 18)
+
         self.c64.karateka.step_right()
         self.c64.clear_sprite(0)
         self.c64.kick(0, 1200)
         self.c64.clear_sprite(2)
         self.c64.punch(2, 500)
         self.c64.draw_karateka()
-        
+
         for i in (0, 2, 3, 2, 3, 0, 0):
             self.c64.walk_karateka(2, 23)
             self.c64.clear_sprite(i)
-            self.c64.kick(i, 1200)           
+            self.c64.kick(i, 1200)
             if i + 1 < 4 and i + 1 != 1:
                 self.c64.clear_sprite(i + 1)
-                self.c64.punch(i + 1, 500)           
-            self.c64.walk_karateka(3, 23)            
+                self.c64.punch(i + 1, 500)
+            self.c64.walk_karateka(3, 23)
         pygame.time.delay(1000)
         self.c64.walk_karateka(0, 2200)
         self.c64.karateka.step_left()
@@ -152,16 +150,16 @@ class Demo:
         self.c64.punch(3, 500)
         self.c64.draw_karateka()
         self.c64.clear_sprite(2)
-        self.c64.kill_karateka(2)   
+        self.c64.kill_karateka(2)
         self.c64.draw_karateka()
         self.c64.karateka4.step_right()
 
-        values = (0, 3, 3, 0, 3, 0)        
+        values = (0, 3, 3, 0, 3, 0)
         for i in range(0, len(values), 2):
             j = values[i]
             k = values[i + 1]
-            
-            logging.info("Karateka indices j=%d k=%d", j, k) 
+
+            logging.info("Karateka indices j=%d k=%d", j, k)
             self.c64.walk_karateka(j, 23)
             self.c64.walk_karateka(k, 28)
             self.c64.draw_karateka()
@@ -173,30 +171,30 @@ class Demo:
             self.c64.kick(k, 1200)
             self.c64.walk_karateka(j, 5)
             self.c64.walk_karateka(k, 5)
-            self.c64.draw_karateka()            
-        
+            self.c64.draw_karateka()
+
         self.c64.karateka.step_right()
-            
+
         self.c64.walk_karateka(0, 300)
-        
-        for _ in range(10):    
+
+        for _ in range(10):
             self.c64.walk_karateka(0, 30)
             self.c64.walk_karateka(3, 33)
         self.c64.draw_karateka()
-        
-        #leaving
+
+        # leaving
         pygame.time.delay(1000)
         self.c64.walk_karateka(0, 500)
         self.c64.clear_sprite(0)
         self.c64.punch(0, 500)
         self.c64.walk_karateka(0, 1200, True)
         self.c64.walk_karateka(3, 2100)
-        
+
         pygame.time.delay(1500)
         self.c64.clear_sprite(1)
         self.c64.karateka2.visible = False
         self.c64.draw_karateka()
-        
+
         pygame.time.delay(700)
         self.c64.karateka2.visible = False
         self.c64.draw_karateka()
@@ -218,7 +216,7 @@ class Demo:
         pygame.time.delay(200)
 
         self.amiga.walk_karateka(0, 1400)
-        for _ in range(30):    
+        for _ in range(30):
             self.amiga.walk_karateka(0, 50)
             self.amiga.walk_karateka(3, 53)
         self.amiga.punch(3, 500)
@@ -242,10 +240,10 @@ class Demo:
         self.amiga.toggle_karatekas('off')
         self.amiga.clear_screen(Scroll.BG_COLOR)
 
-        scroll_instance = Scroll(self.screen, self.WIDTH, canvas_height = 368, scroll_speed=5)
+        scroll_instance = Scroll(self.screen, self.WIDTH, canvas_height=368, scroll_speed=5)
         scroll_instance.run(23000)
 
-    def run(self):       
+    def run(self):
 
         self.phase0()
         self.phase1()
@@ -255,23 +253,23 @@ class Demo:
         self.phase5()
         self.phase6()
         self.phase7()
-        #self.phase_finish()
+        self.phase_finish()
         print("BYE !")
 
 
 if __name__ == "__main__":
     pygame.init()
-    
+
     fullscreen = False
-    
+
     if len(sys.argv) > 1:
         looped = 'loop' in sys.argv
         fullscreen = 'fullscreen' in sys.argv or 'fs' in sys.argv
-        
+
         if looped:
             while True:
                 Demo(fullscreen).run()
-    
+
     Demo(fullscreen).run()
 
     pygame.quit()
