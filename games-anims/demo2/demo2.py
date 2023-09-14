@@ -154,7 +154,7 @@ class Demo:
         self.c64.draw_karateka()
         self.c64.karateka4.step_right()
 
-        values = (0, 3, 3, 0, 3, 0)
+        values = (0, 3)
         for i in range(0, len(values), 2):
             j = values[i]
             k = values[i + 1]
@@ -184,19 +184,20 @@ class Demo:
 
         # leaving
         pygame.time.delay(1000)
-        self.c64.walk_karateka(0, 500)
+        self.c64.walk_karateka(0, 210)
         self.c64.clear_sprite(0)
         self.c64.punch(0, 500)
         self.c64.walk_karateka(0, 1200, True)
         self.c64.walk_karateka(3, 2100)
 
-        pygame.time.delay(1500)
-        self.c64.clear_sprite(1)
-        self.c64.karateka2.visible = False
-        self.c64.draw_karateka()
 
-        pygame.time.delay(700)
-        self.c64.karateka2.visible = False
+        pygame.time.delay(1000)
+        self.c64.clear_sprite(1)
+        self.c64.draw_karateka()
+        self.c64.karateka2.visible = False        
+        
+        pygame.time.delay(1000)
+        self.c64.karateka3.visible = False
         self.c64.draw_karateka()
 
     def phase4(self):

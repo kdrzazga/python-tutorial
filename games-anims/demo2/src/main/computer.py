@@ -89,7 +89,9 @@ class Computer:
         x = self.karateka.x + self.sprite_bitmap.get_width() / 2
         y = self.karateka.y - self.sprite_bitmap.get_height() / 2
 
+        self.draw_karateka()
         self.screen.blit(self.qm_bitmap, (x, y))
+        
         pygame.display.update()
 
     def toggle_karatekas(self, on_off):
