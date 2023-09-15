@@ -1,6 +1,7 @@
 import logging
-import pygame
 import sys
+
+import pygame
 
 
 class Ball:

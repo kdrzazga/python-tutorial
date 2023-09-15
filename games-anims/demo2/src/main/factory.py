@@ -1,7 +1,7 @@
-from src.main.utils import Constants
-from src.main.c64 import C64
 from src.main.amiga import Amiga
+from src.main.c64 import C64
 from src.main.karateka import Karateka
+from src.main.utils import Constants
 
 
 def create_computer(computer_type, screen, karateka_color):

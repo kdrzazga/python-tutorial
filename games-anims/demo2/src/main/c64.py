@@ -1,12 +1,9 @@
-import time
-import pygame
 import logging
 
-from src.main.utils import Utils, Constants
-from src.main.computer import Computer
-from src.main.karateka import Karateka
-
+import pygame
 from PIL import Image, ImageDraw, ImageFont
+from src.main.computer import Computer
+from src.main.utils import Utils, Constants
 
 
 class Cursor:
@@ -96,27 +93,16 @@ class C64(Computer):
         pygame.display.flip()
         self.cursor.move_down()
 
-    def punch(self, karateka_index, duration_ms):
-        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
-        k.punch()
-            
-        self.draw_karateka()
-        punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
-        punch_sound.play()
-        pygame.time.delay(duration_ms)
-        self.clear_sprite(karateka_index)
-        k.stand()
-        
     def kick(self, karateka_index, duration_ms):
         k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
         k.kick()
-            
+
         self.draw_karateka()
         punch_sound = pygame.mixer.Sound("src/main/resources/hu-ua.mp3")
         punch_sound.play()
         pygame.time.delay(duration_ms)
         self.clear_sprite(karateka_index)
-        k.stand()        
+        k.stand()
 
     def open_passage(self, duration_ms):
         height = 76

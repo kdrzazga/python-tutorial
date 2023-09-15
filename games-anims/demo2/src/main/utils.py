@@ -1,22 +1,24 @@
-import pygame
 import logging
+
+import pygame
+
 
 class Constants:
     LIGHT_BLUE = (96, 96, 192)
     BLUE = (32, 0, 128)
     AMIGA_BLUE = (0, 96, 192)
-    SCREEN_WIDTH = 800-2*52
+    SCREEN_WIDTH = 800 - 2 * 52
     SCREEN_HEIGHT = 400
     KARATEKA_Y = 483
-    
-class Utils:
 
+
+class Utils:
     color_index = 0
-    
+
     @staticmethod
     def get_next_color():
-        available_colors= ((0, 255, 0), (0, 255, 255), (255, 0, 0), (255, 255, 255), (255, 255, 0), (200, 130, 200))
-        
+        available_colors = ((0, 255, 0), (0, 255, 255), (255, 0, 0), (255, 255, 0), (255, 255, 255), (200, 130, 200))
+
         Utils.color_index = (Utils.color_index + 1) % len(available_colors)
         return available_colors[Utils.color_index]
 
@@ -29,15 +31,16 @@ class Utils:
         logging.info("Coloring bitmap to %s", color)
         old_color = (255, 255, 255)
         new_image = bitmap.copy()
-        
+
         width, height = bitmap.get_size()
-        
+
         for x in range(width):
             for y in range(height):
                 pixel_color = bitmap.get_at((x, y))
                 if pixel_color == old_color:
                     new_image.set_at((x, y), color)
         return new_image
+
 
 class ClearScreen:
 
@@ -48,7 +51,7 @@ class ClearScreen:
         for y in range(0, height, tile_size):
             for x in range(0, width, tile_size):
                 tiles.add((x, y, tile_size, tile_size))
-        
+
         return tiles
 
     @staticmethod
@@ -58,4 +61,4 @@ class ClearScreen:
         while len(tiles) > 0:
             pygame.draw.rect(screen, color, tiles.pop())
             pygame.display.flip()
-            clock.tick(240)  
+            clock.tick(240)

@@ -1,10 +1,9 @@
 import pygame
-
-from src.main.utils import Constants, Utils, ClearScreen
 from src.main.karateka import Karateka
+from src.main.utils import Constants, Utils, ClearScreen
+
 
 class Computer:
-
     karateka2 = Karateka(300, Constants.KARATEKA_Y, Utils.get_next_color())
     karateka3 = Karateka(460, Constants.KARATEKA_Y, Utils.get_next_color())
     karateka4 = Karateka(590, Constants.KARATEKA_Y, Utils.get_next_color())
@@ -23,9 +22,9 @@ class Computer:
     def clear_sprite(self, sprite_index):
         karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
         y = karateka.y - self.sprite_bitmap.get_height() / 2
-       
+
         pygame.draw.rect(self.screen, self.bg_color,
-                             ((karateka.x - karateka.width //2 - 15, y - 10), (karateka.width + 20, karateka.height + 10)))
+                         ((karateka.x - karateka.width // 2 - 15, y - 10), (karateka.width + 20, karateka.height + 10)))
 
     def draw_sprite(self, sprite):
         path = sprite.get_sprite_path()
@@ -33,9 +32,9 @@ class Computer:
         flipped_sprite_bitmap = pygame.transform.flip(normal_sprite_bitmap, True, False)
 
         self.sprite_bitmap = normal_sprite_bitmap if sprite.looking_right else flipped_sprite_bitmap
-        if sprite.color != None:
+        if sprite.color is not None:
             self.sprite_bitmap = Utils.color_bitmap(self.sprite_bitmap, sprite.color)
-        
+
         x = sprite.x - self.sprite_bitmap.get_width() / 2
         y = sprite.y - self.sprite_bitmap.get_height() / 2
 
@@ -49,7 +48,7 @@ class Computer:
         self.draw_sprite(self.superfrog)
 
     def draw_karateka(self):
-        for karateka in [self.karateka, Computer.karateka2, Computer.karateka3, Computer.karateka4]:
+        for karateka in [self.karateka, self.karateka2, self.karateka3, self.karateka4]:
             if karateka.visible:
                 self.draw_sprite(karateka)
 
@@ -68,6 +67,17 @@ class Computer:
             self.clock.tick(32)
         self.walking_sound.stop()
 
+    def punch(self, karateka_index, duration_ms):
+        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        k.punch()
+
+        self.draw_karateka()
+        punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
+        punch_sound.play()
+        pygame.time.delay(duration_ms)
+        self.clear_sprite(karateka_index)
+        k.stand()
+
     def kill_karateka(self, sprite_index):
         karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
 
@@ -75,15 +85,14 @@ class Computer:
         karateka.y += 24
         self.draw_sprite(karateka)
 
-    def question_mark(self, off):
+    def question_mark(self):
         x = self.karateka.x + self.sprite_bitmap.get_width() / 2
         y = self.karateka.y - self.sprite_bitmap.get_height() / 2
 
+        self.draw_karateka()
         self.screen.blit(self.qm_bitmap, (x, y))
+        
         pygame.display.update()
-
-        if off:
-            pass
 
     def toggle_karatekas(self, on_off):
         visibility = on_off == 'on'
