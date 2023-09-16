@@ -4,6 +4,7 @@ import pygame
 
 
 class Constants:
+    WIDTH, HEIGHT = 800, 600
     LIGHT_BLUE = (96, 96, 192)
     BLUE = (32, 0, 128)
     AMIGA_BLUE = (0, 96, 192)
@@ -28,7 +29,6 @@ class Utils:
 
     @staticmethod
     def color_bitmap(bitmap, color):
-        logging.info("Coloring bitmap to %s", color)
         old_color = (255, 255, 255)
         new_image = bitmap.copy()
 

@@ -1,6 +1,6 @@
-import math
-
+import logging
 import pygame
+import math
 
 
 class Scroll:
@@ -56,6 +56,8 @@ class Scroll:
         while pygame.time.get_ticks() - start_time <= duration_ms:
             running = self.handle_events()
             self.update_display()
+            
+        logging.info("END OF DEMO scrolling done")
 
 
 # Usage

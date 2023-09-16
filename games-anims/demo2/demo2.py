@@ -6,26 +6,28 @@ import pygame
 from src.main.bouncing_ball import BallAnimation
 from src.main.factory import create_computer
 from src.main.scroll import Scroll
+from src.main.scrolling_transition import ScrollingTransition
 from src.main.utils import Utils, Constants, ClearScreen
 
 
 class Demo:
 
-    def __init__(self, fullscreen=False):
-        self.WIDTH, self.HEIGHT = 800, 600
+
+    def __init__(self, fullscreen=False):        
         self.screen = None
 
         if fullscreen:
-            self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT), pygame.FULLSCREEN)
-            pygame.mouse.set_pos((self.WIDTH - 1, self.HEIGHT - 1))
+            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
+            pygame.mouse.set_pos((Constants.WIDTH - 1, Constants.HEIGHT - 1))
         else:
-            self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
 
         pygame.display.set_caption("Ni Komodor Ni Amiga Demo")
         karateka_color = Utils.get_next_color()
         self.c64 = create_computer("C64", self.screen, karateka_color)
         self.amiga = create_computer("Amiga", self.screen, karateka_color)
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        logging.info("Demo start")
 
     def phase0(self):
         print("phase 0 - setup")
@@ -236,12 +238,17 @@ class Demo:
     def phase7(self):
         print("phase 7 - superfrog arrives")
 
+    def phase8(self):
+        print("phase 8 - partial return to c64")
+        scrolling_transition = ScrollingTransition(self.screen)
+        scrolling_transition.run()
+
     def phase_finish(self):
         print("Final phase")
         self.amiga.toggle_karatekas('off')
         self.amiga.clear_screen(Scroll.BG_COLOR)
 
-        scroll_instance = Scroll(self.screen, self.WIDTH, canvas_height=368, scroll_speed=5)
+        scroll_instance = Scroll(self.screen, Constants.WIDTH, canvas_height=368, scroll_speed=5)
         scroll_instance.run(23000)
 
     def run(self):
@@ -254,6 +261,7 @@ class Demo:
         self.phase5()
         self.phase6()
         self.phase7()
+        self.phase8()
         self.phase_finish()
         print("BYE !")
 
