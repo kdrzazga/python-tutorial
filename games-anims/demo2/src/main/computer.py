@@ -111,6 +111,11 @@ class Computer:
         for karateka in (self.karatekaYellow, self.karatekaBrown, self.karatekaPurple):
             karateka.visible = visibility
 
+    def toggle_karatekas2(self, on_off):
+        visibility = on_off == 'on'
+        for karateka in (self.karatekaYellow, self.karatekaBrown, self.karatekaPurple):
+            karateka.visible = visibility
+
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)
 

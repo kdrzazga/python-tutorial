@@ -36,9 +36,6 @@ class Demo:
         self.purple = self.c64.get_karateka_index(Constants.PURPLE)
         
         logging.info("Demo start")
-        
-        for karateka in [self.c64.karateka, self.c64.karatekaGreen, self.c64.karatekaRed, self.c64.karatekaCyan, self.c64.karatekaYellow, self.c64.karatekaBrown, self.c64.karatekaPurple]:
-            logging.info("Karateka " + str(karateka.id) + " color " + str(karateka.color))
 
     def phase0(self):
         print("phase 0 - setup")
