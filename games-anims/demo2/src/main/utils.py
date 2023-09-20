@@ -18,7 +18,7 @@ class Utils:
 
     @staticmethod
     def get_next_color():
-        available_colors = ((0, 255, 0), (0, 255, 255), (255, 0, 0), (255, 255, 0), (255, 255, 255), (200, 130, 200))
+        available_colors = ((0, 255, 0), (0, 255, 255), (255, 0, 0), (255, 255, 0), (200, 130, 200), (255, 255, 255), (185, 122, 85), (34, 177, 76))
 
         Utils.color_index = (Utils.color_index + 1) % len(available_colors)
         return available_colors[Utils.color_index]

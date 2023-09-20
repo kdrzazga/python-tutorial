@@ -4,9 +4,12 @@ from src.main.utils import Constants, Utils, ClearScreen
 
 
 class Computer:
-    karateka2 = Karateka(300, Constants.KARATEKA_Y, Utils.get_next_color())
-    karateka3 = Karateka(460, Constants.KARATEKA_Y, Utils.get_next_color())
-    karateka4 = Karateka(590, Constants.KARATEKA_Y, Utils.get_next_color())
+    karateka2 = Karateka(300, Constants.KARATEKA_Y, Utils.get_next_color(), True)
+    karateka3 = Karateka(460, Constants.KARATEKA_Y, Utils.get_next_color(), True)
+    karateka4 = Karateka(590, Constants.KARATEKA_Y, Utils.get_next_color(), True)
+    karateka5 = Karateka(490, Constants.KARATEKA_Y, Utils.get_next_color(), False)
+    karateka6 = Karateka(380, Constants.KARATEKA_Y, Utils.get_next_color(), False)
+    karateka7 = Karateka(610, Constants.KARATEKA_Y, Utils.get_next_color(), False)
 
     def __init__(self, bg_color1, bg_color2):
         self.clock = pygame.time.Clock()
@@ -20,7 +23,7 @@ class Computer:
         self.walking_sound = pygame.mixer.Sound("src/main/resources/steps.wav")
 
     def clear_sprite(self, sprite_index):
-        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
+        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4, self.karateka5, self.karateka6, self.karateka7][sprite_index]
         y = karateka.y - self.sprite_bitmap.get_height() / 2
 
         pygame.draw.rect(self.screen, self.bg_color,
@@ -48,12 +51,12 @@ class Computer:
         self.draw_sprite(self.superfrog)
 
     def draw_karateka(self):
-        for karateka in [self.karateka, self.karateka2, self.karateka3, self.karateka4]:
+        for karateka in [self.karateka, self.karateka2, self.karateka3, self.karateka4, self.karateka5, self.karateka6, self.karateka7]:
             if karateka.visible:
                 self.draw_sprite(karateka)
 
     def walk_karateka(self, index, duration_ms, open_pass=False):
-        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][index]
+        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4, self.karateka5, self.karateka6, self.karateka7][index]
 
         self.walking_sound.play(-1)
         start_time = pygame.time.get_ticks()
@@ -68,7 +71,7 @@ class Computer:
         self.walking_sound.stop()
 
     def punch(self, karateka_index, duration_ms):
-        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4, self.karateka5, self.karateka6, self.karateka7][karateka_index]
         k.punch()
 
         self.draw_karateka()
@@ -79,7 +82,7 @@ class Computer:
         k.stand()
 
     def kill_karateka(self, sprite_index):
-        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
+        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4, self.karateka5, self.karateka6, self.karateka7][sprite_index]
 
         karateka.walk_phase = 'lying'
         karateka.y += 24
@@ -94,9 +97,14 @@ class Computer:
         
         pygame.display.update()
 
-    def toggle_karatekas(self, on_off):
+    def toggle_karatekas1(self, on_off):
         visibility = on_off == 'on'
         for karateka in (self.karateka2, self.karateka3, self.karateka4):
+            karateka.visible = visibility
+
+    def toggle_karatekas2(self, on_off):
+        visibility = on_off == 'on'
+        for karateka in (self.karateka5, self.karateka6, self.karateka7):
             karateka.visible = visibility
 
     def clear_screen(self, color):
