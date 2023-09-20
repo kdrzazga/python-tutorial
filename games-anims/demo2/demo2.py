@@ -27,8 +27,9 @@ class Demo:
         self.amiga = create_computer("Amiga", self.screen, karateka_color)
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         logging.info("Demo start")
-        for enumerate(i, karateka) in [self.c64.karateka, self.c64.karateka2, self.c64.karateka3, self.c64.karateka4, self.c64.karateka5, self.c64.karateka6, self.c64.karateka7]:
-            logging.info("Karateka " + i + " color " + self.karateka.color)
+        
+        for karateka in [self.c64.karateka, self.c64.karateka2, self.c64.karateka3, self.c64.karateka4, self.c64.karateka5, self.c64.karateka6, self.c64.karateka7]:
+            logging.info("Karateka " + str(karateka.id) + " color " + str(karateka.color))
 
     def phase0(self):
         print("phase 0 - setup")
@@ -280,16 +281,16 @@ class Demo:
     def run(self):
 
         self.phase0()
-        #self.phase1()
+        self.phase1()
         self.phase2()
         self.phase3()
         self.phase4()
-        #self.phase5()
-        #self.phase6()
-        #self.phase7()
-        #self.phase8()
-        #self.phase9()
-        #self.phase_finish()
+        self.phase5()
+        self.phase6()
+        self.phase7()
+        self.phase8()
+        self.phase9()
+        self.phase_finish()
         print("BYE !")
 
 
