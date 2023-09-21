@@ -4,9 +4,12 @@ from src.main.utils import Constants, Utils, ClearScreen
 
 
 class Computer:
-    karateka2 = Karateka(300, Constants.KARATEKA_Y, Utils.get_next_color())
-    karateka3 = Karateka(460, Constants.KARATEKA_Y, Utils.get_next_color())
-    karateka4 = Karateka(590, Constants.KARATEKA_Y, Utils.get_next_color())
+    karatekaGreen = Karateka(300, Constants.KARATEKA_Y, Constants.GREEN, True)
+    karatekaRed = Karateka(460, Constants.KARATEKA_Y, Constants.RED, True)
+    karatekaCyan = Karateka(590, Constants.KARATEKA_Y, Constants.CYAN, True)
+    karatekaYellow = Karateka(490, Constants.KARATEKA_Y, Constants.YELLOW, False)
+    karatekaBrown = Karateka(380, Constants.KARATEKA_Y, Constants.BROWN, False)
+    karatekaPurple = Karateka(610, Constants.KARATEKA_Y, Constants.PURPLE, False)
 
     def __init__(self, bg_color1, bg_color2):
         self.clock = pygame.time.Clock()
@@ -20,7 +23,10 @@ class Computer:
         self.walking_sound = pygame.mixer.Sound("src/main/resources/steps.wav")
 
     def clear_sprite(self, sprite_index):
-        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
+        karateka = self.get_karatekas_array()[sprite_index]
+        self.clear_karateka(karateka)
+
+    def clear_karateka(self, karateka):
         y = karateka.y - self.sprite_bitmap.get_height() / 2
 
         pygame.draw.rect(self.screen, self.bg_color,
@@ -48,12 +54,12 @@ class Computer:
         self.draw_sprite(self.superfrog)
 
     def draw_karateka(self):
-        for karateka in [self.karateka, self.karateka2, self.karateka3, self.karateka4]:
+        for karateka in self.get_karatekas_array():
             if karateka.visible:
                 self.draw_sprite(karateka)
 
     def walk_karateka(self, index, duration_ms, open_pass=False):
-        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][index]
+        karateka = self.get_karatekas_array()[index]
 
         self.walking_sound.play(-1)
         start_time = pygame.time.get_ticks()
@@ -68,7 +74,8 @@ class Computer:
         self.walking_sound.stop()
 
     def punch(self, karateka_index, duration_ms):
-        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        self.clear_sprite(karateka_index)
+        k = self.get_karatekas_array()[karateka_index]
         k.punch()
 
         self.draw_karateka()
@@ -79,7 +86,7 @@ class Computer:
         k.stand()
 
     def kill_karateka(self, sprite_index):
-        karateka = [self.karateka, self.karateka2, self.karateka3, self.karateka4][sprite_index]
+        karateka = self.get_karatekas_array()[sprite_index]
 
         karateka.walk_phase = 'lying'
         karateka.y += 24
@@ -91,12 +98,17 @@ class Computer:
 
         self.draw_karateka()
         self.screen.blit(self.qm_bitmap, (x, y))
-        
+
         pygame.display.update()
 
-    def toggle_karatekas(self, on_off):
+    def toggle_karatekas1(self, on_off):
         visibility = on_off == 'on'
-        for karateka in (self.karateka2, self.karateka3, self.karateka4):
+        for karateka in (self.karatekaGreen, self.karatekaRed, self.karatekaCyan):
+            karateka.visible = visibility
+
+    def toggle_karatekas2(self, on_off):
+        visibility = on_off == 'on'
+        for karateka in (self.karatekaYellow, self.karatekaBrown, self.karatekaPurple):
             karateka.visible = visibility
 
     def clear_screen(self, color):
@@ -104,3 +116,16 @@ class Computer:
 
     def get_bg_color(self):
         return self.bg_color
+
+    def get_karatekas_array(self):
+        return [self.karateka, self.karatekaGreen, self.karatekaRed, self.karatekaCyan, self.karatekaYellow, self.karatekaBrown, self.karatekaPurple]
+
+    def get_karateka(self, color):
+        return [k for k in self.get_karatekas_array() if k.color == color]
+
+    def get_karateka_index(self, color):
+        karatekas = self.get_karatekas_array()
+        try:
+            return karatekas.index(next(k for k in karatekas if k.color == color))
+        except StopIteration:
+            return -1  # Color not found

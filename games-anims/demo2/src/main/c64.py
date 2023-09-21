@@ -17,8 +17,7 @@ class Cursor:
         return Constants.LIGHT_BLUE if self.on else Constants.BLUE
 
     def get_screen_position(self):
-        return self.screen_position[0] + self.position[0] * C64.line_size, self.screen_position[1] + self.position[
-            1] * C64.line_size
+        return self.screen_position[0] + self.position[0] * C64.line_size, self.screen_position[1] + self.position[1] * C64.line_size
 
     def move_right(self):
         new_position = (self.position[0] + 1, self.position[1])
@@ -94,7 +93,8 @@ class C64(Computer):
         self.cursor.move_down()
 
     def kick(self, karateka_index, duration_ms):
-        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4][karateka_index]
+        self.clear_sprite(karateka_index)
+        k = self.get_karatekas_array()[karateka_index]
         k.kick()
 
         self.draw_karateka()
