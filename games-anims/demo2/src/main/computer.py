@@ -4,12 +4,12 @@ from src.main.utils import Constants, Utils, ClearScreen
 
 
 class Computer:
-    karatekaGreen = Karateka(300, Constants.KARATEKA_Y, (0, 255, 0), True)
-    karatekaRed = Karateka(460, Constants.KARATEKA_Y, (255, 0, 0), True)
-    karatekaCyan = Karateka(590, Constants.KARATEKA_Y, (0, 255, 255), True)
-    karatekaYellow = Karateka(490, Constants.KARATEKA_Y, (255, 255, 0), False)
-    karatekaBrown = Karateka(380, Constants.KARATEKA_Y, (185, 122, 85), False)
-    karatekaPurple = Karateka(610, Constants.KARATEKA_Y, (200, 130, 200), False)
+    karatekaGreen = Karateka(300, Constants.KARATEKA_Y, Constants.GREEN, True)
+    karatekaRed = Karateka(460, Constants.KARATEKA_Y, Constants.RED, True)
+    karatekaCyan = Karateka(590, Constants.KARATEKA_Y, Constants.CYAN, True)
+    karatekaYellow = Karateka(490, Constants.KARATEKA_Y, Constants.YELLOW, False)
+    karatekaBrown = Karateka(380, Constants.KARATEKA_Y, Constants.BROWN, False)
+    karatekaPurple = Karateka(610, Constants.KARATEKA_Y, Constants.PURPLE, False)
 
     def __init__(self, bg_color1, bg_color2):
         self.clock = pygame.time.Clock()
@@ -24,6 +24,9 @@ class Computer:
 
     def clear_sprite(self, sprite_index):
         karateka = self.get_karatekas_array()[sprite_index]
+        self.clear_karateka(karateka)
+
+    def clear_karateka(self, karateka):
         y = karateka.y - self.sprite_bitmap.get_height() / 2
 
         pygame.draw.rect(self.screen, self.bg_color,
@@ -71,6 +74,7 @@ class Computer:
         self.walking_sound.stop()
 
     def punch(self, karateka_index, duration_ms):
+        self.clear_sprite(karateka_index)
         k = self.get_karatekas_array()[karateka_index]
         k.punch()
 

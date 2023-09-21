@@ -4,6 +4,13 @@ import pygame
 class Constants:
     WIDTH, HEIGHT = 800, 600
     LIGHT_BLUE = (96, 96, 192)
+    WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    CYAN = (0, 255, 255)
+    BROWN = (185, 122, 85)
+    PURPLE = (200, 130, 200)
+    YELLOW = (255, 255, 0)
     BLUE = (32, 0, 128)
     AMIGA_BLUE = (0, 96, 192)
     SCREEN_WIDTH = 800 - 2 * 52
@@ -16,7 +23,7 @@ class Utils:
 
     @staticmethod
     def get_next_color():
-        available_colors = ((0, 255, 0), (255, 255, 255), (0, 255, 255), (255, 0, 0), (255, 255, 0), (34, 177, 76), (200, 130, 200), (185, 122, 85))
+        available_colors = (Constants.GREEN, Constants.WHITE, Constants.CYAN, Constants.RED, Constants.YELLOW, (34, 177, 76), Constants.PURPLE, Constants.BROWN)
 
         Utils.color_index = (Utils.color_index + 1) % len(available_colors)
         return available_colors[Utils.color_index]
