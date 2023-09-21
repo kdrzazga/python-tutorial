@@ -94,7 +94,7 @@ class C64(Computer):
         self.cursor.move_down()
 
     def kick(self, karateka_index, duration_ms):
-        k = [self.karateka, self.karateka2, self.karateka3, self.karateka4, self.karateka5, self.karateka6, self.karateka7][karateka_index]
+        k = self.get_karatekas_array()[karateka_index]
         k.kick()
 
         self.draw_karateka()

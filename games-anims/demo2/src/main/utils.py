@@ -1,5 +1,3 @@
-import logging
-
 import pygame
 
 
@@ -18,7 +16,7 @@ class Utils:
 
     @staticmethod
     def get_next_color():
-        available_colors = ((0, 255, 0), (0, 255, 255), (255, 0, 0), (255, 255, 0), (34, 177, 76), (200, 130, 200), (185, 122, 85), (255, 255, 255))
+        available_colors = ((0, 255, 0), (255, 255, 255), (0, 255, 255), (255, 0, 0), (255, 255, 0), (34, 177, 76), (200, 130, 200), (185, 122, 85))
 
         Utils.color_index = (Utils.color_index + 1) % len(available_colors)
         return available_colors[Utils.color_index]
