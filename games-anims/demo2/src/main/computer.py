@@ -118,3 +118,10 @@ class Computer:
 
     def get_karateka(self, color):
         return [k for k in self.get_karatekas_array() if k.color == color]
+
+    def get_karateka_index(self, color):
+        karatekas = self.get_karatekas_array()
+        try:
+            return karatekas.index(next(k for k in karatekas if k.color == color))
+        except StopIteration:
+            return -1  # Color not found
