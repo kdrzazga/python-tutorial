@@ -34,6 +34,11 @@ class Demo:
         self.yellow = self.c64.get_karateka_index(Constants.YELLOW)
         self.brown = self.c64.get_karateka_index(Constants.BROWN)
         self.purple = self.c64.get_karateka_index(Constants.PURPLE)
+<<<<<<< HEAD
+=======
+        
+        logging.info("Demo start")
+>>>>>>> be05d21 (Demo2.5 (#21))
         
         for karateka in [self.c64.karateka, self.c64.karatekaGreen, self.c64.karatekaRed, self.c64.karatekaCyan, self.c64.karatekaYellow, self.c64.karatekaBrown, self.c64.karatekaPurple]:
             logging.info("Karateka " + str(karateka.id) + " color " + str(karateka.color))
@@ -99,6 +104,10 @@ class Demo:
         self.c64.karatekaCyan.step_left()
  
         self.c64.clear_sprite(self.green)
+<<<<<<< HEAD
+=======
+        
+>>>>>>> be05d21 (Demo2.5 (#21))
         self.c64.karatekaGreen.step_left()
         self.c64.karatekaGreen.kick()
 
@@ -109,7 +118,11 @@ class Demo:
 
         self.c64.karatekaGreen.step_right()
         self.c64.karatekaGreen.punch()
+<<<<<<< HEAD
         
+=======
+      
+>>>>>>> be05d21 (Demo2.5 (#21))
         self.c64.walk_karateka(self.white, 200)
         self.c64.karatekaGreen.step_right()
         self.c64.kick(self.white, 1200)
@@ -167,8 +180,12 @@ class Demo:
             self.c64.walk_karateka(self.cyan, 23)
         pygame.time.delay(1000)
         self.c64.walk_karateka(self.white, 2200)
+<<<<<<< HEAD
         self.c64.karateka.step_left()
         self.c64.walk_karateka(self.cyan, 250)
+=======
+        self.c64.karateka.step_left()self.c64.walk_karateka(self.cyan, 250)
+>>>>>>> be05d21 (Demo2.5 (#21))
         self.c64.punch(self.cyan, 500)
         self.c64.draw_karateka()
         self.c64.clear_sprite(self.red)
