@@ -35,12 +35,15 @@ class Demo:
         self.brown = self.c64.get_karateka_index(Constants.BROWN)
         self.purple = self.c64.get_karateka_index(Constants.PURPLE)
         
+        for karateka in [self.c64.karateka, self.c64.karatekaGreen, self.c64.karatekaRed, self.c64.karatekaCyan, self.c64.karatekaYellow, self.c64.karatekaBrown, self.c64.karatekaPurple]:
+            logging.info("Karateka " + str(karateka.id) + " color " + str(karateka.color))
         logging.info("Demo start")
+
 
     def phase0(self):
         print("phase 0 - setup")
         ClearScreen.tile_screen(self.screen, Constants.LIGHT_BLUE)
-        #pygame.time.delay(3500)
+        pygame.time.delay(500)
         self.c64.handle_cursor(3500)
 
     def phase1(self):
