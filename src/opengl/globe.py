@@ -1,11 +1,14 @@
 import pygame
+from datetime import datetime
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
+import math
 
 class GlobeRenderer:
     def __init__(self):
+        self.text_to_display = "HELLO"
         self.display = (800, 600)
         pygame.init()
         self.screen = pygame.display.set_mode(self.display, DOUBLEBUF | OPENGL)
@@ -15,6 +18,8 @@ class GlobeRenderer:
         self.load_texture()
         self.setup_opengl()
         self.create_sphere_display_list()
+
+        self.font = pygame.font.Font(None, 36)
 
     def load_texture(self):
         self.globe_texture = pygame.image.load("resources/globe.jpg")
@@ -44,6 +49,29 @@ class GlobeRenderer:
         glPopMatrix()
         glEndList()
 
+    def render_text(self):
+        text_surface = self.font.render(self.text_to_display, True, (255 -  (7* datetime.now().second) % 255, 120 + 125 * math.sin(3.14/(datetime.now().second + 1) / 60), 255))
+        text_data = pygame.image.tostring(text_surface, "RGBA", 1)
+        text_width, text_height = text_surface.get_size()
+
+        glBindTexture(GL_TEXTURE_2D, glGenTextures(1))
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, text_width, text_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, text_data)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP)
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP)
+
+        glBegin(GL_QUADS)
+        glTexCoord2f(0, 0)
+        glVertex3f(-0.5, 0.5, -2.0)
+        glTexCoord2f(1, 0)
+        glVertex3f(0.5, 0.5, -2.0)
+        glTexCoord2f(1, 1)
+        glVertex3f(0.5, -0.5, -2.0)
+        glTexCoord2f(0, 1)
+        glVertex3f(-0.5, -0.5, -2.0)
+        glEnd()
+
     def run(self):
         while True:
             for event in pygame.event.get():
@@ -66,13 +94,15 @@ class GlobeRenderer:
 
             glCallList(self.sphere_display_list)
 
+            self.render_text()
+
             glPopMatrix()
 
             pygame.display.flip()
-            pygame.time.wait(10)
+            pygame.time.wait(3)
 
             self.angle_x += 0.5
-            self.angle_y += 0.5
+            self.angle_y += 0.1
 
 if __name__ == "__main__":
     globe_renderer = GlobeRenderer()
