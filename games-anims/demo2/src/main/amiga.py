@@ -64,6 +64,12 @@ class Amiga(Computer):
         while pygame.time.get_ticks() - start_time <= duration_ms:
             # TODO
             self.clock.tick(60)
+            
+    def jump_superfrog(self, duration_ms):
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time <= duration_ms:
+            # TODO
+            self.clock.tick(60)
 
     def window_hit_bottom(self):
         wh = self.window_bitmap.get_height()
