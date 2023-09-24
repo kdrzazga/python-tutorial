@@ -1,4 +1,7 @@
 import pygame
+
+from collections import deque
+
 from src.main.karateka import Karateka
 from src.main.utils import Constants, Utils, ClearScreen
 
@@ -14,13 +17,34 @@ class Computer:
     def __init__(self, bg_color1, bg_color2):
         self.clock = pygame.time.Clock()
         self.bg_color = bg_color1
-        self.karateka = None
-        self.superfrog = None
+        self.karateka = None # will be created in factory
+        self.superfrog = None # will be created in factory
         self.location = (0, 0)
         self.sprite_bitmap = None
         self.qm_bitmap = pygame.image.load("src/main/resources/qm.png").convert_alpha()
         pygame.mixer.init()
         self.walking_sound = pygame.mixer.Sound("src/main/resources/steps.wav")
+        self.clock = pygame.time.Clock()
+        self.jump_bitmap = pygame.image.load("src/main/resources/honda/honda_jump.png").convert_alpha()
+        self.fall_bitmap = pygame.image.load("src/main/resources/honda/honda_fall.png").convert_alpha()
+
+        punch_low_right_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_lr.png").convert_alpha()
+        punch_low_left_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_ll.png").convert_alpha()
+        punch_high_right_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_hr.png").convert_alpha()
+        punch_high_left_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_hl.png").convert_alpha()
+        honda1_bitmap = pygame.image.load("src/main/resources/honda/honda1.png").convert_alpha()
+        honda2_bitmap = pygame.image.load("src/main/resources/honda/honda2.png").convert_alpha()
+        honda3_bitmap = pygame.image.load("src/main/resources/honda/honda3.png").convert_alpha()
+        step1_bitmap = pygame.image.load("src/main/resources/honda/honda_step1.png").convert_alpha()
+        step2_bitmap = pygame.image.load("src/main/resources/honda/honda_step2.png").convert_alpha()
+
+        self.stand_sequence = deque((honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
+                                     honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
+                                     honda3_bitmap))
+        self.walk_sequence = deque((step1_bitmap, honda1_bitmap, step2_bitmap))
+        self.punch_sequence = deque((honda1_bitmap, punch_low_right_bitmap, honda2_bitmap, punch_low_left_bitmap,
+                                     honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap ))
+
 
     def clear_sprite(self, sprite_index):
         karateka = self.get_karatekas_array()[sprite_index]

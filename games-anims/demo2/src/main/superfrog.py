@@ -5,7 +5,8 @@ class Superfrog(Sprite):
 
     def __init__(self, x, y):
         super().__init__(x, y, "superfrog")
-        self.path = "src/main/resources/sf-stand.png"
+        self.path = "src/main/resources/honda/honda1.png"
+        self.visible = False
 
     def step_right(self):
         super().step_right()

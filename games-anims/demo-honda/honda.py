@@ -1,6 +1,5 @@
 import logging
 import pygame
-import sys
 
 from collections import deque
 

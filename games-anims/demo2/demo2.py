@@ -16,10 +16,10 @@ class Demo:
         self.screen = None
 
         if fullscreen:
-            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN)
+            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN | pygame.DOUBLEBUF)
             pygame.mouse.set_pos((Constants.WIDTH - 1, Constants.HEIGHT - 1))
         else:
-            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
+            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.DOUBLEBUF)
 
         pygame.display.set_caption("Ni Komodor Ni Amiga Demo")
         karateka_color = Utils.get_next_color()
@@ -123,9 +123,9 @@ class Demo:
         self.c64.kick(self.red, 1200)
         pygame.time.delay(200)
         self.c64.clear_sprite(self.red)
-        self.c64.clear_sprite(1)
+        self.c64.clear_sprite(self.green)
         self.c64.karatekaGreen.step_left()
-        self.c64.kill_karateka(1)
+        self.c64.kill_karateka(self.green)
         self.c64.draw_karateka()
         self.c64.karatekaRed.step_right()
         self.c64.walk_karateka(self.red, 500)
@@ -143,7 +143,7 @@ class Demo:
         # self.c64.draw_karateka()
         self.c64.karatekaCyan.step_left()
         self.c64.clear_sprite(self.cyan)
-        self.c64.clear_sprite(1)
+        self.c64.clear_sprite(self.green)
         self.c64.punch(self.cyan, 500)
         self.c64.clear_sprite(self.white)
         self.c64.karateka.step_left()
@@ -154,11 +154,11 @@ class Demo:
         self.c64.karateka.step_right()
         self.c64.clear_sprite(self.white)
         self.c64.kick(self.white, 1200)
-        self.c64.clear_sprite(2)
+        self.c64.clear_sprite(self.red)
         self.c64.punch(self.red, 500)
         self.c64.draw_karateka()
 
-        for i in (0, self.red, self.cyan, self.red, self.c64.get_karateka_index(Constants.CYAN), 0, 0):
+        for i in (0, self.red, self.cyan, self.red, self.cyan, 0, 0):
             self.c64.walk_karateka(self.red, 23)
             self.c64.clear_sprite(i)
             self.c64.kick(i, 1200)
@@ -221,11 +221,11 @@ class Demo:
         self.c64.clear_sprite(self.white)
         self.c64.punch(self.white, 500)
         self.c64.walk_karateka(self.white, 1200, True)
-        self.c64.walk_karateka(3, 2100)
+        self.c64.walk_karateka(self.cyan, 2100)
 
 
         pygame.time.delay(1000)
-        self.c64.clear_sprite(1)
+        self.c64.clear_sprite(self.green)
         self.c64.draw_karateka()
         self.c64.karatekaGreen.visible = False
         
@@ -234,7 +234,7 @@ class Demo:
         self.c64.draw_karateka()
 
     def phase5(self):
-        print("phase 6 - bouncing ball")
+        print("phase 5 - bouncing ball")
         pygame.time.delay(1000)
         ball_animation = BallAnimation(self.screen, self.c64.get_catwalk_rect(), Constants.BLUE, 1200)
         ball_animation.bounce()
@@ -258,7 +258,7 @@ class Demo:
         self.amiga.question_mark()
         pygame.time.delay(1000)
         self.amiga.dropping(1200)
-        self.amiga.kill_karateka(0)
+        self.amiga.kill_karateka(self.white)
         self.amiga.kill_karateka(self.cyan)
 
     def phase7(self):
@@ -269,6 +269,7 @@ class Demo:
 
     def phase8(self):
         print("phase 8 - superfrog arrives")
+        self.amiga.activate_honda(1000)
 
     def phase9(self):
         print("phase 9 - partial return to c64")

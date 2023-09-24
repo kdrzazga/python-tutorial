@@ -6,18 +6,16 @@ from src.main.utils import Utils, Constants
 
 
 class Amiga(Computer):
+    h = 70
+    window_x = 160 - 3
 
     def __init__(self, screen):
         super().__init__(Constants.AMIGA_BLUE, Constants.BLUE)
         self.screen = screen
 
-        self.h = 70
         self.background_bitmap = Utils.load_background("src/main/resources/amiga.png")
         self.window_bitmap = pygame.image.load("src/main/resources/window2.png")
-        self.window_x = 160 - 3
         self.superfrog_icon_bitmap = pygame.image.load("src/main/resources/sf.png")
-        self.superfrog_jump_bitmap = pygame.image.load("src/main/resources/sf-jump.png")
-        self.superfrog_stand_bitmap = pygame.image.load("src/main/resources/sf-stand.png")
 
     def draw_background(self):
         self.screen.blit(self.background_bitmap, (0, 0))
@@ -59,7 +57,17 @@ class Amiga(Computer):
 
             self.clock.tick(36)
 
-    def activate_superfrog(self, duration_ms):
+    def activate_honda(self, duration_ms):
+        start_time = pygame.time.get_ticks()
+        self.superfrog.y = self.h - self.stand_sequence[0].get_height() - 8
+        self.screen.blit(self.stand_sequence[0], (self.superfrog.x, self.superfrog.y))
+        pygame.display.flip()
+
+        while pygame.time.get_ticks() - start_time <= duration_ms:
+            # TODO
+            self.clock.tick(60)
+            
+    def jump_superfrog(self, duration_ms):
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
             # TODO
