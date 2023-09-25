@@ -85,7 +85,9 @@ class Computer:
     def walk_karateka(self, index, duration_ms, open_pass=False):
         karateka = self.get_karatekas_array()[index]
 
-        self.walking_sound.play(-1)
+        if not pygame.mixer.get_busy():
+            self.walking_sound.play(-1)
+
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
             karateka.step()

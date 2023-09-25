@@ -47,6 +47,7 @@ class Demo:
         self.c64.handle_cursor(3500)
 
     def phase1(self):
+        print("phase 1 - loading")
 
         for line, duration in (
                 ("LOAD", 1000), (" ", 0), ("PRESS PLAY ON TAPE", 2000), ("OK", 200), (" ", 0), ("SEARCHING", 100)):
@@ -268,8 +269,10 @@ class Demo:
         pygame.time.delay(4000)
 
     def phase8(self):
-        print("phase 8 - superfrog arrives")
+        print("phase 8 - honda arrives")
         self.amiga.activate_honda(1000)
+        pygame.time.delay(1500)
+        
 
     def phase9(self):
         print("phase 9 - partial return to c64")

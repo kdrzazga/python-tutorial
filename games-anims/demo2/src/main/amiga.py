@@ -25,7 +25,7 @@ class Amiga(Computer):
         self.screen.blit(self.window_bitmap, (self.window_x, self.h))
         pygame.display.flip()
 
-    def draw_superfrog_icon(self):
+    def draw_street_fighter_icon(self):
         self.screen.blit(self.superfrog_icon_bitmap, (191 - 3, self.h + 27))
         pygame.display.flip()
 
@@ -33,7 +33,7 @@ class Amiga(Computer):
         start_time = pygame.time.get_ticks()
         self.draw_background()
         self.draw_window()
-        self.draw_superfrog_icon()
+        self.draw_street_fighter_icon()
 
         while pygame.time.get_ticks() - start_time <= duration_ms:
             pass
@@ -46,7 +46,7 @@ class Amiga(Computer):
             self.draw_sprite(self.karateka)
             self.draw_sprite(self.karatekaCyan)
             self.draw_window()
-            self.draw_superfrog_icon()
+            self.draw_street_fighter_icon()
             if pygame.time.get_ticks() - start_time <= duration_ms - 500:
                 self.question_mark()
             acceleration += 0.3
