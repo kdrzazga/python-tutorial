@@ -79,7 +79,7 @@ class Computer:
 
     def draw_karateka(self):
         for karateka in self.get_karatekas_array():
-            if karateka.visible:
+            if karateka.visible:                
                 self.draw_sprite(karateka)
 
     def start_walking_sounds(self):

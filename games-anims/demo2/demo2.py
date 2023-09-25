@@ -247,8 +247,10 @@ class Demo:
     def phase5(self):
         print("phase 5 - bouncing ball")
         pygame.time.delay(1000)
+        self.c64.toggle_karatekas1('on')
         ball_animation = BallAnimation(self.screen, self.c64.get_catwalk_rect(), Constants.BLUE, 1200)
-        ball_animation.bounce()
+        ball_animation.bounce(self.c64)
+        self.c64.toggle_karatekas1('off')
 
     def phase6(self):
         print("phase 6 - amiga")
@@ -279,7 +281,7 @@ class Demo:
     def phase7(self):
         print("phase 7 - yet another bouncing ball")
         ball_animation = BallAnimation(self.screen, self.amiga.get_catwalk_rect(), Constants.AMIGA_BLUE, 147)
-        ball_animation.bounce()
+        ball_animation.bounce(self.amiga)
         pygame.time.delay(4000)
 
     def phase8(self):
