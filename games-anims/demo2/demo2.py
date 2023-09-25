@@ -232,7 +232,7 @@ class Demo:
         self.c64.clear_sprite(self.white)
         self.c64.punch(self.white, 500)
         self.c64.walk_karateka(self.white, 1200, True)
-        self.c64.walk_karateka(self.cyan, 2100)
+        self.c64.walk_karateka(self.cyan, 3300)
 
 
         pygame.time.delay(1000)

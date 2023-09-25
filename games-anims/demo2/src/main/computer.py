@@ -119,6 +119,14 @@ class Computer:
         self.clear_sprite(karateka_index)
         k.stand()
 
+    def check_ball_kill(self, ball_x):
+        for index, karateka in enumerate(self.get_karatekas_array()):
+            if karateka.walk_phase != 'lying':
+                if ball_x >= karateka.x and ball_x <= karateka.x + 30:
+                    karateka.step_left()
+                    self.clear_karateka(karateka)
+                    self.kill_karateka(index)
+
     def kill_karateka(self, sprite_index):
         karateka = self.get_karatekas_array()[sprite_index]
 

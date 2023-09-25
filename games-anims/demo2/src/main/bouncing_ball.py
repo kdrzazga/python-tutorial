@@ -77,6 +77,7 @@ class BallAnimation:
 
             self.clear()
             self.ball.move()
+            computer.check_ball_kill(self.ball.x)
             self.clear()
             self.ball.draw()
             computer.draw_karateka()
