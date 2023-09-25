@@ -104,10 +104,12 @@ class Demo:
         self.c64.karatekaGreen.step_left()
         self.c64.karatekaGreen.kick()
 
+        self.c64.start_walking_sounds()
         for _ in range(28):
-            self.c64.walk_karateka(self.green, 31)
-            self.c64.walk_karateka(self.red, 31)
-            self.c64.walk_karateka(self.cyan, 868 // 28)
+            self.c64.walk_karateka(self.green, 31, bulk_walk=True)
+            self.c64.walk_karateka(self.red, 31, bulk_walk=True)
+            self.c64.walk_karateka(self.cyan, 868 // 28, bulk_walk=True)        
+        self.c64.stop_walking_sounds()
 
         self.c64.karatekaGreen.step_right()
         self.c64.karatekaGreen.punch()
@@ -116,9 +118,12 @@ class Demo:
         self.c64.karatekaGreen.step_right()
         self.c64.kick(self.white, 1200)
         self.c64.karateka.step_right()
+        
+        self.c64.start_walking_sounds()
         for _ in range(28):
-            self.c64.walk_karateka(self.red, 580 // 28)
-            self.c64.walk_karateka(self.white, 1800 // 28)
+            self.c64.walk_karateka(self.red, 580 // 28, bulk_walk=True)
+            self.c64.walk_karateka(self.white, 1800 // 28, bulk_walk=True)
+        self.c64.stop_walking_sounds()
 
         self.c64.clear_sprite(self.red)
         self.c64.kick(self.red, 1200)
@@ -148,9 +153,12 @@ class Demo:
         self.c64.punch(self.cyan, 500)
         self.c64.clear_sprite(self.white)
         self.c64.karateka.step_left()
+        
+        self.c64.start_walking_sounds()
         for _ in range(18):
-            self.c64.walk_karateka(self.white, 1250 // 18)
-            self.c64.walk_karateka(self.cyan, 500 // 18)
+            self.c64.walk_karateka(self.white, 1250 // 18, bulk_walk=True)
+            self.c64.walk_karateka(self.cyan, 500 // 18, bulk_walk=True)
+        self.c64.stop_walking_sounds()
 
         self.c64.karateka.step_right()
         self.c64.clear_sprite(self.white)
@@ -206,9 +214,11 @@ class Demo:
         self.c64.karateka.step_right()
         self.c64.walk_karateka(self.white, 270)
 
+        self.c64.start_walking_sounds()
         for _ in range(10):
-            self.c64.walk_karateka(self.white, 33)
-            self.c64.walk_karateka(self.cyan, 36)
+            self.c64.walk_karateka(self.white, 33, bulk_walk=True)
+            self.c64.walk_karateka(self.cyan, 36, bulk_walk=True)
+        self.c64.stop_walking_sounds()
         self.c64.draw_karateka()
 
         for i in (4, 5, 4, 6, 5, self.white):
@@ -252,9 +262,13 @@ class Demo:
         pygame.time.delay(200)
 
         self.amiga.walk_karateka(self.white, 1400)
+        
+        self.c64.start_walking_sounds()
         for _ in range(30):
-            self.amiga.walk_karateka(self.white, 50)
-            self.amiga.walk_karateka(self.cyan, 53)
+            self.amiga.walk_karateka(self.white, 50, bulk_walk=True)
+            self.amiga.walk_karateka(self.cyan, 53, bulk_walk=True)
+        self.c64.stop_walking_sounds()
+
         self.amiga.punch(self.cyan, 500)
         self.amiga.question_mark()
         pygame.time.delay(1000)

@@ -82,11 +82,17 @@ class Computer:
             if karateka.visible:
                 self.draw_sprite(karateka)
 
-    def walk_karateka(self, index, duration_ms, open_pass=False):
+    def start_walking_sounds(self):
+        self.walking_sound.play(-1)
+
+    def stop_walking_sounds(self):
+        self.walking_sound.stop()
+
+    def walk_karateka(self, index, duration_ms, open_pass=False, bulk_walk=False):
         karateka = self.get_karatekas_array()[index]
 
-        if not pygame.mixer.get_busy():
-            self.walking_sound.play(-1)
+        if not bulk_walk:
+            self.start_walking_sounds()
 
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
@@ -97,7 +103,9 @@ class Computer:
                 self.open_passage(1)
             self.draw_karateka()
             self.clock.tick(32)
-        self.walking_sound.stop()
+
+        if not bulk_walk:
+            self.stop_walking_sounds()
 
     def punch(self, karateka_index, duration_ms):
         self.clear_sprite(karateka_index)
