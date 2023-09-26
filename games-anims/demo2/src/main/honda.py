@@ -4,7 +4,7 @@ from src.main.sprite import Sprite
 class Superfrog(Sprite):
 
     def __init__(self, x, y):
-        super().__init__(x, y, "superfrog")
+        super().__init__(x, y, "honda")
         self.path = "src/main/resources/honda/honda1.png"
         self.visible = False
 

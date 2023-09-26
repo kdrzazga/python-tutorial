@@ -79,13 +79,21 @@ class Computer:
 
     def draw_karateka(self):
         for karateka in self.get_karatekas_array():
-            if karateka.visible:
+            if karateka.visible:                
                 self.draw_sprite(karateka)
 
-    def walk_karateka(self, index, duration_ms, open_pass=False):
+    def start_walking_sounds(self):
+        self.walking_sound.play(-1)
+
+    def stop_walking_sounds(self):
+        self.walking_sound.stop()
+
+    def walk_karateka(self, index, duration_ms, open_pass=False, bulk_walk=False):
         karateka = self.get_karatekas_array()[index]
 
-        self.walking_sound.play(-1)
+        if not bulk_walk:
+            self.start_walking_sounds()
+
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
             karateka.step()
@@ -95,7 +103,9 @@ class Computer:
                 self.open_passage(1)
             self.draw_karateka()
             self.clock.tick(32)
-        self.walking_sound.stop()
+
+        if not bulk_walk:
+            self.stop_walking_sounds()
 
     def punch(self, karateka_index, duration_ms):
         self.clear_sprite(karateka_index)
@@ -108,6 +118,14 @@ class Computer:
         pygame.time.delay(duration_ms)
         self.clear_sprite(karateka_index)
         k.stand()
+
+    def check_ball_kill(self, ball_x):
+        for index, karateka in enumerate(self.get_karatekas_array()):
+            if karateka.walk_phase != 'lying':
+                if ball_x >= karateka.x and ball_x <= karateka.x + 30:
+                    karateka.step_left()
+                    self.clear_karateka(karateka)
+                    self.kill_karateka(index)
 
     def kill_karateka(self, sprite_index):
         karateka = self.get_karatekas_array()[sprite_index]

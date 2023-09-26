@@ -47,6 +47,7 @@ class Demo:
         self.c64.handle_cursor(3500)
 
     def phase1(self):
+        print("phase 1 - loading")
 
         for line, duration in (
                 ("LOAD", 1000), (" ", 0), ("PRESS PLAY ON TAPE", 2000), ("OK", 200), (" ", 0), ("SEARCHING", 100)):
@@ -103,10 +104,12 @@ class Demo:
         self.c64.karatekaGreen.step_left()
         self.c64.karatekaGreen.kick()
 
+        self.c64.start_walking_sounds()
         for _ in range(28):
-            self.c64.walk_karateka(self.green, 31)
-            self.c64.walk_karateka(self.red, 31)
-            self.c64.walk_karateka(self.cyan, 868 // 28)
+            self.c64.walk_karateka(self.green, 31, bulk_walk=True)
+            self.c64.walk_karateka(self.red, 31, bulk_walk=True)
+            self.c64.walk_karateka(self.cyan, 868 // 28, bulk_walk=True)        
+        self.c64.stop_walking_sounds()
 
         self.c64.karatekaGreen.step_right()
         self.c64.karatekaGreen.punch()
@@ -115,9 +118,12 @@ class Demo:
         self.c64.karatekaGreen.step_right()
         self.c64.kick(self.white, 1200)
         self.c64.karateka.step_right()
+        
+        self.c64.start_walking_sounds()
         for _ in range(28):
-            self.c64.walk_karateka(self.red, 580 // 28)
-            self.c64.walk_karateka(self.white, 1800 // 28)
+            self.c64.walk_karateka(self.red, 580 // 28, bulk_walk=True)
+            self.c64.walk_karateka(self.white, 1800 // 28, bulk_walk=True)
+        self.c64.stop_walking_sounds()
 
         self.c64.clear_sprite(self.red)
         self.c64.kick(self.red, 1200)
@@ -147,9 +153,12 @@ class Demo:
         self.c64.punch(self.cyan, 500)
         self.c64.clear_sprite(self.white)
         self.c64.karateka.step_left()
+        
+        self.c64.start_walking_sounds()
         for _ in range(18):
-            self.c64.walk_karateka(self.white, 1250 // 18)
-            self.c64.walk_karateka(self.cyan, 500 // 18)
+            self.c64.walk_karateka(self.white, 1250 // 18, bulk_walk=True)
+            self.c64.walk_karateka(self.cyan, 500 // 18, bulk_walk=True)
+        self.c64.stop_walking_sounds()
 
         self.c64.karateka.step_right()
         self.c64.clear_sprite(self.white)
@@ -205,9 +214,11 @@ class Demo:
         self.c64.karateka.step_right()
         self.c64.walk_karateka(self.white, 270)
 
+        self.c64.start_walking_sounds()
         for _ in range(10):
-            self.c64.walk_karateka(self.white, 33)
-            self.c64.walk_karateka(self.cyan, 36)
+            self.c64.walk_karateka(self.white, 33, bulk_walk=True)
+            self.c64.walk_karateka(self.cyan, 36, bulk_walk=True)
+        self.c64.stop_walking_sounds()
         self.c64.draw_karateka()
 
         for i in (4, 5, 4, 6, 5, self.white):
@@ -221,7 +232,7 @@ class Demo:
         self.c64.clear_sprite(self.white)
         self.c64.punch(self.white, 500)
         self.c64.walk_karateka(self.white, 1200, True)
-        self.c64.walk_karateka(self.cyan, 2100)
+        self.c64.walk_karateka(self.cyan, 3300)
 
 
         pygame.time.delay(1000)
@@ -236,8 +247,10 @@ class Demo:
     def phase5(self):
         print("phase 5 - bouncing ball")
         pygame.time.delay(1000)
+        self.c64.toggle_karatekas1('on')
         ball_animation = BallAnimation(self.screen, self.c64.get_catwalk_rect(), Constants.BLUE, 1200)
-        ball_animation.bounce()
+        ball_animation.bounce(self.c64)
+        self.c64.toggle_karatekas1('off')
 
     def phase6(self):
         print("phase 6 - amiga")
@@ -251,9 +264,13 @@ class Demo:
         pygame.time.delay(200)
 
         self.amiga.walk_karateka(self.white, 1400)
+        
+        self.c64.start_walking_sounds()
         for _ in range(30):
-            self.amiga.walk_karateka(self.white, 50)
-            self.amiga.walk_karateka(self.cyan, 53)
+            self.amiga.walk_karateka(self.white, 50, bulk_walk=True)
+            self.amiga.walk_karateka(self.cyan, 53, bulk_walk=True)
+        self.c64.stop_walking_sounds()
+
         self.amiga.punch(self.cyan, 500)
         self.amiga.question_mark()
         pygame.time.delay(1000)
@@ -264,12 +281,14 @@ class Demo:
     def phase7(self):
         print("phase 7 - yet another bouncing ball")
         ball_animation = BallAnimation(self.screen, self.amiga.get_catwalk_rect(), Constants.AMIGA_BLUE, 147)
-        ball_animation.bounce()
+        ball_animation.bounce(self.amiga)
         pygame.time.delay(4000)
 
     def phase8(self):
-        print("phase 8 - superfrog arrives")
+        print("phase 8 - honda arrives")
         self.amiga.activate_honda(1000)
+        pygame.time.delay(1500)
+        
 
     def phase9(self):
         print("phase 9 - partial return to c64")

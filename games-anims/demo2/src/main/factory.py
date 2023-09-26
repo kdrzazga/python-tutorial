@@ -1,7 +1,7 @@
 from src.main.amiga import Amiga
 from src.main.c64 import C64
 from src.main.karateka import Karateka
-from src.main.superfrog import Superfrog
+from src.main.honda import Superfrog
 from src.main.utils import Constants
 
 
