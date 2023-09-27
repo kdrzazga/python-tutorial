@@ -12,6 +12,6 @@ def create_computer(computer_type, screen, karateka_color):
     else:
         computer = Amiga(screen)
         computer.karateka = Karateka(-29, 560, karateka_color, True)
-        computer.superfrog = Superfrog(Amiga.window_x, Amiga.h)
+        computer.superfrog = Superfrog(Amiga.window_x + 40, Amiga.h)
 
     return computer

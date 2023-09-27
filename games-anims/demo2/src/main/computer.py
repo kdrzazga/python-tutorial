@@ -32,11 +32,11 @@ class Computer:
         punch_low_left_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_ll.png").convert_alpha()
         punch_high_right_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_hr.png").convert_alpha()
         punch_high_left_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_hl.png").convert_alpha()
-        honda1_bitmap = pygame.image.load("src/main/resources/honda/honda1.png").convert_alpha()
+        honda1_bitmap = pygame.image.load("src/main/resources/honda/honda_w2.png").convert_alpha()
         honda2_bitmap = pygame.image.load("src/main/resources/honda/honda2.png").convert_alpha()
         honda3_bitmap = pygame.image.load("src/main/resources/honda/honda3.png").convert_alpha()
-        step1_bitmap = pygame.image.load("src/main/resources/honda/honda_step1.png").convert_alpha()
-        step2_bitmap = pygame.image.load("src/main/resources/honda/honda_step2.png").convert_alpha()
+        step1_bitmap = pygame.image.load("src/main/resources/honda/honda_w1.png").convert_alpha()
+        step2_bitmap = pygame.image.load("src/main/resources/honda/honda_w3.png").convert_alpha()
 
         self.stand_sequence = deque((honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
                                      honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
@@ -74,7 +74,8 @@ class Computer:
         self.screen.blit(self.sprite_bitmap, (x, y))
         pygame.display.update()
 
-    def draw_superfrog(self):
+    def draw_honda(self):
+        self.clear_karateka(self.superfrog)
         self.draw_sprite(self.superfrog)
 
     def draw_karateka(self):
@@ -87,6 +88,17 @@ class Computer:
 
     def stop_walking_sounds(self):
         self.walking_sound.stop()
+
+    def walk_honda(self, duration_ms, over_window = True):
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time <= duration_ms:
+            self.superfrog.step()
+            self.clear_karateka(self.superfrog)
+            if over_window:
+                self.draw_window()                    
+            self.draw_sprite(self.superfrog)
+            
+            self.clock.tick(19)
 
     def walk_karateka(self, index, duration_ms, open_pass=False, bulk_walk=False):
         karateka = self.get_karatekas_array()[index]
@@ -171,3 +183,6 @@ class Computer:
             return karatekas.index(next(k for k in karatekas if k.color == color))
         except StopIteration:
             return -1  # Color not found
+
+    def draw_window(self):
+        pass
