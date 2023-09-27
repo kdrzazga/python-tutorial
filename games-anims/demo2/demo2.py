@@ -234,7 +234,6 @@ class Demo:
         self.c64.walk_karateka(self.white, 1200, True)
         self.c64.walk_karateka(self.cyan, 3300)
 
-
         pygame.time.delay(1000)
         self.c64.clear_sprite(self.green)
         self.c64.draw_karateka()
@@ -288,12 +287,22 @@ class Demo:
         print("phase 8 - honda arrives")
         self.amiga.activate_honda(1000)
         pygame.time.delay(1500)
+        self.amiga.walk_honda(2700)
+        pygame.time.delay(900)
+        self.amiga.superfrog.step_left()
+        self.amiga.walk_honda(3800)
+        self.amiga.fall_honda(2700)
+        self.amiga.walk_honda(1)
+        pygame.time.delay(1000)
         
-
     def phase9(self):
         print("phase 9 - partial return to c64")
         scrolling_transition = ScrollingTransition(self.screen)
         scrolling_transition.run()
+        #self.amiga.clear_karateka(self.amiga.superfrog)
+        self.amiga.superfrog.x += scrolling_transition.max_distance
+        self.amiga.superfrog.y -= 82
+        self.amiga.walk_honda(2800, over_window = False)
 
     def phase_finish(self):
         print("Final phase")
@@ -306,17 +315,17 @@ class Demo:
 
     def run(self):
 
-        self.phase0()
-        self.phase1()
-        self.phase2()
-        self.phase3()
-        self.phase4()
-        self.phase5()
+        #self.phase0()
+        #self.phase1()
+        #self.phase2()
+        #self.phase3()
+        #self.phase4()
+        #self.phase5()
         self.phase6()
-        self.phase7()
+        #self.phase7()
         self.phase8()
         self.phase9()
-        self.phase_finish()
+        #self.phase_finish()
         print("BYE !")
 
 
