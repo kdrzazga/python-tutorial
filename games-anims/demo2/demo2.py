@@ -1,4 +1,5 @@
 import logging
+import time
 import sys
 
 import pygame
@@ -38,7 +39,7 @@ class Demo:
         for karateka in [self.c64.karateka, self.c64.karatekaGreen, self.c64.karatekaRed, self.c64.karatekaCyan, self.c64.karatekaYellow, self.c64.karatekaBrown, self.c64.karatekaPurple]:
             logging.info("Karateka " + str(karateka.id) + " color " + str(karateka.color))
         logging.info("Demo start")
-
+        self.start_time = time.time()
 
     def phase0(self):
         print("phase 0 - setup")
@@ -232,7 +233,7 @@ class Demo:
         self.c64.clear_sprite(self.white)
         self.c64.punch(self.white, 500)
         self.c64.walk_karateka(self.white, 1200, True)
-        self.c64.walk_karateka(self.cyan, 3300)
+        self.c64.walk_karateka(self.cyan, 3800)
 
         pygame.time.delay(1000)
         self.c64.clear_sprite(self.green)
@@ -289,9 +290,9 @@ class Demo:
         pygame.time.delay(1500)
         self.amiga.walk_honda(2700)
         pygame.time.delay(900)
-        self.amiga.superfrog.step_left()
+        self.amiga.honda.step_left()
         self.amiga.walk_honda(3800)
-        self.amiga.fall_honda(2700)
+        self.amiga.fall_honda(2750)
         self.amiga.walk_honda(1)
         pygame.time.delay(1000)
         
@@ -299,10 +300,24 @@ class Demo:
         print("phase 9 - partial return to c64")
         scrolling_transition = ScrollingTransition(self.screen)
         scrolling_transition.run()
-        #self.amiga.clear_karateka(self.amiga.superfrog)
-        self.amiga.superfrog.x += scrolling_transition.max_distance
-        self.amiga.superfrog.y -= 82
-        self.amiga.walk_honda(2800, over_window = False)
+        #self.amiga.clear_karateka(self.amiga.honda)
+        self.amiga.honda.x += scrolling_transition.max_distance
+        self.amiga.honda.y -= 76
+        self.amiga.walk_honda(3600, over_window = False)
+        self.amiga.honda.step_right()
+        self.amiga.walk_honda(1900, over_window = False)
+        self.amiga.honda.step_left()
+        self.amiga.walk_honda(19, over_window = False)
+        pygame.time.delay(6000)
+
+    def phase10(self):
+        print("phase 10 - 3rd bouncing ball")
+        self.c64.toggle_karatekas1('off')
+        rect = self.c64.get_catwalk_rect()
+        rect.x = 0
+        ball_animation = BallAnimation(self.screen, rect, Constants.BLUE, 255)
+        ball_animation.bounce(self.c64)
+        self.c64.toggle_karatekas1('off')
 
     def phase_finish(self):
         print("Final phase")
@@ -313,19 +328,27 @@ class Demo:
         scroll_instance = Scroll(self.screen, Constants.WIDTH, canvas_height=368, scroll_speed=5)
         scroll_instance.run(23000)
 
+        elapsed_time_seconds = time.time() - self.start_time
+        elapsed_minutes = int(elapsed_time_seconds // 60)
+        elapsed_seconds = int(elapsed_time_seconds % 60)
+
+        print(f"Demo duration: {elapsed_minutes}:{elapsed_seconds}")
+
+
     def run(self):
 
-        #self.phase0()
-        #self.phase1()
-        #self.phase2()
-        #self.phase3()
-        #self.phase4()
-        #self.phase5()
+        self.phase0()
+        self.phase1()
+        self.phase2()
+        self.phase3()
+        self.phase4()
+        self.phase5()
         self.phase6()
-        #self.phase7()
+        self.phase7()
         self.phase8()
         self.phase9()
-        #self.phase_finish()
+        self.phase10()
+        self.phase_finish()
         print("BYE !")
 
 

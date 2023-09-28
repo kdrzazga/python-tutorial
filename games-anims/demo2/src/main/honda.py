@@ -1,7 +1,7 @@
 from src.main.sprite import Sprite
 
 
-class Superfrog(Sprite):
+class Honda(Sprite):
 
     def __init__(self, x, y):
         super().__init__(x, y, "honda")

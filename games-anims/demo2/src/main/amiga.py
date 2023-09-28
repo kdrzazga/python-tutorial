@@ -59,7 +59,7 @@ class Amiga(Computer):
 
     def activate_honda(self, duration_ms):
         start_time = pygame.time.get_ticks()
-        self.superfrog.y = self.h - self.stand_sequence[0].get_height() //2 + 10
+        self.honda.y = self.h - self.stand_sequence[0].get_height() //2 + 10
         self.draw_honda()
         pygame.display.flip()
 
@@ -67,11 +67,11 @@ class Amiga(Computer):
             
     def fall_honda(self, duration_ms):
         start_time = pygame.time.get_ticks()        
-        self.superfrog.walk_phase = "fall"
+        self.honda.walk_phase = "fall"
         while pygame.time.get_ticks() - start_time <= duration_ms:
             self.draw_honda()
-            self.superfrog.y +=3
-            self.superfrog.x -=1
+            self.honda.y +=3
+            self.honda.x -=1
             
             self.clock.tick(26)
 

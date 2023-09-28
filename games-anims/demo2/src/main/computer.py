@@ -18,7 +18,7 @@ class Computer:
         self.clock = pygame.time.Clock()
         self.bg_color = bg_color1
         self.karateka = None # will be created in factory
-        self.superfrog = None # will be created in factory
+        self.honda = None # will be created in factory
         self.location = (0, 0)
         self.sprite_bitmap = None
         self.qm_bitmap = pygame.image.load("src/main/resources/qm.png").convert_alpha()
@@ -75,8 +75,8 @@ class Computer:
         pygame.display.update()
 
     def draw_honda(self):
-        self.clear_karateka(self.superfrog)
-        self.draw_sprite(self.superfrog)
+        self.clear_karateka(self.honda)
+        self.draw_sprite(self.honda)
 
     def draw_karateka(self):
         for karateka in self.get_karatekas_array():
@@ -92,11 +92,13 @@ class Computer:
     def walk_honda(self, duration_ms, over_window = True):
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
-            self.superfrog.step()
-            self.clear_karateka(self.superfrog)
+            self.honda.step()
+            self.clear_karateka(self.honda)
             if over_window:
-                self.draw_window()                    
-            self.draw_sprite(self.superfrog)
+                self.draw_window()
+            else:
+                self.draw_c64_right_bottom()
+            self.draw_sprite(self.honda)
             
             self.clock.tick(19)
 
@@ -165,6 +167,11 @@ class Computer:
         for karateka in (self.karatekaYellow, self.karatekaBrown, self.karatekaPurple):
             karateka.visible = visibility
 
+    def draw_c64_right_bottom(self):
+        pygame.draw.rect(self.screen, Constants.LIGHT_BLUE, (0, 520, 800, 77))
+        pygame.draw.rect(self.screen, Constants.BLUE, (342, 440, 57, 80))
+        pygame.draw.rect(self.screen, Constants.BLUE, (0, 440, 346, 80))
+
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)
 
@@ -185,4 +192,7 @@ class Computer:
             return -1  # Color not found
 
     def draw_window(self):
+        pass
+        
+    def honda_deflects_ball(self, x):
         pass
