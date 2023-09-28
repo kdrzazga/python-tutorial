@@ -126,3 +126,9 @@ class C64(Computer):
         pygame.mixer.init()
         ik_sound = pygame.mixer.Sound("src/main/resources/appear.mp3")
         ik_sound.play()
+        
+    @staticmethod
+    def play_honda_sound():
+        pygame.mixer.init()
+        ik_sound = pygame.mixer.Sound("src/main/resources/honda.m4a")
+        ik_sound.play()

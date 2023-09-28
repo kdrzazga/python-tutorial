@@ -319,6 +319,14 @@ class Demo:
         ball_animation.bounce(self.c64)
         self.c64.toggle_karatekas1('off')
 
+    def phase11(self):
+        print("phase 11 - honda, you don't belong here !!!")
+        self.c64.writeline("HONDA !!")
+        self.c64.writeline("You don't")
+        self.c64.writeline("belong here!!!")
+        self.c64.play_honda_sound()
+        pygame.time.delay(6000)
+
     def phase_finish(self):
         print("Final phase")
         self.amiga.toggle_karatekas1('off')
@@ -348,6 +356,7 @@ class Demo:
         self.phase8()
         self.phase9()
         self.phase10()
+        self.phase11()
         self.phase_finish()
         print("BYE !")
 
