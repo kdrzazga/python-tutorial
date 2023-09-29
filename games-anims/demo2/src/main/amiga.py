@@ -90,3 +90,9 @@ class Amiga(Computer):
         height = 88
 
         return pygame.Rect(x, y, width, height)
+        
+    def honda_deflects_ball(self, x):
+        self.honda.punch()
+        self.draw_honda()
+        punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
+        punch_sound.play()

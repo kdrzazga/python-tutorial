@@ -68,7 +68,7 @@ class BallAnimation:
         h = 2 * self.ball.radius
         pygame.draw.rect(self.screen, self.BG_COLOR, ((x, y), (w, h)))
 
-    def bounce(self, computer):
+    def bounce(self, computer, karateka=False):
         while 0 < self.ball.x + self.BALL_RADIUS < self.rect.width:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -77,11 +77,15 @@ class BallAnimation:
 
             self.clear()
             self.ball.move()
-            computer.check_ball_kill(self.ball.x)
-            computer.honda_deflects_ball(self.ball.x)
+            if karateka:
+                computer.check_ball_kill(self.ball.x)
+            else:
+                computer.honda_deflects_ball(self.ball.x)
+
             self.clear()
             self.ball.draw()
-            computer.draw_karateka()
+            if karateka:
+                computer.draw_karateka()
 
             pygame.display.flip()
             pygame.time.delay(64)
