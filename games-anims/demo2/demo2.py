@@ -249,7 +249,7 @@ class Demo:
         pygame.time.delay(1000)
         self.c64.toggle_karatekas1('on')
         ball_animation = BallAnimation(self.screen, self.c64.get_catwalk_rect(), Constants.BLUE, 1200)
-        ball_animation.bounce(self.c64)
+        ball_animation.bounce(self.c64, karateka=True)
         self.c64.toggle_karatekas1('off')
 
     def phase6(self):
@@ -334,7 +334,7 @@ class Demo:
         self.amiga.clear_screen(Scroll.BG_COLOR)
 
         scroll_instance = Scroll(self.screen, Constants.WIDTH, canvas_height=368, scroll_speed=5)
-        scroll_instance.run(23000)
+        scroll_instance.run(27000)
 
         elapsed_time_seconds = time.time() - self.start_time
         elapsed_minutes = int(elapsed_time_seconds // 60)
