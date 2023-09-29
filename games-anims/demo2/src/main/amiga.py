@@ -94,5 +94,7 @@ class Amiga(Computer):
     def honda_deflects_ball(self, x):
         self.honda.punch()
         self.draw_honda()
-        punch_sound = pygame.mixer.Sound("src/main/resources/chuja.mp3")
+
+    def play_honda_sound(self):
+        punch_sound = pygame.mixer.Sound("src/main/resources/honda/honda.mp3")
         punch_sound.play()

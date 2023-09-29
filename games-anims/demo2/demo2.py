@@ -324,7 +324,7 @@ class Demo:
         self.c64.writeline("HONDA !!")
         self.c64.writeline("You don't")
         self.c64.writeline("belong here!!!")
-        #self.c64.play_honda_sound()
+        self.amiga.play_honda_sound()
         pygame.time.delay(6000)
 
     def phase_finish(self):
@@ -345,19 +345,19 @@ class Demo:
 
     def run(self):
 
-        #self.phase0()
-        #self.phase1()
-        #self.phase2()
-        #self.phase3()
-        #self.phase4()
-        #self.phase5()
+        self.phase0()
+        self.phase1()
+        self.phase2()
+        self.phase3()
+        self.phase4()
+        self.phase5()
         self.phase6() # amiga
-        #self.phase7() # bounce
+        self.phase7() # bounce
         self.phase8()
         self.phase9()
         self.phase10()
         self.phase11()
-        #self.phase_finish()
+        self.phase_finish()
         print("BYE !")
 
 
