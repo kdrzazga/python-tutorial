@@ -15,7 +15,7 @@ class Amiga(Computer):
 
         self.background_bitmap = Utils.load_background("src/main/resources/amiga.png")
         self.window_bitmap = pygame.image.load("src/main/resources/window2.png")
-        self.superfrog_icon_bitmap = pygame.image.load("src/main/resources/sf.png")
+        self.streetfigher_icon_bitmap = pygame.image.load("src/main/resources/sf.png")
 
     def draw_background(self):
         self.screen.blit(self.background_bitmap, (0, 0))
@@ -24,16 +24,16 @@ class Amiga(Computer):
     def draw_window(self):
         self.screen.blit(self.window_bitmap, (self.window_x, self.h))
         pygame.display.flip()
+        self.draw_street_fighter_icon()
 
-    def draw_superfrog_icon(self):
-        self.screen.blit(self.superfrog_icon_bitmap, (191 - 3, self.h + 27))
+    def draw_street_fighter_icon(self):
+        self.screen.blit(self.streetfigher_icon_bitmap, (191 - 3, self.h + 27))
         pygame.display.flip()
 
     def draw(self, duration_ms):
         start_time = pygame.time.get_ticks()
         self.draw_background()
         self.draw_window()
-        self.draw_superfrog_icon()
 
         while pygame.time.get_ticks() - start_time <= duration_ms:
             pass
@@ -46,32 +46,34 @@ class Amiga(Computer):
             self.draw_sprite(self.karateka)
             self.draw_sprite(self.karatekaCyan)
             self.draw_window()
-            self.draw_superfrog_icon()
             if pygame.time.get_ticks() - start_time <= duration_ms - 500:
                 self.question_mark()
             acceleration += 0.3
             self.h += int(1 + acceleration)
 
             if self.window_hit_bottom():
+                self.h -= int(1 + acceleration)
                 break
 
             self.clock.tick(36)
 
     def activate_honda(self, duration_ms):
         start_time = pygame.time.get_ticks()
-        self.superfrog.y = self.h - self.stand_sequence[0].get_height() - 8
-        self.screen.blit(self.stand_sequence[0], (self.superfrog.x, self.superfrog.y))
+        self.honda.y = self.h - self.stand_sequence[0].get_height() //2 + 10
+        self.draw_honda()
         pygame.display.flip()
 
-        while pygame.time.get_ticks() - start_time <= duration_ms:
-            # TODO
-            self.clock.tick(60)
+        pygame.time.delay(duration_ms)
             
-    def jump_superfrog(self, duration_ms):
-        start_time = pygame.time.get_ticks()
+    def fall_honda(self, duration_ms):
+        start_time = pygame.time.get_ticks()        
+        self.honda.walk_phase = "fall"
         while pygame.time.get_ticks() - start_time <= duration_ms:
-            # TODO
-            self.clock.tick(60)
+            self.draw_honda()
+            self.honda.y +=3
+            self.honda.x -=1
+            
+            self.clock.tick(26)
 
     def window_hit_bottom(self):
         wh = self.window_bitmap.get_height()
@@ -88,3 +90,11 @@ class Amiga(Computer):
         height = 88
 
         return pygame.Rect(x, y, width, height)
+        
+    def honda_deflects_ball(self, x):
+        self.honda.punch()
+        self.draw_honda()
+
+    def play_honda_sound(self):
+        punch_sound = pygame.mixer.Sound("src/main/resources/honda/honda.mp3")
+        punch_sound.play()

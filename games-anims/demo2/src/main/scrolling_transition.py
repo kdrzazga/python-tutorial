@@ -11,12 +11,13 @@ class ScrollingTransition:
         self.screen = screen
         self.screenshot = None
         self.clock = pygame.time.Clock()
+        self.max_distance = Constants.WIDTH // 2
         self.c64half = pygame.image.load("src/main/resources/c64half.png")
 
     def scroll_right(self):
         scroll_distance = 0
         scroll_speed = 1 / 6
-        c64half_x = -Constants.WIDTH // 2
+        c64half_x = -self.max_distance
         self.screenshot = pygame.Surface((Constants.WIDTH, Constants.HEIGHT))
         self.screenshot.blit(self.screen, (0, 0))
 

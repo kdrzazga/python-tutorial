@@ -18,7 +18,7 @@ class Computer:
         self.clock = pygame.time.Clock()
         self.bg_color = bg_color1
         self.karateka = None # will be created in factory
-        self.superfrog = None # will be created in factory
+        self.honda = None # will be created in factory
         self.location = (0, 0)
         self.sprite_bitmap = None
         self.qm_bitmap = pygame.image.load("src/main/resources/qm.png").convert_alpha()
@@ -32,11 +32,11 @@ class Computer:
         punch_low_left_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_ll.png").convert_alpha()
         punch_high_right_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_hr.png").convert_alpha()
         punch_high_left_bitmap = pygame.image.load("src/main/resources/honda/honda_punch_hl.png").convert_alpha()
-        honda1_bitmap = pygame.image.load("src/main/resources/honda/honda1.png").convert_alpha()
+        honda1_bitmap = pygame.image.load("src/main/resources/honda/honda_w2.png").convert_alpha()
         honda2_bitmap = pygame.image.load("src/main/resources/honda/honda2.png").convert_alpha()
         honda3_bitmap = pygame.image.load("src/main/resources/honda/honda3.png").convert_alpha()
-        step1_bitmap = pygame.image.load("src/main/resources/honda/honda_step1.png").convert_alpha()
-        step2_bitmap = pygame.image.load("src/main/resources/honda/honda_step2.png").convert_alpha()
+        step1_bitmap = pygame.image.load("src/main/resources/honda/honda_w1.png").convert_alpha()
+        step2_bitmap = pygame.image.load("src/main/resources/honda/honda_w3.png").convert_alpha()
 
         self.stand_sequence = deque((honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
                                      honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
@@ -74,18 +74,40 @@ class Computer:
         self.screen.blit(self.sprite_bitmap, (x, y))
         pygame.display.update()
 
-    def draw_superfrog(self):
-        self.draw_sprite(self.superfrog)
+    def draw_honda(self):
+        self.clear_karateka(self.honda)
+        self.draw_sprite(self.honda)
 
     def draw_karateka(self):
         for karateka in self.get_karatekas_array():
-            if karateka.visible:
+            if karateka.visible:                
                 self.draw_sprite(karateka)
 
-    def walk_karateka(self, index, duration_ms, open_pass=False):
+    def start_walking_sounds(self):
+        self.walking_sound.play(-1)
+
+    def stop_walking_sounds(self):
+        self.walking_sound.stop()
+
+    def walk_honda(self, duration_ms, over_window = True):
+        start_time = pygame.time.get_ticks()
+        while pygame.time.get_ticks() - start_time <= duration_ms:
+            self.honda.step()
+            self.clear_karateka(self.honda)
+            if over_window:
+                self.draw_window()
+            else:
+                self.draw_c64_right_bottom()
+            self.draw_sprite(self.honda)
+            
+            self.clock.tick(19)
+
+    def walk_karateka(self, index, duration_ms, open_pass=False, bulk_walk=False):
         karateka = self.get_karatekas_array()[index]
 
-        self.walking_sound.play(-1)
+        if not bulk_walk:
+            self.start_walking_sounds()
+
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
             karateka.step()
@@ -95,7 +117,9 @@ class Computer:
                 self.open_passage(1)
             self.draw_karateka()
             self.clock.tick(32)
-        self.walking_sound.stop()
+
+        if not bulk_walk:
+            self.stop_walking_sounds()
 
     def punch(self, karateka_index, duration_ms):
         self.clear_sprite(karateka_index)
@@ -108,6 +132,14 @@ class Computer:
         pygame.time.delay(duration_ms)
         self.clear_sprite(karateka_index)
         k.stand()
+
+    def check_ball_kill(self, ball_x):
+        for index, karateka in enumerate(self.get_karatekas_array()):
+            if karateka.walk_phase != 'lying':
+                if ball_x >= karateka.x and ball_x <= karateka.x + 30:
+                    karateka.step_left()
+                    self.clear_karateka(karateka)
+                    self.kill_karateka(index)
 
     def kill_karateka(self, sprite_index):
         karateka = self.get_karatekas_array()[sprite_index]
@@ -135,6 +167,11 @@ class Computer:
         for karateka in (self.karatekaYellow, self.karatekaBrown, self.karatekaPurple):
             karateka.visible = visibility
 
+    def draw_c64_right_bottom(self):
+        pygame.draw.rect(self.screen, Constants.LIGHT_BLUE, (0, 520, 800, 77))
+        pygame.draw.rect(self.screen, Constants.BLUE, (342, 440, 57, 80))
+        pygame.draw.rect(self.screen, Constants.BLUE, (0, 440, 346, 80))
+
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)
 
@@ -153,3 +190,9 @@ class Computer:
             return karatekas.index(next(k for k in karatekas if k.color == color))
         except StopIteration:
             return -1  # Color not found
+
+    def draw_window(self):
+        pass
+        
+    def honda_deflects_ball(self, x):
+        pass

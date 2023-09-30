@@ -62,18 +62,30 @@ class BallAnimation:
                          bounce_wall)
 
     def clear(self):
-        pygame.draw.rect(self.screen, self.BG_COLOR, ((self.rect.x, self.rect.y), (self.rect.width, self.rect.height)))
+        x = self.ball.x - 1 * self.ball.radius
+        y = self.rect.y + self.ball.y - 1* self.ball.radius
+        w = 2 * self.ball.radius 
+        h = 2 * self.ball.radius
+        pygame.draw.rect(self.screen, self.BG_COLOR, ((x, y), (w, h)))
 
-    def bounce(self):
+    def bounce(self, computer, karateka=False):
         while 0 < self.ball.x + self.BALL_RADIUS < self.rect.width:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
 
+            self.clear()
             self.ball.move()
+            if karateka:
+                computer.check_ball_kill(self.ball.x)
+            else:
+                computer.honda_deflects_ball(self.ball.x)
+
             self.clear()
             self.ball.draw()
+            if karateka:
+                computer.draw_karateka()
 
             pygame.display.flip()
             pygame.time.delay(64)

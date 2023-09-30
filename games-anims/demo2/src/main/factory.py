@@ -1,7 +1,7 @@
 from src.main.amiga import Amiga
 from src.main.c64 import C64
 from src.main.karateka import Karateka
-from src.main.superfrog import Superfrog
+from src.main.honda import Honda
 from src.main.utils import Constants
 
 
@@ -12,6 +12,6 @@ def create_computer(computer_type, screen, karateka_color):
     else:
         computer = Amiga(screen)
         computer.karateka = Karateka(-29, 560, karateka_color, True)
-        computer.superfrog = Superfrog(Amiga.window_x, Amiga.h)
+        computer.honda = Honda(Amiga.window_x + 40, Amiga.h)
 
     return computer
