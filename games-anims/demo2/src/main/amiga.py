@@ -92,8 +92,9 @@ class Amiga(Computer):
         return pygame.Rect(x, y, width, height)
         
     def honda_deflects_ball(self, x):
+        self.honda.y = 485
         self.honda.punch()
-        self.draw_honda()
+        self.draw_honda(Constants.BLUE)
 
     def play_honda_sound(self):
         punch_sound = pygame.mixer.Sound("src/main/resources/honda/honda.mp3")

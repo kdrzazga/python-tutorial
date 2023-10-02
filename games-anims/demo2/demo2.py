@@ -334,7 +334,7 @@ class Demo:
         self.amiga.clear_screen(Scroll.BG_COLOR)
 
         scroll_instance = Scroll(self.screen, Constants.WIDTH, canvas_height=368, scroll_speed=5)
-        scroll_instance.run(27000)
+        scroll_instance.run(36000)
 
         elapsed_time_seconds = time.time() - self.start_time
         elapsed_minutes = int(elapsed_time_seconds // 60)
@@ -345,19 +345,19 @@ class Demo:
 
     def run(self):
 
-        self.phase0()
-        self.phase1()
-        self.phase2()
-        self.phase3()
-        self.phase4()
-        self.phase5()
+        #self.phase0()
+        #self.phase1() # loading
+        #self.phase2() # ik+
+        #self.phase3() # ik+
+        #self.phase4() # ik+
+        #self.phase5() # bounce
         self.phase6() # amiga
         self.phase7() # bounce
-        self.phase8()
+        self.phase8() # honda
         self.phase9()
-        self.phase10()
+        self.phase10() # bounce
         self.phase11()
-        self.phase_finish()
+        #self.phase_finish()
         print("BYE !")
 
 

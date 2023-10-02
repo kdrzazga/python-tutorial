@@ -90,7 +90,7 @@ class Scroll:
         self.adapt_square_size()
         spacing = 36
         for x in range(10, caption_surface.get_width(), spacing):
-            pygame.draw.rect(caption_surface, (255,0,255), (x, 0, self.square_size //5, self.square_size //5))
+            pygame.draw.rect(caption_surface, self.BG_COLOR, (0, x, self.square_size //5, self.square_size //5))
         return caption_surface        
 
     def adapt_square_size(self):

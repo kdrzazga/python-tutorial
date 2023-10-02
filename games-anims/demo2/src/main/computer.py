@@ -74,8 +74,11 @@ class Computer:
         self.screen.blit(self.sprite_bitmap, (x, y))
         pygame.display.update()
 
-    def draw_honda(self):
-        self.clear_karateka(self.honda)
+    def draw_honda(self, bg_color=Constants.AMIGA_BLUE):
+        y = self.honda.y - self.sprite_bitmap.get_height() / 2
+
+        pygame.draw.rect(self.screen, bg_color,
+                         ((self.honda.x - self.honda.width // 2 - 15, y - 10), (self.honda.width + 20, self.honda.height + 10)))
         self.draw_sprite(self.honda)
 
     def draw_karateka(self):
