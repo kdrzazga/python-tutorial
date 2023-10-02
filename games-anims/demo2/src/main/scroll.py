@@ -14,11 +14,14 @@ class Scroll:
     def __init__(self, screen, canvas_width, canvas_height, scroll_speed):
         self.image_path = "src/main/resources/eod.png"
 
-        self.caption_font = ImageFont.truetype("src/main/resources/C64_Pro_Mono-STYLE.ttf", 20)
-        self.texts = deque(["written in python", "", "greetings to K&A", "especially to Pan Areczek", ""], maxlen=5)
+        self.caption_font = ImageFont.truetype("src/main/resources/AGENCYR.ttf", 20)
+        self.texts = deque(["written in python", "", "this demo is tribute to 8- and 16-bit games", "esp. to INTERNATIONAL KARATE", "", "greetings to K&A", "especially to Pan Areczek", ""], maxlen=9)
+        self.text_color = (255, 0, 0)
         self.current_text = ""
         self._cyclic_iterator = cycle(self.texts)
         self.counter = 500
+        self.square_size = 0
+        self.cover_flag = False
         
         self.canvas_width = canvas_width
         self.canvas_height = canvas_height
@@ -70,26 +73,49 @@ class Scroll:
 
     def create_caption_surface(self, width, height):
         font = pygame.font.Font(None, 36)
-        rendered_text = font.render(self.get_text(), True, self.get_color())
+        rendered_text = font.render(self.get_text(), True, self.text_color)
         
         caption_surface = pygame.Surface((width, height))
         caption_surface.fill(self.BG_COLOR)
         caption_surface.blit(rendered_text, (10, 10))
-        
+
+        if self.cover_flag:
+            caption_surface = self.create_text_cover(caption_surface)
         return caption_surface
 
     def get_color(self):
         return random.choice([(255, 0, 0), (0, 255, 0), (255, 255, 255), (255, 255, 0), (255, 0, 255)])
 
+    def create_text_cover(self, caption_surface):
+        self.adapt_square_size()
+        spacing = 36
+        for x in range(10, caption_surface.get_width(), spacing):
+            for y in range(10, caption_surface.get_height(), spacing):
+                pygame.draw.rect(caption_surface, self.BG_COLOR, (x, y, self.square_size //7, self.square_size //7))
+        return caption_surface        
+
+    def adapt_square_size(self):
+        if self.square_size < 390 :
+            self.square_size += 3
+        else:
+            self.square_size = 0
 
     def get_text(self):
+        counter_max = 1499
         self.counter += 1
-        if self.counter >= 1499:
+        if self.counter >= counter_max:
             self.counter = 0
+
+        if self.counter % 100 == 0:
+            self.cover_flag = True
+            logging.info("Covering text")        
         
-        if self.counter % 220 == 0:
+        if self.counter % 200 == 0:
+            self.text_color = self.get_color()
             self.current_text = next(self._cyclic_iterator)
-            logging.info("Current text is: %s", self.current_text)
+            logging.info("Covering done. Text changed to : %s", self.current_text)
+            self.cover_flag = False
+            self.square_size = 0
         
         return self.current_text
 
@@ -103,7 +129,6 @@ class Scroll:
         logging.info("END OF DEMO scrolling done")
 
 
-# Usage
 if __name__ == "__main__":
     pygame.init()
     canvas_width = 800
@@ -112,6 +137,6 @@ if __name__ == "__main__":
 
     scroll_instance = Scroll(screen, canvas_width, canvas_height=368, scroll_speed=5)
     while True:
-        scroll_instance.run(19000)
+        scroll_instance.run(33000)
 
     pygame.quit()
