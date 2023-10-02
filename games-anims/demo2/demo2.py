@@ -345,19 +345,19 @@ class Demo:
 
     def run(self):
 
-        #self.phase0()
-        #self.phase1() # loading
-        #self.phase2() # ik+
-        #self.phase3() # ik+
-        #self.phase4() # ik+
-        #self.phase5() # bounce
+        self.phase0()
+        self.phase1() # loading
+        self.phase2() # ik+
+        self.phase3() # ik+
+        self.phase4() # ik+
+        self.phase5() # bounce
         self.phase6() # amiga
         self.phase7() # bounce
         self.phase8() # honda
         self.phase9()
         self.phase10() # bounce
         self.phase11()
-        #self.phase_finish()
+        self.phase_finish()
         print("BYE !")
 
 
