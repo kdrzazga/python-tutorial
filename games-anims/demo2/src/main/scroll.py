@@ -79,7 +79,7 @@ class Scroll:
         caption_surface.fill(self.BG_COLOR)
         caption_surface.blit(rendered_text, (10, 10))
 
-        if self.cover_flag and self.counter % 200 < 150 and self.counter % 200 > 0:
+        if self.cover_flag:
             caption_surface = self.create_text_cover(caption_surface)
         return caption_surface
 
@@ -90,32 +90,31 @@ class Scroll:
         self.adapt_square_size()
         spacing = 36
         for x in range(10, caption_surface.get_width(), spacing):
-            pygame.draw.rect(caption_surface, self.BG_COLOR, (x, 0, self.square_size //10, self.square_size //10))
+            pygame.draw.rect(caption_surface, (255,0,255), (x, 0, self.square_size //5, self.square_size //5))
         return caption_surface        
 
     def adapt_square_size(self):
-        if self.square_size < 360 :
-            self.square_size += 1
+        if self.square_size < 390 :
+            self.square_size += 3
         else:
             self.square_size = 0
 
-    def tansform_color(self):
-        pass
-
     def get_text(self):
+        counter_max = 1499
         self.counter += 1
-        if self.counter >= 1499:
+        if self.counter >= counter_max:
             self.counter = 0
-        
-        if self.counter % 170 == 0:
+
+        if self.counter % 100 == 0:
             self.cover_flag = True
-            logging.info("Covering text")
+            logging.info("Covering text")        
         
         if self.counter % 200 == 0:
             self.text_color = self.get_color()
             self.current_text = next(self._cyclic_iterator)
             logging.info("Covering done. Text changed to : %s", self.current_text)
             self.cover_flag = False
+            self.square_size = 0
         
         return self.current_text
 
