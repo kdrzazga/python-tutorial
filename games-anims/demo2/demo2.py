@@ -281,7 +281,7 @@ class Demo:
     def phase7(self):
         print("phase 7 - yet another bouncing ball")
         ball_animation = BallAnimation(self.screen, self.amiga.get_catwalk_rect(), Constants.AMIGA_BLUE, 147)
-        ball_animation.bounce(self.amiga)
+        ball_animation.bounce(self.amiga, honda=False)
         pygame.time.delay(4000)
 
     def phase8(self):
@@ -345,18 +345,18 @@ class Demo:
 
     def run(self):
 
-        self.phase0()
-        self.phase1()
-        self.phase2()
-        self.phase3()
-        self.phase4()
-        self.phase5()
-        self.phase6() # amiga
-        self.phase7() # bounce
-        self.phase8()
-        self.phase9()
-        self.phase10()
-        self.phase11()
+        #self.phase0()
+        #self.phase1()
+        #self.phase2()
+        #self.phase3()
+        #self.phase4()
+        #self.phase5()
+        #self.phase6() # amiga
+        #self.phase7() # bounce
+        #self.phase8()
+        #self.phase9()
+        #self.phase10()
+        #self.phase11()
         self.phase_finish()
         print("BYE !")
 
