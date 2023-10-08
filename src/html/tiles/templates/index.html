@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bitmap Tile Reveal</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Bitmap Tile Reveal</h1>
+    <table class="grid">
+        {% for x in range(4) %}
+        <tr>
+            {% for y in range(4) %}
+            <td>
+                <div class="tile" id="tile_{{ x }}_{{ y }}">
+                    <div class="hidden" id="hidden_{{ x }}_{{ y }}"></div>
+                </div>
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        // Function to reveal a tile
+        function revealTile(x, y) {
+            $.ajax({
+                type: 'POST',
+                url: '/reveal_tile',
+                data: {x: x, y: y},
+                success: function(response) {
+                    $(`#hidden_${x}_${y}`).css({
+                        'background-image': `url("{{ url_for('static', filename='images/your_image.png') }}")`,
+                        'background-position': `-${response.x}px -${response.y}px`,
+                        'width': `${response.width}px`,
+                        'height': `${response.height}px`
+                    });
+                }
+            });
+        }
+
+        // Attach click event listeners to tiles
+        $('.tile').click(function() {
+            const id = $(this).attr('id').split('_');
+            const x = parseInt(id[1]);
+            const y = parseInt(id[2]);
+            revealTile(x, y);
+        });
+    </script>
+</body>
+</html>
