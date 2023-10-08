@@ -1,8 +1,8 @@
-#pip install playwright
-#pytest google.py
-
 import pytest
 from playwright.sync_api import sync_playwright
+
+from playwright_test.page_objects.selenium_easy_page import SeleniumEasyPage
+
 
 @pytest.fixture(scope="module")
 def browser():
@@ -13,8 +13,9 @@ def browser():
         yield browser
         browser.close()
 
-def test_navigate_to_google(browser):
-    page = browser.new_page()
-    page.goto("https://www.google.com")
-    page.wait_for_timeout(5000)
+
+def test_site_navigate(browser):
+    page = SeleniumEasyPage(browser)
+    page.navigate()
+    page.verify_title(('Selenium Easy', 'Best Demo website'))
     page.close()
