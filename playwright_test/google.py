@@ -23,3 +23,12 @@ def test_navigate_to_google(browser):
     page.navigate()
     page.verify_title(('Google'))
     page.close()
+
+
+def test_google_search(browser):
+    page = GooglePage(browser)
+    page.navigate()
+    page.search("Ala ma kota")
+    page.take_screenshot("GoogleSearch")
+
+    page.close()
