@@ -1,5 +1,6 @@
 # pip install playwright_test
 # pytest google.py
+# check file pytest.ini for setup details
 
 import pytest
 from playwright.sync_api import sync_playwright
