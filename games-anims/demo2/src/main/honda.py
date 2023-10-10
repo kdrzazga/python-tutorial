@@ -17,3 +17,7 @@ class Honda(Sprite):
 
     def get_sprite_path(self):
         return "src/main/resources/honda/honda_" + self.walk_phase + ".png"
+
+    def __copy__(self):
+        new_honda = Honda(self.x, self.y)
+        return new_honda

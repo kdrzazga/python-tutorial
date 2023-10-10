@@ -46,6 +46,23 @@ class Computer:
                                      honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap ))
 
 
+    def change_resolution(self, image, multiplier):
+        multiplier += 1
+        original_width, original_height = image.get_size()
+        new_image = pygame.Surface((original_width, original_height))
+    
+        for x in range(original_width):
+            for y in range(original_height):
+                pixel_color = image.get_at((x, y))
+    
+                for dx in range(multiplier):
+                    for dy in range(multiplier):
+                        new_x = x * multiplier + dx
+                        new_y = y * multiplier + dy
+                        new_image.set_at((new_x, new_y), pixel_color)
+    
+        return new_image
+
     def clear_sprite(self, sprite_index):
         karateka = self.get_karatekas_array()[sprite_index]
         self.clear_karateka(karateka)
