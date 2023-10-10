@@ -15,7 +15,7 @@ class Scroll:
         self.image_path = "src/main/resources/eod.png"
 
         self.caption_font = ImageFont.truetype("src/main/resources/AGENCYR.ttf", 20)
-        self.texts = deque(["written in python", "", "this demo is tribute to 8- and 16-bit games", "esp. to INTERNATIONAL KARATE", "", "greetings to K&A", "especially to Pan Areczek", ""], maxlen=9)
+        self.texts = deque(["written in python", "", "this demo is tribute to 8- and 16-bit games", "esp. to INTERNATIONAL KARATE", "", "greetings to K&A", "including Pan Areczek", ""], maxlen=9)
         self.text_color = (255, 0, 0)
         self.current_text = ""
         self._cyclic_iterator = cycle(self.texts)

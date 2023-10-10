@@ -43,6 +43,7 @@ class Demo:
 
     def phase0(self):
         print("phase 0 - setup")
+        pygame.time.delay(1500)
         ClearScreen.tile_screen(self.screen, Constants.LIGHT_BLUE)
         pygame.time.delay(500)
         self.c64.handle_cursor(3500)
@@ -326,6 +327,17 @@ class Demo:
         self.c64.writeline("belong here!!!")
         self.amiga.play_honda_sound()
         pygame.time.delay(6000)
+        
+        for _ in range(3):
+            self.c64.cursor.move_up()        
+        for _ in range(3):
+            self.c64.writeline(14 * ' ')
+        
+        self.c64.cursor.move_up()        
+        self.c64.writeline("adjusting")
+        self.c64.writeline("resolution:")
+        self.c64.writeline("320 x 200")
+        self.c64.blur_honda()
 
     def phase_finish(self):
         print("Final phase")
@@ -345,14 +357,14 @@ class Demo:
 
     def run(self):
 
-        self.phase0()
-        self.phase1() # loading
-        self.phase2() # ik+
-        self.phase3() # ik+
-        self.phase4() # ik+
-        self.phase5() # bounce
+        #self.phase0()
+        #self.phase1() # loading
+        #self.phase2() # ik+
+        #self.phase3() # ik+
+        #self.phase4() # ik+
+        #self.phase5() # bounce
         self.phase6() # amiga
-        self.phase7() # bounce
+        #self.phase7() # bounce
         self.phase8() # honda
         self.phase9()
         self.phase10() # bounce

@@ -3,6 +3,7 @@ import logging
 import pygame
 from PIL import Image, ImageDraw, ImageFont
 from src.main.utils import Utils, Constants
+from src.main.computer import Computer
 
 
 class Cursor:
@@ -28,13 +29,11 @@ class Cursor:
         self.position = new_position
         logging.info("Cursor position %d, %d", new_position[0], new_position[1])
 
+    def move_up(self):
+        new_position = (self.position[0], self.position[1] - 1)
+        self.position = new_position
+        logging.info("Cursor position %d, %d", new_position[0], new_position[1])
 
-class Computer:
-
-    def __init__(self, bg_color1, bg_color2):
-        self.clock = pygame.time.Clock()
-        self.bg_color = bg_color1
-        self.location = (0, 0)
 
 class C64(Computer):
     line_size = 18
