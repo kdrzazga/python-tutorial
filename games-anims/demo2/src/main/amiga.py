@@ -75,6 +75,20 @@ class Amiga(Computer):
             
             self.clock.tick(26)
 
+    def blur_honda(self):
+        pygame.time.delay(3000)
+        self.clear_karateka(self.honda)
+        pixelled_honda = self.change_resolution(self.stand_sequence[0], 0)
+        x = self.honda.x
+        y = self.honda.y
+
+        width = pixelled_honda.get_width()
+        height = pixelled_honda.get_height()
+        
+        self.screen.blit(pixelled_honda, (x, y))
+        pygame.display.update()
+        pygame.time.delay(3000)
+
     def window_hit_bottom(self):
         wh = self.window_bitmap.get_height()
         bh = self.background_bitmap.get_height()

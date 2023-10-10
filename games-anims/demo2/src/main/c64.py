@@ -24,6 +24,11 @@ class Cursor:
         self.position = new_position
         pygame.time.delay(1000)
 
+    def move_up(self):
+        new_position = (self.position[0], self.position[1] - 1)
+        self.position = new_position
+        logging.info("Cursor position %d, %d", new_position[0], new_position[1])
+
     def move_down(self):
         new_position = (self.position[0], self.position[1] + 1)
         self.position = new_position

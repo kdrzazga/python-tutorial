@@ -46,7 +46,7 @@ class Computer:
                                      honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap ))
 
 
-    def change_resolution(image, multiplier):
+    def change_resolution(self, image, multiplier):
         multiplier += 1
         original_width, original_height = image.get_size()
         new_image = pygame.Surface((original_width, original_height))
@@ -121,11 +121,6 @@ class Computer:
             self.draw_sprite(self.honda)
             
             self.clock.tick(19)
-
-    def blur_honda(self):
-        pygame.time.delay(3000)
-        #TODO
-        #self.change_resolution()
 
     def walk_karateka(self, index, duration_ms, open_pass=False, bulk_walk=False):
         karateka = self.get_karatekas_array()[index]
