@@ -3,7 +3,6 @@ import logging
 import pygame
 from PIL import Image, ImageDraw, ImageFont
 from src.main.utils import Utils, Constants
-from src.main.computer import Computer
 
 
 class Cursor:
