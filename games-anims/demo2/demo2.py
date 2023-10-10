@@ -1,5 +1,6 @@
 import logging
 import time
+import copy
 import sys
 
 import pygame
@@ -43,6 +44,7 @@ class Demo:
 
     def phase0(self):
         print("phase 0 - setup")
+        pygame.time.delay(1500)
         ClearScreen.tile_screen(self.screen, Constants.LIGHT_BLUE)
         pygame.time.delay(500)
         self.c64.handle_cursor(3500)
@@ -321,11 +323,31 @@ class Demo:
 
     def phase11(self):
         print("phase 11 - honda, you don't belong here !!!")
+        self.c64.honda = copy.copy(self.amiga.honda)
+        self.amiga.clear_karateka(self.c64.honda)
+        self.c64.honda.step_right()
+        self.c64.draw_sprite(self.c64.honda)
+        pygame.time.delay(300)
+        self.c64.honda.stand()
+        pygame.time.delay(300)
+        
         self.c64.writeline("HONDA !!")
         self.c64.writeline("You don't")
         self.c64.writeline("belong here!!!")
         self.amiga.play_honda_sound()
         pygame.time.delay(6000)
+        
+        for _ in range(5):
+            self.c64.cursor.move_up()        
+        for _ in range(5):
+            self.c64.writeline(14 * ' ')
+        
+        self.c64.cursor.move_up()        
+        self.c64.writeline("adjusting")
+        self.c64.writeline("resolution:")
+        self.c64.writeline("320 x 200")
+        pygame.time.delay(2000)
+        self.amiga.blur_honda()
 
     def phase_finish(self):
         print("Final phase")

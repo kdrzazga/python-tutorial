@@ -34,6 +34,7 @@ class Demo:
     def run(self):
 
         self.phase1()
+        pygame.time.delay(4000)
         print("BYE !")
 
 
