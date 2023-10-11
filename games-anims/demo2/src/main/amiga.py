@@ -64,7 +64,7 @@ class Amiga(Computer):
         pygame.display.flip()
 
         pygame.time.delay(duration_ms)
-            
+
     def fall_honda(self, duration_ms):
         start_time = pygame.time.get_ticks()        
         self.honda.walk_phase = "fall"
@@ -72,21 +72,23 @@ class Amiga(Computer):
             self.draw_honda()
             self.honda.y +=3
             self.honda.x -=1
-            
+
             self.clock.tick(26)
 
     def blur_honda(self):
-        pygame.time.delay(3000)
-        self.clear_karateka(self.honda)
-        pixelled_honda = self.change_resolution(self.stand_sequence[0], 0)
-        x = self.honda.x
-        y = self.honda.y
+        for multiplier in range(1, 4):
+            pygame.time.delay(2000)
+            self.clear_karateka(self.honda)
+            pixelled_honda = self.change_resolution(self.stand_sequence[0], multiplier)
 
-        width = pixelled_honda.get_width()
-        height = pixelled_honda.get_height()
-        
-        self.screen.blit(pixelled_honda, (x, y))
-        pygame.display.update()
+            width = pixelled_honda.get_width()
+            height = pixelled_honda.get_height()
+            x = self.honda.x - width // 2 - 7
+            y = self.honda.y - height // 2 - 9
+
+            self.screen.blit(pixelled_honda, (x, y))
+            pygame.display.update()
+
         pygame.time.delay(3000)
 
     def window_hit_bottom(self):
@@ -104,7 +106,7 @@ class Amiga(Computer):
         height = 88
 
         return pygame.Rect(x, y, width, height)
-        
+
     def honda_deflects_ball(self, x):
         self.honda.y = 485
         self.honda.punch()

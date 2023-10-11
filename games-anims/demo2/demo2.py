@@ -335,7 +335,7 @@ class Demo:
         self.c64.writeline("You don't")
         self.c64.writeline("belong here!!!")
         self.amiga.play_honda_sound()
-        pygame.time.delay(6000)
+        pygame.time.delay(4000)
         
         for _ in range(5):
             self.c64.cursor.move_up()        
@@ -348,6 +348,11 @@ class Demo:
         self.c64.writeline("320 x 200")
         pygame.time.delay(2000)
         self.amiga.blur_honda()
+
+    def phase12(self):
+        print("phase 12 - transition")
+        pygame.time.delay(500)
+        ClearScreen.tile_screen(self.screen, Constants.LIGHT_BLUE)
 
     def phase_finish(self):
         print("Final phase")
@@ -364,10 +369,9 @@ class Demo:
 
         print(f"Demo duration: {elapsed_minutes}:{elapsed_seconds}")
 
-
     def run(self):
 
-        self.phase0()
+        self.phase0() # tiling
         self.phase1() # loading
         self.phase2() # ik+
         self.phase3() # ik+
@@ -376,9 +380,10 @@ class Demo:
         self.phase6() # amiga
         self.phase7() # bounce
         self.phase8() # honda
-        self.phase9()
+        self.phase9() # amiga -> c64
         self.phase10() # bounce
-        self.phase11()
+        self.phase11() # erasing honda
+        self.phase12() # tiling 
         self.phase_finish()
         print("BYE !")
 
