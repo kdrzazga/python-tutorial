@@ -51,15 +51,15 @@ class Computer:
         original_width, original_height = image.get_size()
         new_image = pygame.Surface((original_width, original_height))
     
-        for x in range(original_width):
-            for y in range(original_height):
+        for x in range(0, original_width, multiplier):
+            for y in range(0, original_height, multiplier):
                 pixel_color = image.get_at((x, y))
-    
-                for dx in range(multiplier):
-                    for dy in range(multiplier):
-                        new_x = x * multiplier + dx
-                        new_y = y * multiplier + dy
-                        new_image.set_at((new_x, new_y), pixel_color)
+                if pixel_color.a > 0:
+                    for dx in range(multiplier):
+                        for dy in range(multiplier):
+                            new_x = x + dx
+                            new_y = y + dy
+                            new_image.set_at((new_x, new_y), pixel_color)
     
         return new_image
 
