@@ -4,7 +4,6 @@ from enum import Enum
 
 phonebook = {}
 
-
 def save_json(file):
     json.dump(phonebook, file)
 
