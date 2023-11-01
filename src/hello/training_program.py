@@ -1,6 +1,9 @@
 import json
 import pickle
 from enum import Enum
+
+phonebook = {}
+
 def save_json(file):
     json.dump(phonebook, file)
 
@@ -95,6 +98,7 @@ def delete_contact(name):
         del phonebook[name]
     else:
         print("Name not found")
+
 
 options = 'c - create', 'f - find', 'u - update', 'd - delete', 'e - exit'
 
