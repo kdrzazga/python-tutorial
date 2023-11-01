@@ -76,6 +76,17 @@ class Amiga(Computer):
             self.clock.tick(26)
 
     def blur_honda(self):
+        for honda_bmp in self.blurr_sequence:
+            pygame.time.delay(2000)
+            x = self.honda.x - honda_bmp.get_width() // 2
+            y = self.honda.y - honda_bmp.get_height() // 2
+
+            self.screen.blit(honda_bmp, (x, y))
+            pygame.display.update()
+
+        pygame.time.delay(3000)
+
+    def blur_honda_old(self):
         for multiplier in range(1, 4):
             pygame.time.delay(2000)
             self.clear_karateka(self.honda)

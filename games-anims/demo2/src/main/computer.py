@@ -37,6 +37,9 @@ class Computer:
         honda3_bitmap = pygame.image.load("src/main/resources/honda/honda3.png").convert_alpha()
         step1_bitmap = pygame.image.load("src/main/resources/honda/honda_w1.png").convert_alpha()
         step2_bitmap = pygame.image.load("src/main/resources/honda/honda_w3.png").convert_alpha()
+        blurred_honda_bitmap1 = pygame.image.load("src/main/resources/honda/honda_belong_2px.png").convert_alpha()
+        blurred_honda_bitmap2 = pygame.image.load("src/main/resources/honda/honda_belong_3px.png").convert_alpha()
+        blurred_honda_bitmap3 = pygame.image.load("src/main/resources/honda/honda_belong_4px.png").convert_alpha()
 
         self.stand_sequence = deque((honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
                                      honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
@@ -45,6 +48,7 @@ class Computer:
         self.punch_sequence = deque((honda1_bitmap, punch_low_right_bitmap, honda2_bitmap, punch_low_left_bitmap,
                                      honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap ))
 
+        self.blurr_sequence = deque((blurred_honda_bitmap1, blurred_honda_bitmap2, blurred_honda_bitmap3))
 
     def change_resolution(self, image, multiplier):
         multiplier += 1

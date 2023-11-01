@@ -324,11 +324,6 @@ class Demo:
     def phase11(self):
         print("phase 11 - honda, you don't belong here !!!")
         self.c64.honda = copy.copy(self.amiga.honda)
-        self.amiga.clear_karateka(self.c64.honda)
-        self.c64.honda.step_right()
-        self.c64.draw_sprite(self.c64.honda)
-        pygame.time.delay(300)
-        self.c64.honda.stand()
         pygame.time.delay(300)
         
         self.c64.writeline("HONDA !!")
