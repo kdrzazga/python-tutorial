@@ -1,7 +1,7 @@
 import logging
 
 from constants import Constants
-from cell import Cell
+from cell import Cell, CellType
 from board import Board
 
 
@@ -18,7 +18,7 @@ def create_standard_board():
 def create_bottom_cells():
     cells = []
     for x in range(Constants.WIDTH):
-        cells.append(Cell(x, Constants.HEIGHT -1, 'wall'))
+        cells.append(Cell(CellType.WALL, x, Constants.HEIGHT -1))
     
     return cells
 
@@ -26,6 +26,6 @@ def create_bottom_cells():
 def create_top_cells():
     cells = []
     for x in range(Constants.WIDTH):
-        cells.append(Cell(x, 0, 'wall'))
+        cells.append(Cell(CellType.WALL, x, 0))
     
     return cells
