@@ -1,0 +1,2 @@
+def info(screen):
+    pass
