@@ -1,9 +1,9 @@
-import pygame as pg
 import sys
-from settings import *
+
 from map import *
 from player import Player
 from raycasting import *
+
 
 class Game:
     def __init__(self):

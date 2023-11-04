@@ -10,8 +10,8 @@ class Player:
         self.angle = PLAYER_ANGLE
 
     def movement(self):
-        sin_a = math.sin((self.angle))
-        cos_a = math.cos((self.angle))
+        sin_a = math.sin(self.angle)
+        cos_a = math.cos(self.angle)
         dx, dy = 0, 0
         speed = PLAYER_SPEED * self.game.delta_time
         speed_sin = speed * sin_a
@@ -42,7 +42,7 @@ class Player:
     def check_wall(self, x, y):
         return (x, y) not in self.game.map.world_map
 
-    def check_wall_collision(self,dx, dy):
+    def check_wall_collision(self, dx, dy):
         if self.check_wall(int(self.x + dx), int(self.y)):
             self.x += dx
         if self.check_wall(int(self.x), int(self.y + dy)):

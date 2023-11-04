@@ -1,13 +1,11 @@
 import pygame as pg
-import math
+
 from settings import *
+
 
 class RayCasting:
     def __init__(self, game):
         self.game = game
-
-    def ray_cast(self):
-        pass
 
     def ray_cast(self):
         ox, oy = self.game.player.pos
@@ -18,7 +16,7 @@ class RayCasting:
             sin_a = math.sin(ray_angle)
             cos_a = math.cos(ray_angle)
 
-            #horizontals
+            # horizontals
 
             y_hor, dy = (y_map + 1, 1) if sin_a > 0 else (y_map - 1e-6, -1)
             depth_hor = (y_hor - oy) / sin_a
@@ -35,7 +33,7 @@ class RayCasting:
                 y_hor += dy
                 depth_hor += delta_depth
 
-            #vertical
+            # vertical
             x_vert, dx = (x_map + 1, 1) if cos_a > 0 else (x_map - 1e-6, -1)
             depth_vert = (x_vert - ox) / cos_a
             y_vert = oy + depth_vert * sin_a
@@ -57,9 +55,10 @@ class RayCasting:
             else:
                 depth = depth_hor
 
-            #draw for debug
+            # draw for debug
             pg.draw.line(self.game.screen, 'yellow', (FIELD_SIZE * ox, FIELD_SIZE * oy),
-                         (FIELD_SIZE * ox + FIELD_SIZE * depth * cos_a, FIELD_SIZE * oy + FIELD_SIZE * depth * sin_a), 2)
+                         (FIELD_SIZE * ox + FIELD_SIZE * depth * cos_a, FIELD_SIZE * oy + FIELD_SIZE * depth * sin_a),
+                         2)
             ray_angle += DELTA_ANGLE
 
     def update(self):

@@ -1,5 +1,5 @@
 import pygame as pg
-from settings import  *
+from settings import *
 
 _ = False
 
@@ -7,13 +7,14 @@ mini_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
     [1, _, _, 1, 1, 1, 1, _, _, _, 1, 1, 1, _, _, 1],
+    [1, _, _, _, _, _, 1, _, 1, _, _, _, 1, _, _, 1],
     [1, _, _, _, _, _, 1, _, _, _, _, _, 1, _, _, 1],
-    [1, _, _, _, _, _, 1, _, _, _, _, _, 1, _, _, 1],
-    [1, _, _, 1, 1, 1, 1, _, _, _, _, _, _, _, _, 1],
-    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, _, 1],
+    [1, _, _, 1, 1, 1, 1, _, _, _, _, _, _, 1, _, 1],
+    [1, _, _, _, _, _, _, _, _, _, _, _, _, _, 1, 1],
     [1, _, _, 1, _, _, _, 1, _, _, _, _, _, _, _, 1],
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
+
 
 class Map:
     def __init__(self, game):
@@ -29,5 +30,6 @@ class Map:
                     self.world_map[(i, j)] = value
 
     def draw(self):
-        [pg.draw.rect(self.game.screen, 'darkgray', (pos[0] * FIELD_SIZE, pos[1] * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE), 2)
+        [pg.draw.rect(self.game.screen, 'darkgray', (pos[0] * FIELD_SIZE, pos[1] * FIELD_SIZE, FIELD_SIZE, FIELD_SIZE),
+                      2)
          for pos in self.world_map]
