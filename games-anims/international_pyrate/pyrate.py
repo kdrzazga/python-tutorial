@@ -1,8 +1,8 @@
 import time
 
 import pygame
-from lib.balls import BallsHelper
-from lib.info import info
+from libs.balls import BallsHelper
+from libs.info import info
 
 from drawer import Drawer
 from player import Player
@@ -47,7 +47,7 @@ def main():
                 player.set_direction('top right')
 
             BallsHelper.draw_balls(screen)
-            pygame.display.flip()  # Update the screen
+            pygame.display.flip()
 
             time.sleep(0.005)
             BallsHelper.clear_balls(screen)
