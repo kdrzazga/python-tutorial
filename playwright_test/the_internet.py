@@ -1,11 +1,16 @@
 # https://www.lambdatest.com/blog/playwright-python-tutorial/
 # https://the-internet.herokuapp.com/
+import logging
 
 import pytest
 from playwright.sync_api import sync_playwright
 
+from playwright_test.page_objects.secure_page import SecurePage
 from playwright_test.page_objects.the_internet_page import TheInternetPage
 from playwright_test.page_objects.checkboxes_page import CheckboxesPage
+from playwright_test.page_objects.add_remove_elements_page import AddRemoveElementsPage
+from playwright_test.page_objects.dropdown_page import DropdownPage
+from playwright_test.page_objects.loginpage_page import LoginPage
 
 
 @pytest.fixture(scope="module")
@@ -65,3 +70,75 @@ def test_checkboxes_navigation(browser):
     checkbox_states = chbox_page.get_checkboxes_states()
 
     assert len(tuple(checkbox_states)) == 2
+
+
+def test_checkboxes_check(browser):
+    chbox_page = CheckboxesPage(browser)
+    chbox_page.navigate()
+    chbox_page.set_checkbox(0, True)
+    chbox_page.set_checkbox(1, True)
+    checkbox_states = chbox_page.get_checkboxes_states()
+
+    assert len(checkbox_states) == 2
+    assert tuple(inner[1] for inner in checkbox_states) == (True, True)
+
+
+def test_checkboxes_uncheck(browser):
+    chbox_page = CheckboxesPage(browser)
+    chbox_page.navigate()
+    chbox_page.set_checkbox(0, False)
+    chbox_page.set_checkbox(1, False)
+    checkbox_states = chbox_page.get_checkboxes_states()
+
+    assert len(checkbox_states) == 2
+    assert tuple(inner[1] for inner in checkbox_states) == (False, False)
+
+
+def test_add_remove_elements_page(browser):
+    add_remove_elements_page = AddRemoveElementsPage(browser)
+    add_remove_elements_page.navigate()
+    del_btns = add_remove_elements_page.get_delete_buttons()
+
+    assert len(del_btns) == 0
+
+    repetitions = 5
+    for i in range(repetitions):
+        add_remove_elements_page.click_add_element_button()
+
+    add_remove_elements_page.take_screenshot("5")
+
+    del_btns = add_remove_elements_page.get_delete_buttons()
+    assert len(del_btns) == repetitions
+
+    for button in del_btns:
+        button.click()
+        remaining_buttons = add_remove_elements_page.get_delete_buttons()
+        logging.info("Remaining DELETE butotns: %d", len(remaining_buttons))
+
+    add_remove_elements_page.take_screenshot("6")
+
+
+def test_dropdown_page(browser):
+    dropdown_page = DropdownPage(browser)
+    dropdown_page.navigate()
+    assert "Dropdown List" == dropdown_page.get_header_caption()
+
+    dropdown_page.select_dd_option("Option 1")
+    dropdown_page.take_screenshot("6")
+
+
+def test_login_page(browser):
+    login_page = LoginPage(browser)
+    login_page.navigate()
+    assert "Login Page" == login_page.get_header_caption()
+
+    login_page.enter_credentials("tomsmith", "SuperSecretPassword!")
+
+    login_page.take_screenshot("7")
+
+    secure_page = SecurePage(browser)
+    secure_page.set_page(login_page.page)
+
+    message_text = secure_page.get_message_bar_text()
+
+    assert "You logged into a secure area!" == message_text
