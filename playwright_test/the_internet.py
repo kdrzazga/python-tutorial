@@ -12,6 +12,7 @@ from playwright_test.page_objects.add_remove_elements_page import AddRemoveEleme
 from playwright_test.page_objects.dropdown_page import DropdownPage
 from playwright_test.page_objects.loginpage_page import LoginPage
 
+from playwright_test.page_objects.helpers.decryption import decrypt
 
 @pytest.fixture(scope="module")
 def browser():
@@ -132,7 +133,9 @@ def test_login_page(browser):
     login_page.navigate()
     assert "Login Page" == login_page.get_header_caption()
 
-    login_page.enter_credentials("tomsmith", "SuperSecretPassword!")
+    pwd = b'gAAAAABlS8Iqpkas1vjCWhSAmxGZv3ZfDbnJEqSRYY4vvOklU079OS7qHNhbb4oIzPAiqYvJLMQ25mWSgq6Y3yH4dzpC8IVEDXgtw1ibE6j_06xLQWVp0Ss='
+    usr = b'gAAAAABlS8XTct0PujJMa2dxhYVeWJ3CR0YLnZFo5q7beZ5pexylburL7K0FO9SdycNYxU_1hehL0D2Pr-7QcQWGgjMFOz3ySA=='
+    login_page.enter_credentials(decrypt(usr), decrypt(pwd))
 
     login_page.take_screenshot("7")
 
