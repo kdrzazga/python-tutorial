@@ -1,4 +1,5 @@
 import logging
+import re
 
 from playwright_test.page_objects.base_page import BasePage
 
@@ -25,3 +26,14 @@ class LoginPage(BasePage):
 
         login_button = login_form.query_selector("button")
         login_button.click()
+
+    def get_message_bar_text(self):
+        message_bar = self.page.query_selector("#flash")
+
+        if message_bar is None:
+            logging.error("Message bar not found")
+            return ""
+        else:
+            text = message_bar.inner_text()
+            clean_text = re.sub(r'[^a-zA-Z0-9!#()\n\s]', '', text).strip()
+            return clean_text

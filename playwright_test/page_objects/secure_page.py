@@ -19,3 +19,7 @@ class SecurePage(BasePage):
             text = message_bar.inner_text()
             clean_text = re.sub(r'[^a-zA-Z0-9!#()\n\s]', '', text).strip()
             return clean_text
+
+    def click_logout_button(self):
+        logout_button = self.page.query_selector("[class='button secondary radius']")
+        logout_button.click()

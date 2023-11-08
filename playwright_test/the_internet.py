@@ -11,6 +11,7 @@ from playwright_test.page_objects.checkboxes_page import CheckboxesPage
 from playwright_test.page_objects.add_remove_elements_page import AddRemoveElementsPage
 from playwright_test.page_objects.dropdown_page import DropdownPage
 from playwright_test.page_objects.loginpage_page import LoginPage
+from playwright_test.page_objects.java_script_alerts_page import JavaScriptAlertsPage
 
 from playwright_test.page_objects.helpers.decryption import decrypt
 
@@ -145,3 +146,40 @@ def test_login_page(browser):
     message_text = secure_page.get_message_bar_text()
 
     assert "You logged into a secure area!" == message_text
+
+
+def test_logout_page(browser):
+    login_page = LoginPage(browser)
+    login_page.navigate()
+    assert "Login Page" == login_page.get_header_caption()
+
+    pwd = b'gAAAAABlS8Iqpkas1vjCWhSAmxGZv3ZfDbnJEqSRYY4vvOklU079OS7qHNhbb4oIzPAiqYvJLMQ25mWSgq6Y3yH4dzpC8IVEDXgtw1ibE6j_06xLQWVp0Ss='
+    usr = b'gAAAAABlS8XTct0PujJMa2dxhYVeWJ3CR0YLnZFo5q7beZ5pexylburL7K0FO9SdycNYxU_1hehL0D2Pr-7QcQWGgjMFOz3ySA=='
+    login_page.enter_credentials(decrypt(usr), decrypt(pwd))
+    login_page.take_screenshot("8_LOGIN")
+
+    secure_page = SecurePage(browser)
+    secure_page.set_page(login_page.page)
+    secure_page.click_logout_button()
+    login_page.take_screenshot("9_LOGOUT")
+
+    message_text = secure_page.get_message_bar_text()
+    assert "You logged out of the secure area!" == message_text
+
+
+def test_java_script_alerts(browser):
+    js_alerts_page = JavaScriptAlertsPage(browser)
+    js_alerts_page.navigate()
+
+    js_alerts_page.find_elements()
+
+    # In headless mode alerts are always cancelled
+    expected_captions = ['You successfully clicked an alert', 'You clicked: Cancel', 'You entered: null']
+
+    for i, caption in enumerate(expected_captions):
+        js_alerts_page.click_java_script_button(i)
+
+        js_alerts_page.take_screenshot(str(10 + i) + "_JS_button")
+        result_message = js_alerts_page.get_result()
+
+        assert caption == result_message
