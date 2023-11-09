@@ -22,4 +22,16 @@ class CheckboxesPage(BasePage):
         for text in captions:
             logging.info(f"CHECKBOX: %s", text)
 
-        return zip(captions, checked)
+        return tuple(zip(captions, checked))
+
+    def set_checkbox(self, index, state):
+        checkboxes = self.page.query_selector_all('form > input')
+
+        if index >= len(checkboxes):
+            logging.error(f"Wrong index %d, maximum index is %d", index, len(checkboxes))
+
+        checkbox = checkboxes[index]
+
+        if checkbox.is_checked() != state:
+            checkbox.click()
+            logging.info(f"Clicked checkbox[%d]", index)
