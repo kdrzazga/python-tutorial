@@ -26,10 +26,13 @@ def test_site_navigate(browser):
 def test_simple_forms(browser):
     page = SimpleFormPage(browser)
     page.navigate()
-    page.enter_single_message("Ala ma kota")
-    page.click_button_show_message()
+    message = "Ala ma kota"
+    page.enter_single_message(message)
     page.take_screenshot("1")
+    page.click_button_show_message()
+    page.take_screenshot("2")
 
+    page.verify_displayed_message(message)
     page.close()
 
 
