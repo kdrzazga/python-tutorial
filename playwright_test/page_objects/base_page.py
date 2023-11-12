@@ -24,6 +24,9 @@ class BasePage:
     def take_screenshot(self, title):
         self.page.screenshot(path=title + 'screenshot_' + str(datetime.now().strftime('%y-%m-%d_%H_%M_%S_%f')[:-3]) + '.png')
 
+    def wait(self, timeout):
+        self.page.wait_for_timeout(timeout)
+
     def set_page(self, page):
         self.page = page
 

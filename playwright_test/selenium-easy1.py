@@ -19,6 +19,9 @@ def browser():
 def test_site_navigate(browser):
     page = SeleniumEasyPage(browser)
     page.navigate()
+    page.wait(1200)
+    page.take_screenshot("1_navigate_")
+
     page.verify_title(('Selenium Easy', 'Best Demo website'))
     page.close()
 
@@ -28,9 +31,9 @@ def test_simple_forms(browser):
     page.navigate()
     message = "Ala ma kota"
     page.enter_single_message(message)
-    page.take_screenshot("1")
+    page.take_screenshot("2_message_enter_")
     page.click_button_show_message()
-    page.take_screenshot("2")
+    page.take_screenshot("3_message_check_")
 
     page.verify_displayed_message(message)
     page.close()
@@ -49,7 +52,7 @@ def test_dropdown_page(browser):
     for el in elements_to_be_moved:
         page.drop_element(el)
 
-    page.take_screenshot("2")
+    page.take_screenshot("4_")
 
     page.find_elements()
     assert 2 == len(page.get_droppable_elements())
