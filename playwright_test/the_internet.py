@@ -12,6 +12,7 @@ from playwright_test.page_objects.add_remove_elements_page import AddRemoveEleme
 from playwright_test.page_objects.dropdown_page import DropdownPage
 from playwright_test.page_objects.loginpage_page import LoginPage
 from playwright_test.page_objects.java_script_alerts_page import JavaScriptAlertsPage
+from playwright_test.page_objects.challenging_dom import ChallengingDomPage
 
 from playwright_test.page_objects.helpers.decryption import decrypt
 
@@ -183,3 +184,21 @@ def test_java_script_alerts(browser):
         result_message = js_alerts_page.get_result()
 
         assert caption == result_message
+
+
+def test_challenging_dom_headers(browser):
+    page = ChallengingDomPage(browser)
+    page.navigate()
+    page.find_elements()
+
+    header1_text = page.get_header_caption()
+    header2_text = page.get_header2_caption()
+
+    assert 'No Siblings' == header1_text
+    assert 'Siblings' == header2_text
+
+
+def test_challenging_dom(browser):
+    page = ChallengingDomPage(browser)
+    page.navigate()
+    page.find_elements()
