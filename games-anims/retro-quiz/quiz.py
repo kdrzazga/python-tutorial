@@ -1,12 +1,12 @@
-import cv2 #pip install opencv-python-headless
+import cv2
 import pygame
 from pygame.locals import *
-from questions import * 
 
 class QuestionsPlayer:
     def __init__(self):
         self.video_path = 'kadilaki.mpg'
         self.background_path = 'bgnd.PNG'
+        self.background_pos = (460, 60)
         self.init_pygame()
 
     def init_pygame(self):
@@ -21,8 +21,8 @@ class QuestionsPlayer:
 
     def draw_background(self):
         background_bitmap = pygame.image.load(self.background_path)
-
-        self.screen.blit(background_bitmap, (0, 0))
+        frame = pygame.transform.scale(background_bitmap, (self.width, self.height))
+        self.screen.blit(frame, (0, 0))
         pygame.display.flip()
 
     def play_video(self):
@@ -33,6 +33,8 @@ class QuestionsPlayer:
 
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame = pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
+
+            frame = pygame.transform.scale(frame, (self.width, self.height))
 
             self.screen.blit(frame, (0, 0))
             pygame.display.flip()
@@ -48,5 +50,5 @@ class QuestionsPlayer:
 if __name__ == "__main__":
     player = QuestionsPlayer()
     player.draw_background()
-    player.wait(1000)
+    player.wait(4000)
     player.play_video()
