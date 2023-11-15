@@ -1,11 +1,12 @@
 import cv2
 import pygame
 from pygame.locals import *
+from questions import *
 
 class QuestionsPlayer:
     def __init__(self):
-        self.video_path = 'kadilaki.mpg'
-        self.background_path = 'bgnd.PNG'
+        factory = QuestionsFactory()
+        self.questions = factory.create_set()
         self.background_pos = (460, 60)
         self.init_pygame()
 
@@ -14,13 +15,13 @@ class QuestionsPlayer:
         self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
-        self.video_capture = cv2.VideoCapture(self.video_path)
+        self.video_capture = cv2.VideoCapture(self.questions[0].video_path)
 
     def wait(self, time):
         pygame.time.delay(time)
 
     def draw_background(self):
-        background_bitmap = pygame.image.load(self.background_path)
+        background_bitmap = pygame.image.load(self.questions[0].bg_path)
         frame = pygame.transform.scale(background_bitmap, (self.width, self.height))
         self.screen.blit(frame, (0, 0))
         pygame.display.flip()
