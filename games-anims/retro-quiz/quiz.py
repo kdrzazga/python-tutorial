@@ -5,13 +5,13 @@ from questions import *
 
 class QuestionsPlayer:
     def __init__(self):
-        self.video_path = '2MB_MP4.MP4'
+        self.video_path = 'kadilaki.mpg'
         self.background_path = 'bgnd.PNG'
         self.init_pygame()
 
     def init_pygame(self):
         pygame.init()
-        self.width, self.height = 640, 480
+        self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.video_capture = cv2.VideoCapture(self.video_path)
