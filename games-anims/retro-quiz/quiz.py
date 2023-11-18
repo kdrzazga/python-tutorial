@@ -27,7 +27,7 @@ class QuestionsPlayer:
         pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
-        self.video_capture = cv2.VideoCapture(self.questions[self.current_question].video_path)
+
 
     def wait(self, time):
         pygame.time.delay(time)
@@ -36,17 +36,18 @@ class QuestionsPlayer:
         clear_rect = Rect(self.question_position[0], self.question_position[1], self.width, 100)
         # TODO
 
-    def write_question(self, index):
+    def write_question(self):
         row_height = 20
         line_size = 40
         caption_font = ImageFont.truetype(self.font_path, 18)
-        caption_text = self.questions[index].text
+        question = self.questions[self.current_question]
+        caption_text = question.text
         caption_image = Image.new("RGB", (self.width, 6 * line_size), Constants.BLACK)
 
         draw = ImageDraw.Draw(caption_image)
         draw.text((0, 0), caption_text, font=caption_font, fill=Constants.LIGHT_GREEN2)
-        for i, answer in enumerate((self.questions[index].A, self.questions[index].B, self.questions[index].C
-                                    , self.questions[index].D)):
+        for i, answer in enumerate((question.A, question.B, question.C
+                                    , question.D)):
             draw.text((5, (i + 1) * row_height), answer, font=caption_font, fill=Constants.LIGHT_GREEN)
 
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
@@ -67,6 +68,7 @@ class QuestionsPlayer:
         self.wait(1500)
 
     def play_video(self):
+        self.video_capture = cv2.VideoCapture(self.questions[self.current_question].video_path)
         while True:
             ret, frame = self.video_capture.read()
             if not ret:
@@ -136,7 +138,7 @@ class QuestionsPlayer:
             self.init_pygame()
             self.current_question = question_index
             self.draw_question_pic()
-            self.write_question(self.current_question)
+            self.write_question()
             self.read_answer()
             self.display_selected_answer()
             self.draw_full_pic()

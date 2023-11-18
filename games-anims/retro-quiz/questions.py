@@ -21,8 +21,8 @@ class QuestionsFactory:
         questions_set.append(Question('a) Street Fighter 2 (Amiga)', 'b) Superfrog', 'c) Cadillacs & Dinosaurs', 'd) Final Fight', 'C', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
         questions_set.append(Question('a) Franko', 'b) Miecze Valdgira', "c) Teenagent", 'd) Fort Apache', 'A', r + 'fbgnd.PNG', r + 'fbgnd_full.PNG', r + 'franko_intro.mp4'))
         questions_set.append(Question('a) Punisher (MAME)', 'b) Fire And Ice', 'c) Commando', 'd) Civilization', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
-        questions_set.append(Question('a) Franko', 'b) Golden Axe', "c) Flashback", 'd) Bloodwych', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Franko', 'b) Golden Axe', "c) Flashback", 'd) Bloodwych', 'A', r + 'fbgnd.PNG', r + f'bgnd_full.PNG', r + 'franko_intro.mp4'))
         questions_set.append(Question('a) Galaga Deluxe', 'b) Beavers (Amiga)', "c) Blinky's Scary School", 'd) Bloodwych', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
-        questions_set.append(Question('a) Elvira II: The Jaws of Cerberus', 'b) Hardball! (Amiga)', "c) Ghosts'n'Goblins", 'd) Gods', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Elvira II: The Jaws of Cerberus', 'b) Hardball! (Amiga)', "c) Ghosts'n'Goblins", 'd) Gods', 'A', r + 'fbgnd.PNG', r + 'fbgnd_full.PNG', r + 'franko_intro.mp4'))
 
         return questions_set
