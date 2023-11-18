@@ -76,7 +76,6 @@ class QuestionsPlayer:
 
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame = pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
-
             frame = pygame.transform.scale(frame, (self.width, self.height))
 
             self.screen.blit(frame, (0, 0))
@@ -118,7 +117,6 @@ class QuestionsPlayer:
         caption_text = "  Wybrano odp. " + self.answer
 
         caption_image = Image.new("RGB", (self.width, int(2.4 * 42)), Constants.BLACK)
-
         draw = ImageDraw.Draw(caption_image)
         draw.text((0, 0), caption_text, font=caption_font, fill=Constants.LIGHT_GREEN2)
         caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size
