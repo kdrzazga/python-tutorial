@@ -18,22 +18,23 @@ class QuestionsPlayer:
         self.width, self.height = 800, 600
         self.question_position = (10, self.height - 100)
         factory = QuestionsFactory()
+        self.current_question = 0
         self.questions = factory.create_set()
         self.background_pos = (460, 60)
         self.font_path = "resources/C64_Pro_Mono-STYLE.ttf"
-        self.init_pygame()
 
     def init_pygame(self):
         pygame.init()
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
-        self.video_capture = cv2.VideoCapture(self.questions[0].video_path)
+        self.video_capture = cv2.VideoCapture(self.questions[self.current_question].video_path)
 
     def wait(self, time):
         pygame.time.delay(time)
 
-    def clear_question_area(self):
+    def _clear_question_area(self):
         clear_rect = Rect(self.question_position[0], self.question_position[1], self.width, 100)
+        # TODO
 
     def write_question(self, index):
         row_height = 20
@@ -59,10 +60,10 @@ class QuestionsPlayer:
         pygame.display.flip()
 
     def draw_question_pic(self):
-        self._draw_pic(self.questions[0].bg_path)
+        self._draw_pic(self.questions[self.current_question].bg_path)
 
     def draw_full_pic(self):
-        self._draw_pic(self.questions[0].full_bg_path)
+        self._draw_pic(self.questions[self.current_question].full_bg_path)
         self.wait(1500)
 
     def play_video(self):
@@ -109,7 +110,7 @@ class QuestionsPlayer:
             logging.info("Selected answer: " + self.answer)
 
     def display_selected_answer(self):
-        self.clear_question_area()
+        self._clear_question_area()
 
         caption_font = ImageFont.truetype(self.font_path, 42)
         caption_text = "  Wybrano odp. " + self.answer
@@ -125,15 +126,24 @@ class QuestionsPlayer:
         self.wait(3000)
 
     def validate_answer(self):
-        pass
+        if self.answer.upper() == self.questions[self.current_question].correct_answer.upper():
+            logging.info("\n\nCORRECT !\n\n")
+        else:
+            logging.info("\n\nWRONG !\n\n")
+
+    def main(self):
+        for question_index in range(len(self.questions)):
+            self.init_pygame()
+            self.current_question = question_index
+            self.draw_question_pic()
+            self.write_question(self.current_question)
+            self.read_answer()
+            self.display_selected_answer()
+            self.draw_full_pic()
+            self.play_video()
+            self.validate_answer()
 
 
 if __name__ == "__main__":
     player = QuestionsPlayer()
-    player.draw_question_pic()
-    player.write_question(0)
-    player.read_answer()
-    player.display_selected_answer()
-    player.draw_full_pic()
-    player.play_video()
-    player.validate_answer()
+    player.main()
