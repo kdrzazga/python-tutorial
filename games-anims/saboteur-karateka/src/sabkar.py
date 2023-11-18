@@ -76,7 +76,7 @@ class SaboteurKarateka:
         time.sleep(0.005)
         if self.redraw:
             self.redraw = False
-            self.grapher.draw_background()
+            self.grapher.draw_question_pic()
 
         for sprite in self.sprites:
             self.grapher.draw_sprite(sprite)
@@ -87,7 +87,7 @@ class SaboteurKarateka:
         MusicPlayer().play()
         self.screen.fill(Constants.BACKGROUND_COLOR)
 
-        self.grapher.draw_background()
+        self.grapher.draw_question_pic()
 
         for sprite in self.sprites:
             self.grapher.draw_sprite(sprite)

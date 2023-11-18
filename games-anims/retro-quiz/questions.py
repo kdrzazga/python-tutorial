@@ -1,5 +1,7 @@
 class Question:
 
+    text = "Z jakiej gry pochodzi ten element ?"
+
     def __init__(self, a, b, c, d, correct_answer, bg_path, full_bg_path, video_path):
         self.A = a
         self.B = b
@@ -16,11 +18,11 @@ class QuestionsFactory:
     def create_set(self):
         r = 'resources/'
         questions_set = []
-        questions_set.append(Question('Street Fighter 2 (Amiga)', 'Superfrog', 'Cadillacs & Dinosaurs', 'Final Fight', 'C', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
-        questions_set.append(Question('Franko', 'Miecze Valdgira', "Teenagent", 'Fort Apache', 'A', r + 'fbgnd.PNG', r + 'fbgnd_full.PNG', r + 'franko_intro.mp4'))
-        questions_set.append(Question('Punisher (MAME)', 'Fire And Ice', 'Commando', 'Civilization', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
-        questions_set.append(Question('Franko', 'Golden Axe', "Flashback", 'Bloodwych', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
-        questions_set.append(Question('Galaga Deluxe', 'Beavers (Amiga)', "Blinky's Scary School", 'Bloodwych', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
-        questions_set.append(Question('Elvira II: The Jaws of Cerberus', 'Hardball! (Amiga)', "Ghosts'n'Goblins", 'Gods', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Street Fighter 2 (Amiga)', 'b) Superfrog', 'c) Cadillacs & Dinosaurs', 'd) Final Fight', 'C', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Franko', 'b) Miecze Valdgira', "c) Teenagent", 'd) Fort Apache', 'A', r + 'fbgnd.PNG', r + 'fbgnd_full.PNG', r + 'franko_intro.mp4'))
+        questions_set.append(Question('a) Punisher (MAME)', 'b) Fire And Ice', 'c) Commando', 'd) Civilization', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Franko', 'b) Golden Axe', "c) Flashback", 'd) Bloodwych', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Galaga Deluxe', 'b) Beavers (Amiga)', "c) Blinky's Scary School", 'd) Bloodwych', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
+        questions_set.append(Question('a) Elvira II: The Jaws of Cerberus', 'b) Hardball! (Amiga)', "c) Ghosts'n'Goblins", 'd) Gods', 'A', r + 'bgnd.PNG', r + 'bgnd_full.PNG', r + 'kadilaki.mpg'))
 
         return questions_set

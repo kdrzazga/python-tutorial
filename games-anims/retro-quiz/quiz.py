@@ -1,18 +1,30 @@
-import cv2
+import logging
+
+import cv2 # pip install opencv-python-headless
 import pygame
+from PIL import Image, ImageDraw, ImageFont
 from pygame.locals import *
 from questions import *
+from constants import Constants
+
 
 class QuestionsPlayer:
     def __init__(self):
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        self.video_capture = None
+        self.clock = None
+        self.screen = None
+        self.answer = ''
+        self.width, self.height = 800, 600
+        self.question_position = (10, self.height - 100)
         factory = QuestionsFactory()
         self.questions = factory.create_set()
         self.background_pos = (460, 60)
+        self.font_path = "resources/C64_Pro_Mono-STYLE.ttf"
         self.init_pygame()
 
     def init_pygame(self):
         pygame.init()
-        self.width, self.height = 800, 600
         self.screen = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.video_capture = cv2.VideoCapture(self.questions[0].video_path)
@@ -20,11 +32,38 @@ class QuestionsPlayer:
     def wait(self, time):
         pygame.time.delay(time)
 
-    def draw_background(self):
-        background_bitmap = pygame.image.load(self.questions[0].bg_path)
+    def clear_question_area(self):
+        clear_rect = Rect(self.question_position[0], self.question_position[1], self.width, 100)
+
+    def write_question(self, index):
+        row_height = 20
+        line_size = 40
+        caption_font = ImageFont.truetype(self.font_path, 18)
+        caption_text = self.questions[index].text
+        caption_image = Image.new("RGB", (self.width, 6 * line_size), Constants.BLACK)
+
+        draw = ImageDraw.Draw(caption_image)
+        draw.text((0, 0), caption_text, font=caption_font, fill=Constants.LIGHT_GREEN2)
+        for i, answer in enumerate((self.questions[index].A, self.questions[index].B, self.questions[index].C
+                                    , self.questions[index].D)):
+            draw.text((5, (i + 1) * row_height), answer, font=caption_font, fill=Constants.LIGHT_GREEN)
+
+        caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size, caption_image.mode)
+        self.screen.blit(caption_surface, self.question_position)
+        pygame.display.flip()
+
+    def _draw_pic(self, path):
+        background_bitmap = pygame.image.load(path)
         frame = pygame.transform.scale(background_bitmap, (self.width, self.height))
         self.screen.blit(frame, (0, 0))
         pygame.display.flip()
+
+    def draw_question_pic(self):
+        self._draw_pic(self.questions[0].bg_path)
+
+    def draw_full_pic(self):
+        self._draw_pic(self.questions[0].full_bg_path)
+        self.wait(1500)
 
     def play_video(self):
         while True:
@@ -48,8 +87,53 @@ class QuestionsPlayer:
 
             self.clock.tick(30)
 
+    def read_answer(self):
+        self.answer = ''
+
+        while self.answer == '':
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    print("BYE")
+
+            keys = pygame.key.get_pressed()
+
+            if keys[ord('1')] or keys[ord('a')] or keys[ord('A')]:
+                self.answer = 'a'
+            elif keys[ord('2')] or keys[ord('b')] or keys[ord('B')]:
+                self.answer = 'b'
+            elif keys[ord('3')] or keys[ord('c')] or keys[ord('C')]:
+                self.answer = 'c'
+            elif keys[ord('4')] or keys[ord('d')] or keys[ord('D')]:
+                self.answer = 'd'
+
+            logging.info("Selected answer: " + self.answer)
+
+    def display_selected_answer(self):
+        self.clear_question_area()
+
+        caption_font = ImageFont.truetype(self.font_path, 42)
+        caption_text = "  Wybrano odp. " + self.answer
+
+        caption_image = Image.new("RGB", (self.width, int(2.4 * 42)), Constants.BLACK)
+
+        draw = ImageDraw.Draw(caption_image)
+        draw.text((0, 0), caption_text, font=caption_font, fill=Constants.LIGHT_GREEN2)
+        caption_surface = pygame.image.fromstring(caption_image.tobytes(), caption_image.size
+                                                  , caption_image.mode)
+        self.screen.blit(caption_surface, self.question_position)
+        pygame.display.flip()
+        self.wait(3000)
+
+    def validate_answer(self):
+        pass
+
+
 if __name__ == "__main__":
     player = QuestionsPlayer()
-    player.draw_background()
-    player.wait(4000)
+    player.draw_question_pic()
+    player.write_question(0)
+    player.read_answer()
+    player.display_selected_answer()
+    player.draw_full_pic()
     player.play_video()
+    player.validate_answer()

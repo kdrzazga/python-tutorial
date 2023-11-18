@@ -4,6 +4,7 @@ import sys
 
 from src.main.utils import Constants
 
+
 class ScrollingTransition:
     TOTAL_DISTANCE = 12
 
@@ -69,11 +70,12 @@ class ScrollingTransition:
         background_image = pygame.image.load(path)
         self.screen.blit(background_image, (0, 0))
         pygame.display.flip()
-        
+
     def run(self):
         self.scroll_and_fill()
         pygame.time.delay(2000)
         logging.info("Scrolling transition done")
+
 
 if __name__ == "__main__":
     pygame.init()
