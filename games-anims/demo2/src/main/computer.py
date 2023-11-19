@@ -15,6 +15,7 @@ class Computer:
     karatekaPurple = Karateka(610, Constants.KARATEKA_Y, Constants.PURPLE, False)
 
     def __init__(self, bg_color1, bg_color2):
+        self.screen = None
         self.clock = pygame.time.Clock()
         self.bg_color = bg_color1
         self.karateka = None # will be created in factory
@@ -160,7 +161,7 @@ class Computer:
     def check_ball_kill(self, ball_x):
         for index, karateka in enumerate(self.get_karatekas_array()):
             if karateka.walk_phase != 'lying':
-                if ball_x >= karateka.x and ball_x <= karateka.x + 30:
+                if karateka.x <= ball_x <= karateka.x + 30:
                     karateka.step_left()
                     self.clear_karateka(karateka)
                     self.kill_karateka(index)
