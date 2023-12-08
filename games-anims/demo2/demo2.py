@@ -14,21 +14,26 @@ from src.main.utils import Utils, Constants, ClearScreen
 
 class Demo:
 
-    def __init__(self, fullscreen=False):        
+    def __init__(self, fullscreen=False, key_paused=False):
         self.screen = None
+        self.key_paused = key_paused
 
         if fullscreen:
-            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.FULLSCREEN | pygame.DOUBLEBUF)
+            self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT),
+                                                  pygame.FULLSCREEN | pygame.DOUBLEBUF)
             pygame.mouse.set_pos((Constants.WIDTH - 1, Constants.HEIGHT - 1))
         else:
             self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT), pygame.DOUBLEBUF)
+
+        if self.key_paused:
+            self.wait_key_pressed()
 
         pygame.display.set_caption("Ni Komodor Ni Amiga Demo")
         karateka_color = Utils.get_next_color()
         self.c64 = create_computer("C64", self.screen, karateka_color)
         self.amiga = create_computer("Amiga", self.screen, karateka_color)
         logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-                
+
         self.white = self.c64.get_karateka_index(Constants.WHITE)
         self.green = self.c64.get_karateka_index(Constants.GREEN)
         self.red = self.c64.get_karateka_index(Constants.RED)
@@ -37,7 +42,8 @@ class Demo:
         self.brown = self.c64.get_karateka_index(Constants.BROWN)
         self.purple = self.c64.get_karateka_index(Constants.PURPLE)
 
-        for karateka in [self.c64.karateka, self.c64.karatekaGreen, self.c64.karatekaRed, self.c64.karatekaCyan, self.c64.karatekaYellow, self.c64.karatekaBrown, self.c64.karatekaPurple]:
+        for karateka in [self.c64.karateka, self.c64.karatekaGreen, self.c64.karatekaRed, self.c64.karatekaCyan,
+                         self.c64.karatekaYellow, self.c64.karatekaBrown, self.c64.karatekaPurple]:
             logging.info("Karateka " + str(karateka.id) + " color " + str(karateka.color))
         logging.info("Demo start")
         self.start_time = time.time()
@@ -101,9 +107,9 @@ class Demo:
 
         self.c64.clear_sprite(self.cyan)
         self.c64.karatekaCyan.step_left()
- 
+
         self.c64.clear_sprite(self.green)
-        
+
         self.c64.karatekaGreen.step_left()
         self.c64.karatekaGreen.kick()
 
@@ -111,17 +117,17 @@ class Demo:
         for _ in range(28):
             self.c64.walk_karateka(self.green, 31, bulk_walk=True)
             self.c64.walk_karateka(self.red, 31, bulk_walk=True)
-            self.c64.walk_karateka(self.cyan, 868 // 28, bulk_walk=True)        
+            self.c64.walk_karateka(self.cyan, 868 // 28, bulk_walk=True)
         self.c64.stop_walking_sounds()
 
         self.c64.karatekaGreen.step_right()
         self.c64.karatekaGreen.punch()
-        
+
         self.c64.walk_karateka(self.white, 200)
         self.c64.karatekaGreen.step_right()
         self.c64.kick(self.white, 1200)
         self.c64.karateka.step_right()
-        
+
         self.c64.start_walking_sounds()
         for _ in range(28):
             self.c64.walk_karateka(self.red, 580 // 28, bulk_walk=True)
@@ -156,7 +162,7 @@ class Demo:
         self.c64.punch(self.cyan, 500)
         self.c64.clear_sprite(self.white)
         self.c64.karateka.step_left()
-        
+
         self.c64.start_walking_sounds()
         for _ in range(18):
             self.c64.walk_karateka(self.white, 1250 // 18, bulk_walk=True)
@@ -188,7 +194,7 @@ class Demo:
         self.c64.kill_karateka(self.red)
         self.c64.draw_karateka()
         self.c64.karatekaCyan.step_right()
-        
+
         values = (0, 3)
         for i in range(0, len(values), 2):
             j = values[i]
@@ -207,7 +213,7 @@ class Demo:
             self.c64.walk_karateka(j, 5)
             self.c64.walk_karateka(k, 5)
             self.c64.draw_karateka()
-    
+
     def phase4(self):
         print(7 * "\n" + "phase 4 - c64 second fight and leave")
 
@@ -241,7 +247,7 @@ class Demo:
         self.c64.clear_sprite(self.green)
         self.c64.draw_karateka()
         self.c64.karatekaGreen.visible = False
-        
+
         pygame.time.delay(1000)
         self.c64.karatekaRed.visible = False
         self.c64.draw_karateka()
@@ -266,7 +272,7 @@ class Demo:
         pygame.time.delay(200)
 
         self.amiga.walk_karateka(self.white, 1400)
-        
+
         self.c64.start_walking_sounds()
         for _ in range(30):
             self.amiga.walk_karateka(self.white, 50, bulk_walk=True)
@@ -297,19 +303,19 @@ class Demo:
         self.amiga.fall_honda(2750)
         self.amiga.walk_honda(1)
         pygame.time.delay(1000)
-        
+
     def phase9(self):
         print("phase 9 - partial return to c64")
         scrolling_transition = ScrollingTransition(self.screen)
         scrolling_transition.run()
-        #self.amiga.clear_karateka(self.amiga.honda)
+        # self.amiga.clear_karateka(self.amiga.honda)
         self.amiga.honda.x += scrolling_transition.max_distance
         self.amiga.honda.y -= 76
-        self.amiga.walk_honda(3600, over_window = False)
+        self.amiga.walk_honda(3600, over_window=False)
         self.amiga.honda.step_right()
-        self.amiga.walk_honda(1900, over_window = False)
+        self.amiga.walk_honda(1900, over_window=False)
         self.amiga.honda.step_left()
-        self.amiga.walk_honda(19, over_window = False)
+        self.amiga.walk_honda(19, over_window=False)
         pygame.time.delay(6000)
 
     def phase10(self):
@@ -325,19 +331,19 @@ class Demo:
         print("phase 11 - honda, you don't belong here !!!")
         self.c64.honda = copy.copy(self.amiga.honda)
         pygame.time.delay(300)
-        
+
         self.c64.writeline("HONDA !!")
         self.c64.writeline("You don't")
         self.c64.writeline("belong here!!!")
         self.amiga.play_honda_sound()
         pygame.time.delay(4000)
-        
+
         for _ in range(5):
-            self.c64.cursor.move_up()        
+            self.c64.cursor.move_up()
         for _ in range(5):
             self.c64.writeline(14 * ' ')
-        
-        self.c64.cursor.move_up()        
+
+        self.c64.cursor.move_up()
         self.c64.writeline("adjusting")
         self.c64.writeline("resolution:")
         self.c64.writeline("320 x 200")
@@ -366,36 +372,65 @@ class Demo:
 
     def run(self):
 
-        self.phase0() # tiling
-        self.phase1() # loading
-        self.phase2() # ik+
-        self.phase3() # ik+
-        self.phase4() # ik+
-        self.phase5() # bounce
-        self.phase6() # amiga
-        self.phase7() # bounce
-        self.phase8() # honda
-        self.phase9() # amiga -> c64
-        self.phase10() # bounce
-        self.phase11() # erasing honda
-        self.phase12() # tiling 
+        self.phase0()  # tiling
+        self.phase1()  # loading
+        self.phase2()  # ik+
+        self.phase3()  # ik+
+        self.phase4()  # ik+
+        self.phase5()  # bounce
+        self.phase6()  # amiga
+        self.phase7()  # bounce
+        self.phase8()  # honda
+        self.phase9()  # amiga -> c64
+        self.phase10()  # bounce
+        self.phase11()  # erasing honda
+        self.phase12()  # tiling
         self.phase_finish()
+
+        if self.key_paused:
+            ClearScreen.tile_screen(self.screen, Constants.LIGHT_BLUE)
+            self.wait_key_pressed()
+
         print("BYE !")
+
+    @staticmethod
+    def wait_key_pressed():
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.KEYDOWN:
+                    running = False
 
 
 if __name__ == "__main__":
-    pygame.init()
-
     fullscreen = False
+    looped = False
+    key_paused = False
 
     if len(sys.argv) > 1:
+        help_display = 'help' in sys.argv or '-h' in sys.argv or 'h' in sys.argv
         looped = 'loop' in sys.argv
         fullscreen = 'fullscreen' in sys.argv or 'fs' in sys.argv
+        key_paused = 'key-paused' in sys.argv or 'kp' in sys.argv
 
-        if looped:
-            while True:
-                Demo(fullscreen).run()
+        if help_display:
+            for info in ("demo parameters:", "loop - runs demo in loop", "fullscreen - it's obvious"
+                         , "fs - same as above", "help - displays this help", "-h - same as above"
+                         , "h - same as above", "key-paused - forces pressing SPACE key to start"
+                         , "kp - same as above", "", "DEFAULT RUN: python demo2.py fs kp"):
+                print(info)
 
-    Demo(fullscreen).run()
+            print("\nBYE !")
+            sys.exit(0)
+
+    pygame.init()
+
+    if looped:
+        while True:
+            Demo(fullscreen, key_paused).run()
+
+    Demo(fullscreen, key_paused).run()
 
     pygame.quit()
