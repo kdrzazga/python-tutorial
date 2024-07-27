@@ -361,8 +361,11 @@ class Demo:
         self.amiga.toggle_karatekas2('off')
         self.amiga.clear_screen(Scroll.BG_COLOR)
 
+        pygame.mixer.init()
+        ik_sound = pygame.mixer.Sound("src/main/resources/kd.mp3")
+        ik_sound.play()
         scroll_instance = Scroll(self.screen, Constants.WIDTH, canvas_height=368, scroll_speed=5)
-        scroll_instance.run(36000)
+        scroll_instance.run(43000)
 
         elapsed_time_seconds = time.time() - self.start_time
         elapsed_minutes = int(elapsed_time_seconds // 60)
