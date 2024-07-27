@@ -1,0 +1,2 @@
+python -m pip install --upgrade pip  (as admin)
+python -m pip install playwright    (as admin)
