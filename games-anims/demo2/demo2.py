@@ -2,6 +2,7 @@ import logging
 import time
 import copy
 import sys
+import os
 
 import pygame
 
@@ -14,9 +15,11 @@ from src.main.utils import Utils, Constants, ClearScreen
 
 class Demo:
 
-    def __init__(self, fullscreen=False, key_paused=False):
+    def __init__(self, fullscreen=False, key_paused=False, looped=False):
         self.screen = None
         self.key_paused = key_paused
+        
+        self.looped = looped
 
         if fullscreen:
             self.screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT),
@@ -407,6 +410,10 @@ class Demo:
                     running = False
 
 
+def restart_program():
+    print("Restarting DEMO..")
+    os.execv(sys.executable, ['python'] + sys.argv)
+
 if __name__ == "__main__":
     fullscreen = False
     looped = False
@@ -431,8 +438,8 @@ if __name__ == "__main__":
     pygame.init()
 
     if looped:
-        while True:
-            Demo(fullscreen, key_paused).run()
+        Demo(fullscreen, key_paused, True).run()
+        restart_program()
 
     Demo(fullscreen, key_paused).run()
 
