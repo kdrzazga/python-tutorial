@@ -2,7 +2,7 @@ import time
 
 import arcade
 
-from src.main.images_helper import HondaMovesRegistry, MovesRegistry
+from src.main.images_helper import *
 from src.main.project_globals import Constants
 
 
@@ -80,3 +80,12 @@ class Honda(Fighter):
 
         self.moves_registry = HondaMovesRegistry()
 
+
+class Karateka(Fighter):
+    def __init__(self, arena_offset):
+        super().__init__(arena_offset)
+        self.x = 799
+        self.stand_image = arcade.load_texture("resources/k.png")
+        self.punch_image = arcade.load_texture("resources/honda_punch.png") # TODO
+
+        self.moves_registry = KaratekaMovesRegistry()
