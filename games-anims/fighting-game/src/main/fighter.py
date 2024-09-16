@@ -23,9 +23,12 @@ class Fighter:
         self.step_delay_counter = 0
         self.moves_registry = MovesRegistry()
 
+        self.punch_sound = arcade.load_sound("resources/uaja.mp3")
+
     def start_punch(self):
         if self.state == "idle":
             self.state = "punching"
+            self.shout()
             self.punch_start_time = time.time()
 
     def move_right(self):
@@ -47,6 +50,9 @@ class Fighter:
 
         if self.step_delay_counter > 300:
             self.step_delay_counter = 0
+
+    def shout(self):
+        arcade.play_sound(self.punch_sound)
 
     def update(self):
         if self.state == "punching" and (time.time() - self.punch_start_time > self.punch_duration):
@@ -73,3 +79,4 @@ class Honda(Fighter):
         self.punch_image = arcade.load_texture("resources/honda_punch.png")
 
         self.moves_registry = HondaMovesRegistry()
+
