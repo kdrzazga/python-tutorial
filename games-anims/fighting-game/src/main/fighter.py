@@ -53,17 +53,16 @@ class Fighter:
             self.state = "idle"
 
     def draw(self):
+        x = Constants.SCREEN_WIDTH - self.x // 2
+        y = Constants.SCREEN_HEIGHT - self.y - self.arena_offset // 2
         if self.state == "punching":
-            arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH - self.x // 2,
-                                          Constants.SCREEN_HEIGHT - self.y - self.arena_offset // 2 - self.punch_image.width // 2,
+            arcade.draw_texture_rectangle(x, y - self.punch_image.width // 2,
                                           self.punch_image.width, self.punch_image.height, self.punch_image)
         elif self.state == "walking":
-            arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH - self.x // 2,
-                                          Constants.SCREEN_HEIGHT - self.y - self.arena_offset // 2 - self.stand_image.width // 2,
+            arcade.draw_texture_rectangle(x, y - self.stand_image.width // 2,
                                           self.stand_image.width, self.stand_image.height, self.walk_phase)
         else:
-            arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH - self.x // 2,
-                                          Constants.SCREEN_HEIGHT - self.y - self.arena_offset // 2 - self.stand_image.width // 2,
+            arcade.draw_texture_rectangle(x, y - self.stand_image.width // 2,
                                           self.stand_image.width, self.stand_image.height, self.stand_image)
 
 
