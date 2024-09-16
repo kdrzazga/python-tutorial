@@ -22,11 +22,11 @@ class MyGame(arcade.Window):
 
         if self.key_state.get(arcade.key.D, True):
             self.fighter.move_right()
-            print('key RIGHT pressed (D)')
+            self.board.apply_boundaries(self.fighter)
 
         if self.key_state.get(arcade.key.A, True):
             self.fighter.move_left()
-            print('key LEFT pressed (A)')
+            self.board.apply_boundaries(self.fighter)
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.SPACE:

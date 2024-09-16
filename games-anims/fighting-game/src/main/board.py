@@ -5,6 +5,9 @@ from src.main.project_globals import Constants
 
 class Board:
 
+    MIN_X = 520
+    MAX_X = 1712
+
     def __init__(self):
         y_offset = 0
         self.top_image = arcade.load_texture("resources/top.png")
@@ -38,3 +41,9 @@ class Board:
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
                                       Constants.SCREEN_HEIGHT - self.bottom_offset - self.bottom_image.width // 2,
                                       self.bottom_image.width, self.bottom_image.height, self.bottom_image)
+
+    def apply_boundaries(self, fighter):
+        if fighter.x >= Board.MAX_X:
+            fighter.x = Board.MAX_X - fighter.speed
+        elif fighter.x <= Board.MIN_X:
+            fighter.x = Board.MIN_X + fighter.speed
