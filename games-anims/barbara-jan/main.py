@@ -11,7 +11,8 @@ class MyGame(arcade.Window):
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)
-        self.key_state = {arcade.key.D: False, arcade.key.A: False}
+        self.key_state = {arcade.key.D: False, arcade.key.A: False, arcade.key.L: False,
+                          arcade.key.J: False}
 
     def on_draw(self):
         arcade.start_render()
@@ -31,16 +32,33 @@ class MyGame(arcade.Window):
             self.honda_fighter.move_left()
             self.board.apply_boundaries(self.honda_fighter)
 
+        if self.key_state.get(arcade.key.L, True):
+            self.karateka_fighter.move_right()
+            self.board.apply_boundaries(self.karateka_fighter)
+
+        if self.key_state.get(arcade.key.J, True):
+            self.karateka_fighter.move_left()
+            self.board.apply_boundaries(self.karateka_fighter)
+
     def on_key_press(self, key, modifiers):
-        if key == arcade.key.SPACE:
+        if key == arcade.key.SPACE or key == arcade.key.LCTRL or key == arcade.key.LSHIFT:
             self.honda_fighter.start_punch()
-        elif key == arcade.key.D or key == arcade.key.A:
+        elif key == arcade.key.F2:
+            print("Change karateka color.")
+            self.karateka_fighter.change_color()
+        if key == arcade.key.D or key == arcade.key.A or key == arcade.key.L or key == arcade.key.J:
             self.key_state[key] = True
+        if key == arcade.key.ENTER or key == arcade.key.RCTRL or key == arcade.key.RSHIFT:
+            self.karateka_fighter.start_punch()
 
     def on_key_release(self, key, modifiers):
-        self.honda_fighter.state = "idle"
         if key == arcade.key.D or key == arcade.key.A:
-            self.key_state[key] = False
+            self.honda_fighter.state = "idle"
+
+        elif key == arcade.key.L or key == arcade.key.J:
+            self.karateka_fighter.state = "idle"
+
+        self.key_state[key] = False
 
 
 def main():

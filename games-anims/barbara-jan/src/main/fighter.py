@@ -3,7 +3,7 @@ import time
 import arcade
 
 from src.main.images_helper import *
-from src.main.project_globals import Constants
+from src.main.project_globals import Constants, Utils
 
 
 class Fighter:
@@ -84,8 +84,16 @@ class Honda(Fighter):
 class Karateka(Fighter):
     def __init__(self, arena_offset):
         super().__init__(arena_offset)
-        self.x = 799
         self.stand_image = arcade.load_texture("resources/k.png")
-        self.punch_image = arcade.load_texture("resources/honda_punch.png") # TODO
+        self.punch_image = arcade.load_texture("resources/k_kick.png") # TODO
+        self.color = Constants.WHITE
 
         self.moves_registry = KaratekaMovesRegistry()
+
+        self.x = 799
+        self.punch_sound = arcade.load_sound("resources/chuja.mp3")
+
+    def change_color(self):
+        new_color = Utils.get_next_color()
+        self.stand_image = Utils.color_texture(self.stand_image, self.color, new_color)
+        self.color = new_color
