@@ -15,6 +15,7 @@ class Board:
 
         y_offset += self.top_image.height
         self.throne_image = arcade.load_texture("resources/throne.png")
+        self.throne_dialog_image = arcade.load_texture("resources/throne_dialog.png")
         self.throne_offset = y_offset
 
         y_offset += self.throne_image.height
@@ -25,14 +26,16 @@ class Board:
         self.bottom_image = arcade.load_texture("resources/bottom.png")
         self.bottom_offset = y_offset
 
-    def draw(self):
+    def draw(self, dialog=False):
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
                                       Constants.SCREEN_HEIGHT - self.top_offset - self.top_image.height // 2,
                                       self.top_image.width, self.top_image.height, self.top_image)
 
+        throne_image = self.throne_dialog_image if dialog else self.throne_image
+
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
                                       Constants.SCREEN_HEIGHT - self.throne_offset - self.throne_image.height // 2,
-                                      self.throne_image.width, self.throne_image.height, self.throne_image)
+                                      self.throne_image.width, self.throne_image.height, throne_image)
 
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
                                       Constants.SCREEN_HEIGHT - self.arena_offset - self.arena_image.height // 2,
