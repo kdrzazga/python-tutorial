@@ -1,8 +1,5 @@
 import os
 
-import arcade
-import numpy as np
-
 
 class Constants:
     SCREEN_WIDTH = 1152
@@ -50,3 +47,4 @@ class Utils:
 
 class Globals:
     root_dir = os.path.dirname(os.path.abspath(__file__))
+    version = "normal"
