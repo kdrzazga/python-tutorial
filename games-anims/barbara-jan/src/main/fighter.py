@@ -85,7 +85,7 @@ class Karateka(Fighter):
     def __init__(self, arena_offset):
         super().__init__(arena_offset)
         self.stand_image = arcade.load_texture("resources/k.png")
-        self.punch_image = arcade.load_texture("resources/k_kick.png") # TODO
+        self.punch_image = arcade.load_texture("resources/k_kick.png")
         self.color = Constants.WHITE
 
         self.moves_registry = KaratekaMovesRegistry()
