@@ -8,3 +8,4 @@ class AdultBarbaraJan(BarbaraJan):
         super().__init__()
         print("Welcome to the adult version of Barbarian/Barbara & Ian.")
         Globals.version = "adult"
+        Globals.woman_image_path += "barbar.png"

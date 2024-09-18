@@ -10,6 +10,10 @@ class Board:
     def __init__(self):
         self.dialog = False
         self.message_ptr = Data.empty
+
+        self.woman_pos = (270, 122)
+        self.woman_image = arcade.load_texture(Globals.woman_image_path)
+
         y_offset = 0
         self.top_image = arcade.load_texture("resources/top.png")
         self.top_offset = y_offset
@@ -45,6 +49,10 @@ class Board:
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
                                       Constants.SCREEN_HEIGHT - self.bottom_offset - self.bottom_image.width // 2,
                                       self.bottom_image.width, self.bottom_image.height, self.bottom_image)
+
+        arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH - self.woman_pos[0],
+                                      Constants.SCREEN_HEIGHT - self.woman_pos[1]
+                                      , self.woman_image.width, self.woman_image.height, self.woman_image)
 
         if self.dialog:
             self.draw_dialogue()
