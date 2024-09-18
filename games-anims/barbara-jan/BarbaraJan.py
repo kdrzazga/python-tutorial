@@ -14,7 +14,8 @@ KEYS = {
     "KARATEKA_LEFT": arcade.key.J,
     "HONDA_PUNCH": [arcade.key.SPACE, arcade.key.LCTRL, arcade.key.LSHIFT],
     "KARATEKA_PUNCH": [arcade.key.ENTER, arcade.key.RCTRL, arcade.key.RSHIFT],
-    "CHANGE_COLOR": arcade.key.F2
+    "CHANGE_COLOR": arcade.key.F2,
+    "QUIT": arcade.key.ESCAPE
 }
 
 
@@ -33,6 +34,7 @@ class BarbaraJan(arcade.Window):
             KEYS["KARATEKA_RIGHT"],
             KEYS["KARATEKA_LEFT"],
             KEYS["CHANGE_COLOR"],
+            KEYS["QUIT"],
         )}
         for key in KEYS["HONDA_PUNCH"]:
             self.key_state[key] = False
@@ -103,6 +105,9 @@ class BarbaraJan(arcade.Window):
             self.key_state[key] = True
         if key in KEYS["KARATEKA_PUNCH"]:
             self.karateka_fighter.start_punch()
+        if key == KEYS["QUIT"]:
+            print("Bye !")
+            arcade.exit()
 
     def on_key_release(self, key, modifiers):
         if key in (KEYS["HONDA_LEFT"], KEYS["HONDA_RIGHT"]):
