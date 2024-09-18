@@ -1,7 +1,7 @@
 import math
-
 import arcade
 
+from src.main.intro import Intro
 from src.main.board import Board
 from src.main.data import Data
 from src.main.fighter import Honda, Karateka
@@ -23,6 +23,8 @@ class BarbaraJan(arcade.Window):
     def __init__(self):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Barbara & Ian")
         self.set_fullscreen(True)
+        
+        self.intro = Intro()
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)
@@ -44,9 +46,12 @@ class BarbaraJan(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        self.board.draw()
-        self.karateka_fighter.draw()
-        self.honda_fighter.draw()
+        if self.time < 5:
+            self.intro.show()
+        else:
+            self.board.draw()
+            self.karateka_fighter.draw()
+            self.honda_fighter.draw()
 
     def update(self, delta_time):
         self.time += delta_time
@@ -60,19 +65,19 @@ class BarbaraJan(arcade.Window):
 
         self.board.dialog = False
 
-        if self.time < 3:
+        if self.time < 8:
             self.board.dialog = True
             self.board.message_ptr = Data.fight_call
 
-        t1 = math.floor(self.time) % 88
+        t1 = math.floor(self.time) % 93
 
-        if 15 < t1 < 24:
+        if 20 < t1 < 29:
             self.board.dialog = True
             self.board.message_ptr = Data.honda_insult
 
-        t2 = math.floor(self.time) % 51
+        t2 = math.floor(self.time) % 56
 
-        if 33 < t2 < 44:
+        if 38 < t2 < 49:
             self.board.dialog = True
             if self.random_draw_reset:
                 self.board.message_ptr = Data.get_random()
