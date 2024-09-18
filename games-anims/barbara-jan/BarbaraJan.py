@@ -21,13 +21,13 @@ KEYS = {
 
 
 class BarbaraJan(arcade.Window):
-    def __init__(self):
+    def __init__(self, woman_file="barbar_c.png"):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Barbara & Ian")
         self.set_fullscreen(False)
 
         self.intro = Intro()
 
-        Globals.woman_image_path += "barbar_c.png"
+        Globals.set_woman_image_file(woman_file)
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)
@@ -49,7 +49,7 @@ class BarbaraJan(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        if self.time < 19:
+        if self.time < 13:
             self.intro.show()
         else:
             self.board.draw()
@@ -68,7 +68,7 @@ class BarbaraJan(arcade.Window):
 
         self.board.dialog = False
 
-        if self.time < 12:
+        if self.time < 15:
             self.board.dialog = True
             self.board.message_ptr = Data.fight_call
 
