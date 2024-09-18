@@ -1,10 +1,11 @@
 import math
+
 import arcade
 
-from src.main.intro import Intro
 from src.main.board import Board
 from src.main.data import Data
 from src.main.fighter import Honda, Karateka
+from src.main.intro import Intro
 from src.main.project_globals import Constants, Globals
 
 KEYS = {
@@ -23,7 +24,7 @@ class BarbaraJan(arcade.Window):
     def __init__(self):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Barbara & Ian")
         self.set_fullscreen(False)
-        
+
         self.intro = Intro()
 
         Globals.woman_image_path += "barbar_c.png"
@@ -46,10 +47,9 @@ class BarbaraJan(arcade.Window):
         for key in KEYS["KARATEKA_PUNCH"]:
             self.key_state[key] = False
 
-
     def on_draw(self):
         arcade.start_render()
-        if self.time < 1:#9:
+        if self.time < 19:
             self.intro.show()
         else:
             self.board.draw()
