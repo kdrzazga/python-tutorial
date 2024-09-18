@@ -22,7 +22,7 @@ KEYS = {
 class BarbaraJan(arcade.Window):
     def __init__(self):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Barbara & Ian")
-        self.set_fullscreen(True)
+        self.set_fullscreen(False)
         
         self.intro = Intro()
         self.board = Board()
@@ -46,7 +46,7 @@ class BarbaraJan(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        if self.time < 5:
+        if self.time < 9:
             self.intro.show()
         else:
             self.board.draw()
@@ -65,19 +65,19 @@ class BarbaraJan(arcade.Window):
 
         self.board.dialog = False
 
-        if self.time < 8:
+        if self.time < 12:
             self.board.dialog = True
             self.board.message_ptr = Data.fight_call
 
-        t1 = math.floor(self.time) % 93
+        t1 = math.floor(self.time) % 97
 
-        if 20 < t1 < 29:
+        if 24 < t1 < 33:
             self.board.dialog = True
             self.board.message_ptr = Data.honda_insult
 
-        t2 = math.floor(self.time) % 56
+        t2 = math.floor(self.time) % 60
 
-        if 38 < t2 < 49:
+        if 42 < t2 < 53:
             self.board.dialog = True
             if self.random_draw_reset:
                 self.board.message_ptr = Data.get_random()
