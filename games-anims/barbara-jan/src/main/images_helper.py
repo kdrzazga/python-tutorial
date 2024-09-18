@@ -25,3 +25,17 @@ class HondaMovesRegistry(MovesRegistry):
         for i, path in enumerate(files):
             image = arcade.load_texture(Globals.root_dir + "\\..\\.." + path)
             self.img_dict[i] = image
+
+
+class KaratekaMovesRegistry(MovesRegistry):
+    def __init__(self):
+        super().__init__()
+        files = ["\\resources\\k.png",
+                 "\\resources\\honda_step3.png", # TODO
+                 "\\resources\\honda_step1.png"] # TODO
+
+        self.img_dict = {}
+
+        for i, path in enumerate(files):
+            image = arcade.load_texture(Globals.root_dir + "\\..\\.." + path)
+            self.img_dict[i] = image
