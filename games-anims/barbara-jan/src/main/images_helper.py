@@ -31,8 +31,8 @@ class KaratekaMovesRegistry(MovesRegistry):
     def __init__(self):
         super().__init__()
         files = ["\\resources\\k.png",
-                 "\\resources\\honda_step3.png", # TODO
-                 "\\resources\\honda_step1.png"] # TODO
+                 "\\resources\\kw1.png",
+                 "\\resources\\kw2.png"]
 
         self.img_dict = {}
 
