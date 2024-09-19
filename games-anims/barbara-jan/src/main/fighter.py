@@ -84,6 +84,7 @@ class Honda(Fighter):
 class Karateka(Fighter):
     def __init__(self, arena_offset):
         super().__init__(arena_offset)
+        self.walk_phase = arcade.load_texture("resources/kw3.png")
         self.stand_image = arcade.load_texture("resources/k.png")
         self.punch_image = arcade.load_texture("resources/k_kick.png")
         self.color = Constants.WHITE

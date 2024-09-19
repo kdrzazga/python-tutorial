@@ -73,4 +73,3 @@ class AdultBoard(Board):
     def __init__(self, woman_image):
         super().__init__()
         self.woman_image = woman_image
-        

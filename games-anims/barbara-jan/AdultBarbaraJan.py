@@ -15,4 +15,3 @@ class AdultBarbaraJan(BarbaraJan):
         root_dir = os.path.dirname(os.path.abspath(__file__))
         texture = decode_base64_to_texture(os.path.join(root_dir, "resources", "barbar.txt"))
         self.board = AdultBoard(texture)
-        
