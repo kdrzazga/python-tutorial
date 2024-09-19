@@ -25,7 +25,7 @@ def decode_base64_to_texture(textfile):
 class Viewer(arcade.Window):
     def __init__(self, width, height, title, texture):
         super().__init__(width, height, title)
-        
+        arcade.set_background_color(arcade.color.LIGHT_GRAY)
         self.texture = texture
 
     def on_draw(self):
