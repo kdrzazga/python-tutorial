@@ -49,7 +49,4 @@ class Globals:
     root_dir = os.path.dirname(os.path.abspath(__file__))
     version = "normal"
     woman_image_path = ""
-
-    @staticmethod
-    def set_woman_image_file(filename):
-        Globals.woman_image_path = Globals.root_dir + "\\..\\..\\resources\\" + filename
+    woman_image_path = root_dir + "\\..\\..\\resources\\" + "barbar_c.png"

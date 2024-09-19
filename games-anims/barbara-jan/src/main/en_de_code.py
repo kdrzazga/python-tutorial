@@ -22,9 +22,10 @@ def decode_base64_to_texture(textfile):
 
     return arcade.load_texture(temp_file_path)
 
-class MyGame(arcade.Window):
+class Viewer(arcade.Window):
     def __init__(self, width, height, title, texture):
         super().__init__(width, height, title)
+        
         self.texture = texture
 
     def on_draw(self):
@@ -35,8 +36,8 @@ class MyGame(arcade.Window):
 
 def main():
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    texture = decode_base64_to_texture(os.path.join(root_dir, "..", "barbar.txt"))
-    game = MyGame(134, 237, "Base64 PNG Viewer", texture)
+    texture = decode_base64_to_texture(os.path.join(root_dir, "..//..//resources", "barbar.txt"))
+    game = Viewer(134, 237, "Base64 PNG Viewer", texture)
     arcade.run()
 
 if __name__ == '__main__':

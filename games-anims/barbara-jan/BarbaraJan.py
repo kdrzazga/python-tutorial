@@ -21,13 +21,12 @@ KEYS = {
 
 
 class BarbaraJan(arcade.Window):
-    def __init__(self, woman_file="barbar_c.png"):
+    def __init__(self):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Barbara & Ian")
         self.set_fullscreen(False)
 
         self.intro = Intro()
 
-        Globals.set_woman_image_file(woman_file)
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)

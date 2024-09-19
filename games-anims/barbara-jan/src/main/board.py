@@ -67,3 +67,10 @@ class Board:
             fighter.x = Board.MAX_X - fighter.speed
         elif fighter.x <= Board.MIN_X:
             fighter.x = Board.MIN_X + fighter.speed
+
+
+class AdultBoard(Board):
+    def __init__(self, woman_image):
+        super().__init__()
+        self.woman_image = woman_image
+        
