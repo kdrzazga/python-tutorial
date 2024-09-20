@@ -48,3 +48,5 @@ class Utils:
 class Globals:
     root_dir = os.path.dirname(os.path.abspath(__file__))
     version = "normal"
+    woman_image_path = ""
+    woman_image_path = root_dir + "\\..\\..\\resources\\" + "barbar_c.png"

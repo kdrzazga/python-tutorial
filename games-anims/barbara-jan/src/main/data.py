@@ -8,28 +8,28 @@ class Data:
     }
 
     honda_insult = {
-        "normal": "Honda! You loser !",
+        "normal": "Honda! You fat loser !",
         "adult": "Honda! Ty kurwo jebana !"
     }
 
     general_insult = {
         "normal": "   P U S S I E S !!!",
-        "adult": "  P I Z D E C Z K I !!!"
+        "adult": "   P I Z D E C Z K I !!!"
     }
 
     best_mage = {
         "normal": "     I am the best !",
-        "adult": "    Ja jestem najlepszy !"
+        "adult": "   Skurwiały spaślak !"
     }
 
     damn_it = {
         "normal": "      Damn it !",
-        "adult": "      JA PIERDOLE !"
+        "adult": "      JA PIERDOLĘ !"
     }
 
     fight_call = {
         "normal": "     Begin fight !",
-        "adult": "    NAKURWIAJCIE !"
+        "adult": "NAKURWIAJCIE, CIULE !"
     }
 
     @staticmethod
