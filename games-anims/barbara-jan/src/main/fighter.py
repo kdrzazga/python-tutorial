@@ -40,14 +40,12 @@ class Fighter:
             print("DEAD !")
 
     def move_right(self):
-
         if self.hp >0:
             self.state = "walking"
             self.x -= self.speed
             self.step_anim()
 
-    def move_left(self):
-        
+    def move_left(self):        
         if self.hp >0:
             self.state = "walking"
             self.x += self.speed

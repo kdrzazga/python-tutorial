@@ -123,15 +123,19 @@ class BarbaraJan(arcade.Window):
             if self.honda_fighter.state != "dead":
                 self.honda_fighter.start_punch()
                 self.karateka_fighter.receive_hit()
+                
         if key == KEYS["CHANGE_COLOR"]:
             print("Change karateka color.")
             self.karateka_fighter.change_color()
+            
         if key in self.key_state.keys():
             self.key_state[key] = True
+            
         if key in KEYS["KARATEKA_PUNCH"]:
             if self.karateka_fighter.state != "dead":
                 self.karateka_fighter.start_punch()
                 self.honda_fighter.receive_hit()
+                
         if key == KEYS["QUIT"]:
             print("Bye !")
             arcade.exit()
