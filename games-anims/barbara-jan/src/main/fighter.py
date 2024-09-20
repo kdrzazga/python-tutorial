@@ -32,17 +32,26 @@ class Fighter:
             self.shout()
             self.punch_start_time = time.time()
 
+    def receive_hit(self):
+        if self.hp > 0:
+            self.hp -= 1
+        else:
+            self.state = "dead"
+            print("DEAD !")
+
     def move_right(self):
 
-        self.state = "walking"
-        self.x -= self.speed
-        self.step_anim()
+        if self.hp >0:
+            self.state = "walking"
+            self.x -= self.speed
+            self.step_anim()
 
     def move_left(self):
-
-        self.state = "walking"
-        self.x += self.speed
-        self.step_anim()
+        
+        if self.hp >0:
+            self.state = "walking"
+            self.x += self.speed
+            self.step_anim()
 
     def step_anim(self):
         self.step_delay_counter += 1
