@@ -13,6 +13,7 @@ class Fighter:
         self.y = 220
         self.state = "idle"
         self.speed = 3
+        self.hp = 6
         self.punch_duration = 0.5
         self.punch_start_time = 0
         self.arena_offset = arena_offset

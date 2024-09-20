@@ -1,4 +1,5 @@
 import os
+import arcade
 
 
 class Constants:
@@ -7,7 +8,7 @@ class Constants:
 
     LIGHT_BLUE = (96, 96, 192)
     WHITE = (255, 255, 255)
-    RED = (255, 0, 0)
+    RED = (175, 42, 41)
     GREEN = (0, 255, 0)
     CYAN = (0, 255, 255)
     BROWN = (185, 122, 85)
@@ -18,7 +19,7 @@ class Constants:
 
 class Utils:
     color_index = 0
-
+    
     @staticmethod
     def get_next_color():
         available_colors = (
