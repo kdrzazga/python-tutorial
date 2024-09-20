@@ -19,7 +19,7 @@ class Constants:
 
 class Utils:
     color_index = 0
-    
+
     @staticmethod
     def get_next_color():
         available_colors = (
