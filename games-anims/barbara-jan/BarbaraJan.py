@@ -4,7 +4,7 @@ import arcade
 
 from src.main.board import Board
 from src.main.data import Data
-from src.main.fighter import Honda, Karateka
+from src.main.fighter import Fighter, Honda, Karateka
 from src.main.intro import Intro
 from src.main.project_globals import Constants, Globals
 
@@ -52,8 +52,23 @@ class BarbaraJan(arcade.Window):
             self.intro.show()
         else:
             self.board.draw()
+            self.draw_hp(self.honda_fighter)
+            self.draw_hp(self.karateka_fighter)
             self.karateka_fighter.draw()
             self.honda_fighter.draw()
+            
+    def draw_hp(self, fighter: Fighter):
+        radius = 13
+        
+        shift = Constants.SCREEN_WIDTH - 160 if isinstance(fighter, Karateka) else 26
+        
+        for i in range(fighter.hp):
+            row = i // 3
+            col = i % 3
+  
+            center_x = shift + col * (radius * 2 + 38)
+            center_y = Constants.SCREEN_HEIGHT - row * (radius * 2 + 21) - 22
+            arcade.draw_circle_filled(center_x, center_y, radius, Constants.RED)
 
     def update(self, delta_time):
         self.time += delta_time
@@ -105,14 +120,22 @@ class BarbaraJan(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         if key in KEYS["HONDA_PUNCH"]:
-            self.honda_fighter.start_punch()
+            if self.honda_fighter.state != "dead":
+                self.honda_fighter.start_punch()
+                self.karateka_fighter.receive_hit()
+                
         if key == KEYS["CHANGE_COLOR"]:
             print("Change karateka color.")
             self.karateka_fighter.change_color()
+            
         if key in self.key_state.keys():
             self.key_state[key] = True
+            
         if key in KEYS["KARATEKA_PUNCH"]:
-            self.karateka_fighter.start_punch()
+            if self.karateka_fighter.state != "dead":
+                self.karateka_fighter.start_punch()
+                self.honda_fighter.receive_hit()
+                
         if key == KEYS["QUIT"]:
             print("Bye !")
             arcade.exit()

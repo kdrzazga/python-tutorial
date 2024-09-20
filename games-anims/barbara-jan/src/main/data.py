@@ -1,4 +1,5 @@
 import random
+import base64
 
 
 class Data:
@@ -9,27 +10,27 @@ class Data:
 
     honda_insult = {
         "normal": "Honda! You fat loser !",
-        "adult": "Honda! Ty kurwo jebana !"
+        "adult": base64.b64decode("SG9uZGEhIFR5IGt1cndvIGplYmFuYSAh").decode('utf-8')
     }
 
     general_insult = {
         "normal": "   P U S S I E S !!!",
-        "adult": "   P I Z D E C Z K I !!!"
+        "adult": base64.b64decode("ICAgUCBJIFogRCBFIEMgWiBLIEkgISEh").decode('utf-8')
     }
 
     best_mage = {
         "normal": "     I am the best !",
-        "adult": "   Skurwiały spaślak !"
+        "adult": base64.b64decode("ICAgU2t1cndpYcWCeSBzcGHFm2xhayAh").decode('utf-8')
     }
 
     damn_it = {
         "normal": "      Damn it !",
-        "adult": "      JA PIERDOLĘ !"
+        "adult": base64.b64decode("ICAgICAgSkEgUElFUkRPTMSYICE=").decode('utf-8')
     }
 
     fight_call = {
         "normal": "     Begin fight !",
-        "adult": "NAKURWIAJCIE, CIULE !"
+        "adult": base64.b64decode("TkFLVVJXSUFKQ0lFLCBDSVVMRSAh").decode('utf-8')
     }
 
     @staticmethod
