@@ -103,6 +103,10 @@ class BarbaraJan(arcade.Window):
             self.random_draw_reset = True
 
     def handle_movement(self):
+        
+        if self.honda_fighter.state == "dead" or self.karateka_fighter.state == "dead":
+            return
+        
         if self.key_state[KEYS["HONDA_RIGHT"]]:
             self.honda_fighter.move_right()
 
@@ -141,6 +145,9 @@ class BarbaraJan(arcade.Window):
             arcade.exit()
 
     def on_key_release(self, key, modifiers):
+        if self.honda_fighter.state == "dead" or self.karateka_fighter.state == "dead":
+            return
+                
         if key in (KEYS["HONDA_LEFT"], KEYS["HONDA_RIGHT"]):
             self.honda_fighter.state = "idle"
         elif key in (KEYS["KARATEKA_LEFT"], KEYS["KARATEKA_RIGHT"]):
