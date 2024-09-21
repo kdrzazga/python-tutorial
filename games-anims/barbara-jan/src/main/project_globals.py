@@ -16,7 +16,7 @@ class Constants:
     YELLOW = (255, 255, 0)
     BLUE = (32, 0, 128)
     
-    REQUIRED_HIT_DISTANCE = 15
+    REQUIRED_HIT_DISTANCE = 200
 
 
 class Utils:

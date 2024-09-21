@@ -4,10 +4,10 @@ from src.main.project_globals import Globals, Constants
 
 
 def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
-    d = karateka_x - honda_x    
-    fighter = honda if d > 0 else karateka    
-    d -= fighter.stand_image.width // 2
-    
+    d = honda_x - karateka_x   
+    fighter_width = honda_width if d < 0 else karateka_width    
+    d -= fighter_width // 2
+    print(f"Distance {d}")
     return d <= Constants.REQUIRED_HIT_DISTANCE
     
     

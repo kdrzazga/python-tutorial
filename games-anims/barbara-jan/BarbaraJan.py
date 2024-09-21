@@ -6,6 +6,7 @@ from src.main.board import Board
 from src.main.intro import Intro
 from src.main.fighter import Fighter, Honda, Karateka
 from src.main.project_globals import Constants, Globals
+from src.main.helper import check_distance
 
 KEYS = {
     "HONDA_RIGHT": arcade.key.D,
@@ -130,7 +131,9 @@ class BarbaraJan(arcade.Window):
         if key in KEYS["HONDA_PUNCH"]:
             if self.honda_fighter.state != "dead":
                 self.honda_fighter.start_punch()
-                self.karateka_fighter.receive_hit()
+                
+                if check_distance(self.karateka_fighter.x, self.honda_fighter.x, self.karateka_fighter.stand_image.width, self.honda_fighter.stand_image.width):
+                    self.karateka_fighter.receive_hit()
                 
         if key == KEYS["CHANGE_COLOR"]:
             print("Change karateka color.")
@@ -142,7 +145,8 @@ class BarbaraJan(arcade.Window):
         if key in KEYS["KARATEKA_PUNCH"]:
             if self.karateka_fighter.state != "dead":
                 self.karateka_fighter.start_punch()
-                self.honda_fighter.receive_hit()
+                if check_distance(self.karateka_fighter.x, self.honda_fighter.x, self.karateka_fighter.stand_image.width, self.honda_fighter.stand_image.width):
+                    self.honda_fighter.receive_hit()
                 
         if key == KEYS["QUIT"]:
             print("Bye !")
