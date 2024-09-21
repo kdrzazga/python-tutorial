@@ -1,11 +1,10 @@
 import math
-
 import arcade
 
-from src.main.board import Board
 from src.main.data import Data
-from src.main.fighter import Fighter, Honda, Karateka
+from src.main.board import Board
 from src.main.intro import Intro
+from src.main.fighter import Fighter, Honda, Karateka
 from src.main.project_globals import Constants, Globals
 
 KEYS = {
@@ -24,6 +23,7 @@ class BarbaraJan(arcade.Window):
     def __init__(self):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Barbara & Ian")
         self.set_fullscreen(False)
+        self.game_on = False
 
         self.intro = Intro()
 
@@ -48,9 +48,9 @@ class BarbaraJan(arcade.Window):
 
     def on_draw(self):
         arcade.start_render()
-        if self.time < 13:
+        if not self.game_on:
             self.intro.show()
-        else:
+        else:            
             self.board.draw()
             self.draw_hp(self.honda_fighter)
             self.draw_hp(self.karateka_fighter)
@@ -72,11 +72,15 @@ class BarbaraJan(arcade.Window):
 
     def update(self, delta_time):
         self.time += delta_time
+        if self.time > 13:
+            self.game_on = True
         # print(self.time, end='\t')
-        self.handle_dialogue()
-        self.honda_fighter.update()
-        self.karateka_fighter.update()
-        self.handle_movement()
+        
+        if self.game_on:
+            self.handle_dialogue()
+            self.honda_fighter.update()
+            self.karateka_fighter.update()
+            self.handle_movement()
 
     def handle_dialogue(self):
 

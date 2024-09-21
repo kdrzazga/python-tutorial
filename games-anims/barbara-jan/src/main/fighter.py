@@ -2,7 +2,7 @@ import time
 
 import arcade
 
-from src.main.images_helper import *
+from src.main.helper import MovesRegistry, HondaMovesRegistry, KaratekaMovesRegistry
 from src.main.project_globals import Constants, Utils
 
 

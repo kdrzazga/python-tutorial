@@ -1,8 +1,16 @@
 import arcade
 
-from src.main.project_globals import Globals
+from src.main.project_globals import Globals, Constants
 
 
+def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
+    d = karateka_x - honda_x    
+    fighter = honda if d > 0 else karateka    
+    d -= fighter.stand_image.width // 2
+    
+    return d <= Constants.REQUIRED_HIT_DISTANCE
+    
+    
 class MovesRegistry:
     def __init__(self):
         self.img_dict = {}
