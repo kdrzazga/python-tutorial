@@ -34,9 +34,9 @@ class BarbaraJan(arcade.Window):
         self.karateka_fighter = Karateka(self.board.arena_offset)
         self.random_draw_reset = True
         self.time = 0
-        self.key_state = self.initialize_key_state()
+        self.key_state = self._initialize_key_state()
 
-    def initialize_key_state(self):
+    def _initialize_key_state(self):
         return {key: False for key in (
             KEYS["HONDA_RIGHT"],
             KEYS["HONDA_LEFT"],
@@ -131,16 +131,16 @@ class BarbaraJan(arcade.Window):
             return
 
         if self.key_state[KEYS["HONDA_RIGHT"]]:
-            self.honda_fighter.move_right()
+            self.honda_fighter.move("right")
 
         if self.key_state[KEYS["HONDA_LEFT"]]:
-            self.honda_fighter.move_left()
+            self.honda_fighter.move("left")
 
         if self.key_state[KEYS["KARATEKA_RIGHT"]]:
-            self.karateka_fighter.move_right()
+            self.karateka_fighter.move("right")
 
         if self.key_state[KEYS["KARATEKA_LEFT"]]:
-            self.karateka_fighter.move_left()
+            self.karateka_fighter.move("left")
 
         self.board.apply_boundaries(self.honda_fighter)
         self.board.apply_boundaries(self.karateka_fighter)

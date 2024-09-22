@@ -37,21 +37,21 @@ class Fighter:
             self.hp -= 1
             return GameState.FIGHT
         else:
-            self.state = "dead"
-            fighter = "Karateka" if isinstance(self, Karateka) else "Honda"
-            print(fighter + " DEAD !")
-            return GameState.KO_KARATEKA if isinstance(self, Karateka) else GameState.KO_HONDA
+            return self.handle_death()
 
-    def move_right(self):
+    def handle_death(self):
+        self.state = "dead"
+        fighter_name = self.get_fighter_name()
+        print(fighter_name + " DEAD!")
+        return GameState.KO_KARATEKA if isinstance(self, Karateka) else GameState.KO_HONDA
+
+    def get_fighter_name(self):
+        return "Karateka" if isinstance(self, Karateka) else "Honda"
+
+    def move(self, direction: str):
         if self.hp > 0:
             self.state = "walking"
-            self.x -= self.speed
-            self.step_anim()
-
-    def move_left(self):
-        if self.hp > 0:
-            self.state = "walking"
-            self.x += self.speed
+            self.x += self.speed if direction == "left" else -self.speed
             self.step_anim()
 
     def step_anim(self):

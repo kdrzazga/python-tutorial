@@ -1,5 +1,4 @@
 import os
-import arcade
 
 
 class Constants:
@@ -35,9 +34,6 @@ class Utils:
         width = texture.width
         height = texture.height
 
-        pixels = texture.image.getdata()
-        new_pixels = []
-
         for y in range(height):
             for x in range(width):
                 r, g, b, _ = texture.image.getpixel((x, y))
@@ -51,5 +47,4 @@ class Utils:
 class Globals:
     root_dir = os.path.dirname(os.path.abspath(__file__))
     version = "normal"
-    woman_image_path = ""
     woman_image_path = root_dir + "\\..\\..\\resources\\" + "barbar_c.png"
