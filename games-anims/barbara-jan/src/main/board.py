@@ -13,7 +13,7 @@ class Board:
         self.dialog = False
         self.message_ptr = Data.empty
 
-        self.ending = False
+        self.ending = [False, False]
 
         self.woman_pos = (270, 122)
         self.woman_image = arcade.load_texture(Globals.woman_image_path)

@@ -59,14 +59,16 @@ class BarbaraJan(arcade.Window):
             self.draw_game()
 
     def draw_game(self):
-        if self.board.ending:
+        if self.board.ending[0]:
             if self.game_on == GameState.KO_HONDA:
                 print("Karateka wins !")
                 beaten = self.honda_fighter
             else:
                 print("Honda wins !")
                 beaten = self.karateka_fighter
-            time.sleep(2)
+            if not self.board.ending[1]:
+                time.sleep(2)
+                self.board.ending[1] = True  # reset waiting after the first wait
 
             beaten.dead_image = self.reward_pic
 
@@ -112,17 +114,17 @@ class BarbaraJan(arcade.Window):
         elif self.game_on == GameState.KO_HONDA or self.game_on == GameState.KO_KARATEKA:
             self.show_ko_dialogue()
 
-        if self.board.ending:
+        if self.board.ending[0]:
             self.board.dialog = True
             self.board.message_ptr = Data.reward
 
     def show_ko_dialogue(self):
         self.board.dialog = True
         self.board.message_ptr = Data.fight_over
-        #print(f'Time = {self.time}')
+        # print(f'Time = {self.time}')
         if math.floor(self.time) % 11 == 0:
             self.board.game_on = GameState.END
-            self.board.ending = True
+            self.board.ending[0] = True
 
     def show_fight_dialogue(self):
         if self.time < 15:
@@ -141,9 +143,8 @@ class BarbaraJan(arcade.Window):
         else:
             self.random_draw_reset = True
 
-        if self.board.ending:
+        if self.board.ending[0]:
             self.board.message_ptr = Data.reward
-
 
     def handle_movement(self):
 
@@ -192,6 +193,12 @@ class BarbaraJan(arcade.Window):
         if check_distance(target_fighter.x, attacker_fighter.x,
                           target_fighter.stand_image.width, attacker_fighter.stand_image.width):
             self.game_on = target_fighter.receive_hit()
+
+            speed = target_fighter.speed if attacker_fighter.x < target_fighter.x else -target_fighter.speed
+
+            for i in range(17):
+                target_fighter.x += speed
+                self.board.apply_boundaries(target_fighter)
 
     def on_key_release(self, key, modifiers):
         if self.honda_fighter.state == "dead" or self.karateka_fighter.state == "dead":
