@@ -33,7 +33,8 @@ class BarbaraJan(arcade.Window):
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)
-        self.reward_pic_path = "resources/barbara.png"
+        reward_pic_path = "resources/barbara.png"
+        self.reward_pic = arcade.load_texture(reward_pic_path)
         self.random_draw_reset = True
         self.time = 0
         self.key_state = self._initialize_key_state()
@@ -67,7 +68,7 @@ class BarbaraJan(arcade.Window):
                 beaten = self.karateka_fighter
             time.sleep(2)
 
-            beaten.dead_image = arcade.load_texture(self.reward_pic_path)
+            beaten.dead_image = self.reward_pic
 
         self.board.draw()
         self.draw_hp(self.honda_fighter)

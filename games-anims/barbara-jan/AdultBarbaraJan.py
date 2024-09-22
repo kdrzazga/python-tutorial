@@ -14,4 +14,5 @@ class AdultBarbaraJan(BarbaraJan):
         Globals.version = "adult"
         root_dir = os.path.dirname(os.path.abspath(__file__))
         texture = decode_base64_to_texture(os.path.join(root_dir, "resources", "barbar.txt"))
+        self.reward_pic = decode_base64_to_texture(os.path.join(root_dir, "resources", "reward.txt"))
         self.board = AdultBoard(texture)
