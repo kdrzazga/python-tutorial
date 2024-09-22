@@ -38,17 +38,18 @@ class Fighter:
             return GameState.FIGHT
         else:
             self.state = "dead"
-            print("DEAD !")
+            fighter = "Karateka" if isinstance(self, Karateka) else "Honda"
+            print(fighter + " DEAD !")
             return GameState.KO_KARATEKA if isinstance(self, Karateka) else GameState.KO_HONDA
 
     def move_right(self):
-        if self.hp >0:
+        if self.hp > 0:
             self.state = "walking"
             self.x -= self.speed
             self.step_anim()
 
-    def move_left(self):        
-        if self.hp >0:
+    def move_left(self):
+        if self.hp > 0:
             self.state = "walking"
             self.x += self.speed
             self.step_anim()

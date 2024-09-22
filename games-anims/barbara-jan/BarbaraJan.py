@@ -114,6 +114,7 @@ class BarbaraJan(arcade.Window):
             self.board.dialog = True
             self.board.message_ptr = Data.fight_over
 
+            print(f'Time = {self.time}')
             if math.floor(self.time) % 11 == 0:
                 self.board.game_on = GameState.END
         else:

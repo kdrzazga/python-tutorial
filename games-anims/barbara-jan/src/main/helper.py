@@ -20,6 +20,11 @@ def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
     return d <= Constants.REQUIRED_HIT_DISTANCE
 
 
+def load_reward_pic():
+    image = arcade.load_texture(Globals.root_dir + "\\..\\..\\" + "barbara.PNG")
+    return image
+
+
 class MovesRegistry:
     def __init__(self):
         self.img_dict = {}
