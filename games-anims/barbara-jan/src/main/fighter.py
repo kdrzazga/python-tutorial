@@ -2,7 +2,7 @@ import time
 
 import arcade
 
-from src.main.images_helper import *
+from src.main.helper import MovesRegistry, HondaMovesRegistry, KaratekaMovesRegistry, GameState
 from src.main.project_globals import Constants, Utils
 
 
@@ -35,20 +35,23 @@ class Fighter:
     def receive_hit(self):
         if self.hp > 0:
             self.hp -= 1
+            return GameState.FIGHT
         else:
-            self.state = "dead"
-            print("DEAD !")
+            return self.handle_death()
 
-    def move_right(self):
-        if self.hp >0:
-            self.state = "walking"
-            self.x -= self.speed
-            self.step_anim()
+    def handle_death(self):
+        self.state = "dead"
+        fighter_name = self.get_fighter_name()
+        #print(fighter_name + " DEAD!")
+        return GameState.KO_KARATEKA if isinstance(self, Karateka) else GameState.KO_HONDA
 
-    def move_left(self):        
-        if self.hp >0:
+    def get_fighter_name(self):
+        return "Karateka" if isinstance(self, Karateka) else "Honda"
+
+    def move(self, direction: str):
+        if self.hp > 0:
             self.state = "walking"
-            self.x += self.speed
+            self.x += self.speed if direction == "left" else -self.speed
             self.step_anim()
 
     def step_anim(self):
@@ -75,6 +78,9 @@ class Fighter:
         elif self.state == "walking":
             arcade.draw_texture_rectangle(x, y - self.stand_image.width // 2,
                                           self.stand_image.width, self.stand_image.height, self.walk_phase)
+        elif self.state == "dead":
+            arcade.draw_texture_rectangle(x, y - self.stand_image.width // 2,
+                                          self.stand_image.width, self.stand_image.height, self.dead_image)
         else:
             arcade.draw_texture_rectangle(x, y - self.stand_image.width // 2,
                                           self.stand_image.width, self.stand_image.height, self.stand_image)
@@ -85,6 +91,7 @@ class Honda(Fighter):
         super().__init__(arena_offset)
         self.stand_image = arcade.load_texture("resources/honda_stand.png")
         self.punch_image = arcade.load_texture("resources/honda_punch.png")
+        self.dead_image = arcade.load_texture("resources/honda_dead.png")
 
         self.moves_registry = HondaMovesRegistry()
 
@@ -95,6 +102,7 @@ class Karateka(Fighter):
         self.walk_phase = arcade.load_texture("resources/kw3.png")
         self.stand_image = arcade.load_texture("resources/k.png")
         self.punch_image = arcade.load_texture("resources/k_kick.png")
+        self.dead_image = arcade.load_texture("resources/karateka_dead.png")
         self.color = Constants.WHITE
 
         self.moves_registry = KaratekaMovesRegistry()

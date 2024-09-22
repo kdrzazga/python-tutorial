@@ -1,6 +1,29 @@
-import arcade
+import math
+from enum import Enum
 
-from src.main.project_globals import Globals
+import arcade
+from src.main.project_globals import Globals, Constants
+
+
+class GameState(Enum):
+    INTRO = 1
+    FIGHT = 2
+    KO_HONDA = 3
+    KO_KARATEKA = 4
+    END = 5
+
+
+def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
+    d = math.fabs(honda_x - karateka_x)
+    fighter_width = honda_width if d < 0 else karateka_width
+    d -= fighter_width // 2
+    #print(f"Distance {d}")
+    return d <= Constants.REQUIRED_HIT_DISTANCE
+
+
+def load_reward_pic():
+    image = arcade.load_texture(Globals.root_dir + "\\..\\..\\" + "barbara.PNG")
+    return image
 
 
 class MovesRegistry:

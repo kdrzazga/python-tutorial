@@ -1,3 +1,5 @@
+import time
+
 import arcade
 from src.main.data import Data
 from src.main.project_globals import Constants, Globals
@@ -10,6 +12,8 @@ class Board:
     def __init__(self):
         self.dialog = False
         self.message_ptr = Data.empty
+
+        self.ending = False
 
         self.woman_pos = (270, 122)
         self.woman_image = arcade.load_texture(Globals.woman_image_path)
