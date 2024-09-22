@@ -2,7 +2,7 @@ import time
 
 import arcade
 
-from src.main.helper import MovesRegistry, HondaMovesRegistry, KaratekaMovesRegistry
+from src.main.helper import MovesRegistry, HondaMovesRegistry, KaratekaMovesRegistry, GameState
 from src.main.project_globals import Constants, Utils
 
 
@@ -35,9 +35,11 @@ class Fighter:
     def receive_hit(self):
         if self.hp > 0:
             self.hp -= 1
+            return GameState.FIGHT
         else:
             self.state = "dead"
             print("DEAD !")
+            return GameState.KO_KARATEKA if isinstance(self, Karateka) else GameState.KO_HONDA
 
     def move_right(self):
         if self.hp >0:

@@ -33,6 +33,16 @@ class Data:
         "adult": base64.b64decode("TkFLVVJXSUFKQ0lFLCBDSVVMRSAh").decode('utf-8')
     }
 
+    fight_over = {
+        "normal": "     The fight is over !",
+        "adult": "      Nokaut !!!"
+    }
+
+    reward = {
+        "normal": "Reward - miss Barbara",
+        "adult": "Nagroda - lejdi Barbara"
+    }
+
     @staticmethod
     def get_random():
         shout = [Data.general_insult, Data.best_mage, Data.damn_it]
