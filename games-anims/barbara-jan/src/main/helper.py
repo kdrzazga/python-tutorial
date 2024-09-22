@@ -1,3 +1,4 @@
+import math
 from enum import Enum
 
 import arcade
@@ -13,10 +14,10 @@ class GameState(Enum):
 
 
 def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
-    d = honda_x - karateka_x
+    d = math.abs(honda_x - karateka_x)
     fighter_width = honda_width if d < 0 else karateka_width
     d -= fighter_width // 2
-    print(f"Distance {d}")
+    #print(f"Distance {d}")
     return d <= Constants.REQUIRED_HIT_DISTANCE
 
 

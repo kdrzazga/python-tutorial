@@ -22,7 +22,9 @@ def decode_base64_to_texture(textfile):
         temp_file.write(image_data)
         temp_file_path = temp_file.name
 
-    return arcade.load_texture(temp_file_path)
+    texture = arcade.load_texture(temp_file_path)
+    os.remove(temp_file_path)
+    return texture
 
 
 class Viewer(arcade.Window):
