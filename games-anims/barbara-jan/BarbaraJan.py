@@ -162,15 +162,11 @@ class BarbaraJan(arcade.Window):
             if key in KEYS["HONDA_PUNCH"] and self.honda_fighter.state != "dead":
                 self.honda_fighter.start_punch()
 
-                if check_distance(self.karateka_fighter.x, self.honda_fighter.x,
-                                  self.karateka_fighter.stand_image.width, self.honda_fighter.stand_image.width):
-                    self.game_on = self.karateka_fighter.receive_hit()
+                self.check_hit(self.karateka_fighter, self.honda_fighter)
 
             if key in KEYS["KARATEKA_PUNCH"] and self.karateka_fighter.state != "dead":
                 self.karateka_fighter.start_punch()
-                if check_distance(self.karateka_fighter.x, self.honda_fighter.x,
-                                  self.karateka_fighter.stand_image.width, self.honda_fighter.stand_image.width):
-                    self.game_on = self.honda_fighter.receive_hit()
+                self.check_hit(self.honda_fighter, self.karateka_fighter)
 
     def check_hit(self, target_fighter: Fighter, attacker_fighter: Fighter):
         if check_distance(target_fighter.x, attacker_fighter.x,
