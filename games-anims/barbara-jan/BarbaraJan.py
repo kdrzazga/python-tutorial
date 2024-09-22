@@ -107,6 +107,7 @@ class BarbaraJan(arcade.Window):
         #print(f'Time = {self.time}')
         if math.floor(self.time) % 11 == 0:
             self.board.game_on = GameState.END
+            self.board.ending = True
 
     def show_fight_dialogue(self):
         if self.time < 15:
@@ -124,6 +125,10 @@ class BarbaraJan(arcade.Window):
             self.random_draw_reset = False
         else:
             self.random_draw_reset = True
+
+        if self.board.ending:
+            self.board.message_ptr = Data.reward
+
 
     def handle_movement(self):
 
