@@ -1,4 +1,5 @@
 import math
+import time
 
 import arcade
 
@@ -32,6 +33,7 @@ class BarbaraJan(arcade.Window):
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)
+        self.reward_pic_path = "resources/barbara.png"
         self.random_draw_reset = True
         self.time = 0
         self.key_state = self._initialize_key_state()
@@ -56,6 +58,17 @@ class BarbaraJan(arcade.Window):
             self.draw_game()
 
     def draw_game(self):
+        if self.board.ending:
+            if self.game_on == GameState.KO_HONDA:
+                print("Karateka wins !")
+                beaten = self.honda_fighter
+            else:
+                print("Honda wins !")
+                beaten = self.karateka_fighter
+            time.sleep(2)
+
+            beaten.dead_image = arcade.load_texture(self.reward_pic_path)
+
         self.board.draw()
         self.draw_hp(self.honda_fighter)
         self.draw_hp(self.karateka_fighter)
@@ -97,7 +110,8 @@ class BarbaraJan(arcade.Window):
 
         elif self.game_on == GameState.KO_HONDA or self.game_on == GameState.KO_KARATEKA:
             self.show_ko_dialogue()
-        else:
+
+        if self.board.ending:
             self.board.dialog = True
             self.board.message_ptr = Data.reward
 

@@ -1,3 +1,5 @@
+import time
+
 import arcade
 from src.main.data import Data
 from src.main.project_globals import Constants, Globals
