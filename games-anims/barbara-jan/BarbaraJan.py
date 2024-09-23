@@ -92,7 +92,7 @@ class BarbaraJan(arcade.Window):
 
     def update(self, delta_time):
         self.time += delta_time
-        if self.time > 11 and self.game_on == GameState.INTRO:
+        if self.time > 1 and self.game_on == GameState.INTRO:
             self.game_on = GameState.FIGHT
         # print(self.time, end='\t')
 

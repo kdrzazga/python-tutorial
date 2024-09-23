@@ -1,5 +1,3 @@
-import time
-
 import arcade
 from src.main.data import Data
 from src.main.project_globals import Constants, Globals
@@ -35,6 +33,9 @@ class Board:
         self.bottom_image = arcade.load_texture("resources/bottom.png")
         self.bottom_offset = y_offset
 
+        self.barbara_image = arcade.load_texture("resources/barbara.PNG")
+        self.barbara_pos = (0.5 * Constants.SCREEN_WIDTH + 0.405 * self.barbara_image.width
+                            , self.arena_offset - 0.45 * self.barbara_image.height)
     def draw(self):
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
                                       Constants.SCREEN_HEIGHT - self.top_offset - self.top_image.height // 2,
@@ -58,8 +59,15 @@ class Board:
                                       Constants.SCREEN_HEIGHT - self.woman_pos[1]
                                       , self.woman_image.width, self.woman_image.height, self.woman_image)
 
+        self.draw_barbara()
+
         if self.dialog:
             self.draw_dialogue()
+
+    def draw_barbara(self):
+        arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH - self.barbara_pos[0],
+                                      Constants.SCREEN_HEIGHT - self.barbara_pos[1],
+                                      self.barbara_image.width, self.barbara_image.height, self.barbara_image)
 
     def draw_dialogue(self):
         msg = self.message_ptr[Globals.version]
