@@ -8,7 +8,7 @@ Flask>=2.2.3
 loguru>=0.7.0
 flask_httpauth
 pygame==2.5.0
-pillow>=10.0.0
+pillow=9.3.0
 playwright~=1.39.0
 cryptography~=41.0.5
 opencv-python-headless
