@@ -71,8 +71,9 @@ class Board:
 
     def draw_dialogue(self):
         msg = self.message_ptr[Globals.version]
+        fnt_size = self.message_ptr["size"]
         # print(msg)
-        arcade.draw_text(msg, Constants.SCREEN_WIDTH // 2 + 30, self.arena_offset + 110)
+        arcade.draw_text(msg, Constants.SCREEN_WIDTH // 3 - 90, self.arena_offset + 120, font_size=fnt_size)
 
     def apply_boundaries(self, fighter):
         if fighter.x >= Board.MAX_X:
