@@ -73,6 +73,10 @@ class BarbaraJan(arcade.Window):
             beaten.dead_image = self.reward_pic
 
         self.board.draw()
+
+        if not self.board.ending[1]:
+            self.board.draw_barbara()
+
         self.draw_hp(self.honda_fighter)
         self.draw_hp(self.karateka_fighter)
         self.karateka_fighter.draw()
