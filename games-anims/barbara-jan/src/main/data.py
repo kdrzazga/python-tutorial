@@ -35,7 +35,7 @@ class Data:
 
     fight_call = {
         "normal": "     Begin fight !",
-        "adult": base64.b64decode("TkFLVVJXSUFKQ0lFLCBDSVVMRSAh").decode('utf-8'),
+        "adult": base64.b64decode("TkFLVVJXSUFKQ0lFICE=").decode('utf-8'),
         "size": 22
     }
 
