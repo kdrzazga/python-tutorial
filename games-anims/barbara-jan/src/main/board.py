@@ -1,5 +1,3 @@
-import time
-
 import arcade
 from src.main.data import Data
 from src.main.project_globals import Constants, Globals
@@ -13,7 +11,7 @@ class Board:
         self.dialog = False
         self.message_ptr = Data.empty
 
-        self.ending = False
+        self.ending = [False, False]
 
         self.woman_pos = (270, 122)
         self.woman_image = arcade.load_texture(Globals.woman_image_path)
@@ -34,6 +32,10 @@ class Board:
         y_offset += self.arena_image.height
         self.bottom_image = arcade.load_texture("resources/bottom.png")
         self.bottom_offset = y_offset
+
+        self.barbara_image = arcade.load_texture("resources/barbara.PNG")
+        self.barbara_pos = (0.5 * Constants.SCREEN_WIDTH + 0.405 * self.barbara_image.width
+                            , self.arena_offset - 0.45 * self.barbara_image.height)
 
     def draw(self):
         arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH // 2,
@@ -61,10 +63,16 @@ class Board:
         if self.dialog:
             self.draw_dialogue()
 
+    def draw_barbara(self):
+        arcade.draw_texture_rectangle(Constants.SCREEN_WIDTH - self.barbara_pos[0],
+                                      Constants.SCREEN_HEIGHT - self.barbara_pos[1],
+                                      self.barbara_image.width, self.barbara_image.height, self.barbara_image)
+
     def draw_dialogue(self):
         msg = self.message_ptr[Globals.version]
+        fnt_size = self.message_ptr["size"]
         # print(msg)
-        arcade.draw_text(msg, Constants.SCREEN_WIDTH // 2 + 30, self.arena_offset + 110)
+        arcade.draw_text(msg, Constants.SCREEN_WIDTH // 3 - 90, self.arena_offset + 120, font_size=fnt_size)
 
     def apply_boundaries(self, fighter):
         if fighter.x >= Board.MAX_X:
