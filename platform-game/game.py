@@ -18,6 +18,15 @@ class Board:
         for platform in self.platforms:
             platform.draw()
 
+    def platform_under(self, player: PlatformPlayer) -> bool:
+        for i, platform in enumerate(self.platforms):
+            if (platform.center_x - platform.width // 2 < player.center_x < platform.center_x + platform.width // 2
+                    and platform.center_y - platform.height // 2 < player.center_y < platform.center_y
+                    + platform.height // 2):
+                print(f"Player on platform {i}")
+                return True
+
+        return False
 
 class MyGame(arcade.Window):
     def __init__(self):
@@ -33,14 +42,20 @@ class MyGame(arcade.Window):
 
     def update(self, delta_time):
         self.player.update()
+        self.handle_keys()
+
+    def handle_keys(self):
+        print(f"Platform under = {self.board.platform_under(self.player)}")
 
     def on_key_press(self, key, modifiers):
         self.player.info()
         if key == arcade.key.LEFT:
             if self.player.status != PlayerStatus.FALLING:
                 self.player.change_x = -5
+
         elif key == arcade.key.RIGHT:
-            self.player.change_x = 5
+            if self.player.status != PlayerStatus.FALLING:
+                self.player.change_x = 5
         elif key == arcade.key.UP and not self.player.jumping:
             self.player.change_y = Constants.JUMP_HEIGHT
             self.player.jumping = True

@@ -17,8 +17,8 @@ class PlatformPlayer(arcade.Sprite):
         super().__init__("player.png", 1)
         self.change_x = 0
         self.change_y = 0
-        self.center_x = 100
-        self.center_y = 180
+        self.center_x = 400
+        self.center_y = 30
         self.status: PlayerStatus = PlayerStatus.STANDING
 
     def update(self):
