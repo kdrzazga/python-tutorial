@@ -1,0 +1,6 @@
+class Constants:
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
+    PLAYER_SIZE = 50
+    GRAVITY = 1
+    JUMP_HEIGHT = 15
