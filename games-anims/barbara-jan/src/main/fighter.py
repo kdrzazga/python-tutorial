@@ -41,8 +41,8 @@ class Fighter:
 
     def handle_death(self):
         self.state = "dead"
-        fighter_name = self.get_fighter_name()
-        #print(fighter_name + " DEAD!")
+        # fighter_name = self.get_fighter_name()
+        # print(fighter_name + " DEAD!")
         return GameState.KO_KARATEKA if isinstance(self, Karateka) else GameState.KO_HONDA
 
     def get_fighter_name(self):
