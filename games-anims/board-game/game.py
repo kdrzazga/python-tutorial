@@ -1,19 +1,7 @@
-import enum
-
 import arcade
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-TILE_WIDTH = 52
-TILE_HEIGHT = 46
-BOARD_WIDTH = 15
-BOARD_HEIGHT = 12
-
-
-class BoardTile(enum.Enum):
-    EMPTY = 0
-    PLATFORM = 1
-    LADDER = 2
+from board import Board
+from globals import Constants
 
 
 class Player(arcade.Sprite):
@@ -21,29 +9,29 @@ class Player(arcade.Sprite):
         super().__init__()
         self.texture = arcade.load_texture("fighter.png")
         self.append_texture(self.texture)
-        self.width = TILE_WIDTH
-        self.height = TILE_HEIGHT
-        self.center_x = TILE_WIDTH // 2
-        self.center_y = TILE_HEIGHT - 8
+        self.width = Constants.TILE_WIDTH
+        self.height = Constants.TILE_HEIGHT
+        self.center_x = Constants.TILE_WIDTH // 2
+        self.center_y = Constants.TILE_HEIGHT - 8
         self.speed = 1
         self.board_position = [0, 0]
 
     def update(self):
-        if arcade.key.UP in self.keys and self.center_y < SCREEN_HEIGHT - self.height:
+        if arcade.key.UP in self.keys and self.center_y < Constants.SCREEN_HEIGHT - self.height:
             self.center_y += self.speed
         if arcade.key.DOWN in self.keys and self.center_y > self.height // 2:
             self.center_y -= self.speed
 
         if arcade.key.LEFT in self.keys and self.center_x > self.width // 2:
             self.center_x -= self.speed
-        if arcade.key.RIGHT in self.keys and self.center_x < SCREEN_WIDTH - self.width // 2:
+        if arcade.key.RIGHT in self.keys and self.center_x < Constants.SCREEN_WIDTH - self.width // 2:
             self.center_x += self.speed
 
         self.snap_to_board_tile()
 
     def snap_to_board_tile(self):
-        self.board_position[0] = round(self.center_x / TILE_WIDTH)
-        self.board_position[1] = round(self.center_y / TILE_HEIGHT)
+        self.board_position[0] = round(self.center_x / Constants.TILE_WIDTH)
+        self.board_position[1] = round(self.center_y / Constants.TILE_HEIGHT)
 
     def draw(self, *, filter=None, pixelated=None, blend_function=None):
         super().draw()
@@ -52,37 +40,10 @@ class Player(arcade.Sprite):
                                       self.texture)
 
 
-class Board:
-    def __init__(self):
-        self.tiles = [[BoardTile.EMPTY for _ in range(BOARD_WIDTH)] for _ in range(BOARD_HEIGHT)]
-
-        for x in range(5, BOARD_WIDTH - 1):
-            self.tiles[10][x] = BoardTile.PLATFORM
-        self.tiles[BOARD_HEIGHT - 1][10] = BoardTile.LADDER
-
-        for x in range(0, BOARD_WIDTH):
-            self.tiles[0][x] = BoardTile.PLATFORM
-
-        self.platform_image = arcade.load_texture("platform.png")
-
-    def draw(self):
-        for row in range(BOARD_HEIGHT):
-            for col in range(BOARD_WIDTH):
-                tile = self.tiles[row][col]
-
-                color = (35, 15, 15)
-                x = col * TILE_WIDTH + TILE_WIDTH // 2 + 1
-                y = row * TILE_HEIGHT + TILE_HEIGHT // 2 + 1
-                arcade.draw_rectangle_outline(x, y, TILE_WIDTH, TILE_HEIGHT, color)
-                if tile == BoardTile.PLATFORM:
-                    arcade.draw_texture_rectangle(x, y,
-                                                  self.platform_image.width, self.platform_image.height,
-                                                  self.platform_image)
-
 
 class Game(arcade.Window):
     def __init__(self):
-        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Platform Game")
+        super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Platform Game")
         self.player = Player()
         self.board = Board()
         self.player.keys = set()
