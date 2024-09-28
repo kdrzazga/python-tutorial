@@ -33,7 +33,7 @@ class BarbaraJan(arcade.Window):
         self.board = Board()
         self.honda_fighter = Honda(self.board.arena_offset)
         self.karateka_fighter = Karateka(self.board.arena_offset)
-        reward_pic_path = "resources/barbara.png"
+        reward_pic_path = "resources/Barbara/b_rew.png"
         self.reward_pic = arcade.load_texture(reward_pic_path)
         self.random_draw_reset = True
         self.time = 0
