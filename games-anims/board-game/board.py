@@ -6,11 +6,6 @@ from globals import Constants, BoardTile
 class Board:
     def __init__(self):
         self.tiles = [[BoardTile.EMPTY for _ in range(Constants.BOARD_WIDTH)] for _ in range(Constants.BOARD_HEIGHT)]
-
-        for x in range(5, Constants.BOARD_WIDTH - 1):
-            self.tiles[10][x] = BoardTile.PLATFORM
-        self.tiles[Constants.BOARD_HEIGHT - 1][10] = BoardTile.LADDER
-
         for x in range(0, Constants.BOARD_WIDTH):
             self.tiles[0][x] = BoardTile.PLATFORM
 

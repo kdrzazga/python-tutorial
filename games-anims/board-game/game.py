@@ -1,6 +1,6 @@
 import arcade
 
-from board import Board
+from factories import BoardFactory
 from globals import Constants
 
 
@@ -45,7 +45,7 @@ class Game(arcade.Window):
     def __init__(self):
         super().__init__(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, "Platform Game")
         self.player = Player()
-        self.board = Board()
+        self.board = BoardFactory.create_room1()
         self.player.keys = set()
 
     def on_draw(self):
