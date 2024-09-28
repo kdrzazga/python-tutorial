@@ -24,7 +24,7 @@ class Player(arcade.Sprite):
         self.width = TILE_WIDTH
         self.height = TILE_HEIGHT
         self.center_x = TILE_WIDTH // 2
-        self.center_y = TILE_HEIGHT // 2
+        self.center_y = TILE_HEIGHT - 8
         self.speed = 1
         self.board_position = [0, 0]
 
@@ -34,13 +34,14 @@ class Player(arcade.Sprite):
         if arcade.key.DOWN in self.keys and self.center_y > self.height // 2:
             self.center_y -= self.speed
 
-        # Move horizontally with "left" and "right" keys
         if arcade.key.LEFT in self.keys and self.center_x > self.width // 2:
             self.center_x -= self.speed
         if arcade.key.RIGHT in self.keys and self.center_x < SCREEN_WIDTH - self.width // 2:
             self.center_x += self.speed
 
-        # Snap to the closest tile
+        self.snap_to_board_tile()
+
+    def snap_to_board_tile(self):
         self.board_position[0] = round(self.center_x / TILE_WIDTH)
         self.board_position[1] = round(self.center_y / TILE_HEIGHT)
 
@@ -54,10 +55,13 @@ class Player(arcade.Sprite):
 class Board:
     def __init__(self):
         self.tiles = [[BoardTile.EMPTY for _ in range(BOARD_WIDTH)] for _ in range(BOARD_HEIGHT)]
-        # Create some platforms for testing
+
         for x in range(5, BOARD_WIDTH - 1):
             self.tiles[10][x] = BoardTile.PLATFORM
         self.tiles[BOARD_HEIGHT - 1][10] = BoardTile.LADDER
+
+        for x in range(0, BOARD_WIDTH):
+            self.tiles[0][x] = BoardTile.PLATFORM
 
         self.platform_image = arcade.load_texture("platform.png")
 
@@ -65,8 +69,8 @@ class Board:
         for row in range(BOARD_HEIGHT):
             for col in range(BOARD_WIDTH):
                 tile = self.tiles[row][col]
-                # Use WHITE for empty tiles or define your own color with alpha
-                color = (235, 15, 15)
+
+                color = (35, 15, 15)
                 x = col * TILE_WIDTH + TILE_WIDTH // 2 + 1
                 y = row * TILE_HEIGHT + TILE_HEIGHT // 2 + 1
                 arcade.draw_rectangle_outline(x, y, TILE_WIDTH, TILE_HEIGHT, color)
