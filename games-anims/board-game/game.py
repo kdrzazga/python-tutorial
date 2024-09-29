@@ -1,8 +1,15 @@
+from enum import Enum
+
 import arcade
 
 from factories import BoardFactory
 from globals import Constants
 
+
+class PlayerState(Enum):
+    STANDING = 0
+    RUNNING = 1
+    FALLING = 2
 
 class Player(arcade.Sprite):
     def __init__(self):
@@ -15,8 +22,20 @@ class Player(arcade.Sprite):
         self.center_y = Constants.TILE_HEIGHT - 8
         self.speed = 1
         self.board_position = [0, 0]
+        self.state = PlayerState.STANDING
 
     def update(self):
+        match self.state:
+            case PlayerState.STANDING:
+                self.update_running()
+            case PlayerState.RUNNING:
+                self.update_running()
+            case PlayerState.FALLING:
+                print("Falling")
+
+        self.snap_to_board_tile()
+
+    def update_running(self):
         if arcade.key.UP in self.keys and self.center_y < Constants.SCREEN_HEIGHT - self.height:
             self.center_y += self.speed
         if arcade.key.DOWN in self.keys and self.center_y > self.height // 2:
@@ -27,7 +46,6 @@ class Player(arcade.Sprite):
         if arcade.key.RIGHT in self.keys and self.center_x < Constants.SCREEN_WIDTH - self.width // 2:
             self.center_x += self.speed
 
-        self.snap_to_board_tile()
 
     def snap_to_board_tile(self):
         self.board_position[0] = round(self.center_x / Constants.TILE_WIDTH)
