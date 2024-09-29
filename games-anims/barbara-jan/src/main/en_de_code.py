@@ -43,7 +43,7 @@ class Viewer(arcade.Window):
 def main():
     root_dir = os.path.dirname(os.path.abspath(__file__))
     texture = decode_base64_to_texture(os.path.join(root_dir, "..//..//resources", "barbar.txt"))
-    game = Viewer(134, 237, "Base64 PNG Viewer", texture)
+    Viewer(134, 237, "Base64 PNG Viewer", texture)
     arcade.run()
 
 

@@ -17,7 +17,7 @@ def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
     d = math.fabs(honda_x - karateka_x)
     fighter_width = honda_width if d < 0 else karateka_width
     d -= fighter_width // 2
-    #print(f"Distance {d}")
+    # print(f"Distance {d}")
     return d <= Constants.REQUIRED_HIT_DISTANCE
 
 
