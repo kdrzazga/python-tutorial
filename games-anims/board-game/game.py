@@ -2,6 +2,7 @@ from enum import Enum
 
 import arcade
 
+from board import Board
 from factories import BoardFactory
 from globals import Constants
 
@@ -10,6 +11,7 @@ class PlayerState(Enum):
     STANDING = 0
     RUNNING = 1
     FALLING = 2
+
 
 class Player(arcade.Sprite):
     def __init__(self):
@@ -24,28 +26,32 @@ class Player(arcade.Sprite):
         self.board_position = [0, 0]
         self.state = PlayerState.STANDING
 
-    def update(self):
+    def update(self, board: Board):
         match self.state:
             case PlayerState.STANDING:
-                self.update_running()
+                self.update_running(board)
             case PlayerState.RUNNING:
-                self.update_running()
+                self.update_running(board)
             case PlayerState.FALLING:
                 print("Falling")
 
         self.snap_to_board_tile()
 
-    def update_running(self):
+    def update_running(self, board: Board):
         if arcade.key.UP in self.keys and self.center_y < Constants.SCREEN_HEIGHT - self.height:
-            self.center_y += self.speed
-        if arcade.key.DOWN in self.keys and self.center_y > self.height // 2:
-            self.center_y -= self.speed
+            if board.is_ladder_above_or_at(self.board_position):
+                self.center_y += self.speed  # Move up if there's a ladder above
+            else:
+                print("jump")
+
+        elif arcade.key.DOWN in self.keys and self.center_y < Constants.SCREEN_HEIGHT - self.height:
+            if board.is_ladder_below_or_at(self.board_position):
+                self.center_y -= self.speed  # Move down if there's a ladder above
 
         if arcade.key.LEFT in self.keys and self.center_x > self.width // 2:
             self.center_x -= self.speed
-        if arcade.key.RIGHT in self.keys and self.center_x < Constants.SCREEN_WIDTH - self.width // 2:
+        elif arcade.key.RIGHT in self.keys and self.center_x < Constants.SCREEN_WIDTH - self.width // 2:
             self.center_x += self.speed
-
 
     def snap_to_board_tile(self):
         self.board_position[0] = round(self.center_x / Constants.TILE_WIDTH)
@@ -56,7 +62,6 @@ class Player(arcade.Sprite):
         arcade.draw_texture_rectangle(self.center_x, self.center_y,
                                       self.texture.width, self.texture.height,
                                       self.texture)
-
 
 
 class Game(arcade.Window):
@@ -72,7 +77,7 @@ class Game(arcade.Window):
         self.player.draw()
 
     def update(self, delta_time):
-        self.player.update()
+        self.player.update(self.board)
 
     def on_key_press(self, key, modifiers):
         self.player.keys.add(key)

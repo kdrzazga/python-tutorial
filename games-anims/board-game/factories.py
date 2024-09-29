@@ -17,7 +17,7 @@ class BoardFactory:
         for x in range(2 * Constants.BOARD_WIDTH // 3, Constants.BOARD_WIDTH):
             b.tiles[Constants.BOARD_HEIGHT // 2 - 3][x] = BoardTile.PLATFORM
 
-        for y in range(4, 12):
+        for y in range(3, 12):
             b.tiles[Constants.BOARD_HEIGHT - y][7] = BoardTile.LADDER
 
         return b
