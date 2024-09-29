@@ -12,13 +12,17 @@ class Board:
         self.platform_image = arcade.load_texture("platform.png")
         self.ladder_image = arcade.load_texture("ladder.png")
 
-    def is_ladder_above_or_at(self, board_position):
-        x, y = board_position[0], board_position[1]  # Check the current tile
-
-        # Check current tile
+    def is_ladder_at(self, board_position):
+        x, y = board_position[0], board_position[1]
         if 0 <= x < Constants.BOARD_WIDTH and 0 <= y < Constants.BOARD_HEIGHT:
             if self.tiles[y][x] == BoardTile.LADDER:
                 return True
+
+    def is_ladder_above_or_at(self, board_position):
+        x, y = board_position[0], board_position[1]
+
+        if self.is_ladder_at(board_position):
+            return True
 
         # Now check the tile directly above
         y = board_position[1] + 1
@@ -28,10 +32,8 @@ class Board:
     def is_ladder_below_or_at(self, board_position):
         x, y = board_position[0], board_position[1]  # Check the current tile
 
-        # Check current tile
-        if 0 <= x < Constants.BOARD_WIDTH and 0 <= y < Constants.BOARD_HEIGHT:
-            if self.tiles[y][x] == BoardTile.LADDER:
-                return True
+        if self.is_ladder_at(board_position):
+            return True
 
         # Now check the tile directly below
         y = board_position[1] - 1
