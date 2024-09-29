@@ -22,11 +22,12 @@ class Player(arcade.Sprite):
         self.height = Constants.TILE_HEIGHT
         self.center_x = Constants.TILE_WIDTH // 2
         self.center_y = Constants.TILE_HEIGHT - 8
-        self.speed = 1
+        self.speed = 1.5
         self.board_position = [0, 0]
         self.state = PlayerState.STANDING
 
     def update(self, board: Board):
+        self.conditional_falling(board)
         match self.state:
             case PlayerState.STANDING:
                 self.update_running(board)
@@ -36,6 +37,15 @@ class Player(arcade.Sprite):
                 print("Falling")
 
         self.snap_to_board_tile()
+
+    def conditional_falling(self, board: Board):
+        below_position = [self.board_position[0], self.board_position[1] - 1]
+        if not board.is_platform_at(below_position):
+            self.center_y -= 0.5
+        else:
+            self.state = PlayerState.STANDING
+            self.center_y = (self.board_position[
+                                 1] * Constants.TILE_HEIGHT) + Constants.TILE_HEIGHT - 8
 
     def update_running(self, board: Board):
         if arcade.key.UP in self.keys and self.center_y < Constants.SCREEN_HEIGHT - self.height:

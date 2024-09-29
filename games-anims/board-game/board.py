@@ -12,13 +12,14 @@ class Board:
         self.platform_image = arcade.load_texture("platform.png")
         self.ladder_image = arcade.load_texture("ladder.png")
 
-    def is_ladder_at(self, board_position):
+    def is_ladder_at(self, board_position: tuple):
         x, y = board_position[0], board_position[1]
         if 0 <= x < Constants.BOARD_WIDTH and 0 <= y < Constants.BOARD_HEIGHT:
             if self.tiles[y][x] == BoardTile.LADDER:
                 return True
+        return False
 
-    def is_ladder_above_or_at(self, board_position):
+    def is_ladder_above_or_at(self, board_position: tuple):
         x, y = board_position[0], board_position[1]
 
         if self.is_ladder_at(board_position):
@@ -29,7 +30,7 @@ class Board:
         if 0 <= x < Constants.BOARD_WIDTH and 0 <= y < Constants.BOARD_HEIGHT:
             return self.tiles[y][x] == BoardTile.LADDER
 
-    def is_ladder_below_or_at(self, board_position):
+    def is_ladder_below_or_at(self, board_position: tuple):
         x, y = board_position[0], board_position[1]  # Check the current tile
 
         if self.is_ladder_at(board_position):
@@ -40,6 +41,12 @@ class Board:
         if 0 <= x < Constants.BOARD_WIDTH and 0 <= y < Constants.BOARD_HEIGHT:
             return self.tiles[y][x] == BoardTile.LADDER
 
+        return False
+
+    def is_platform_at(self, board_position: tuple):
+        x, y = board_position
+        if 0 <= x < Constants.BOARD_WIDTH and 0 <= y < Constants.BOARD_HEIGHT:
+            return self.tiles[y][x] == BoardTile.PLATFORM
         return False
 
     def draw(self):
