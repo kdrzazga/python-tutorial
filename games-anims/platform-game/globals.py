@@ -8,7 +8,7 @@ class Constants:
     TILE_HEIGHT = 46
     BOARD_WIDTH = 15
     BOARD_HEIGHT = 12
-    GRAVITY = 2
+    GRAVITY = 1.5
 
 
 class BoardTile(Enum):

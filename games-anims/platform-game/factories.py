@@ -5,7 +5,7 @@ from globals import Constants, BoardTile
 class BoardFactory:
 
     @staticmethod
-    def create_room1():
+    def create_room1() -> Board:
         b = Board()
 
         for x in range(0, 2 * Constants.BOARD_WIDTH // 3):
