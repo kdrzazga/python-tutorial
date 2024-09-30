@@ -17,12 +17,12 @@ class Sprite:
         self.kick_phase = ''
         self.walk_phase = ''
         self.walk_phases = deque(['w1', 'w2', 'w3'], maxlen=3)
-        self._cyclic_iterator = cycle(self.walk_phases)
+        self._cyclic_iterator: cycle[str] = cycle(self.walk_phases)
         self.counter = 0
         self.anim_counter_threshold = 1
         self.step_delay_counter = 0
         self.looking_right = True
-        self.color = (255, 0, 0)
+        self.color: tuple = 255, 0, 0
 
     def stand(self):
         self.kick_phase = ''

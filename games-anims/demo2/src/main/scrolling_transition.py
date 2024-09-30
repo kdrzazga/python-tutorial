@@ -1,28 +1,29 @@
 import logging
-import pygame
 import sys
 
+import pygame
+from pygame import Surface
 from src.main.utils import Constants
 
 
 class ScrollingTransition:
     TOTAL_DISTANCE = 12
 
-    def __init__(self, screen):
-        self.screen = screen
-        self.screenshot = None
+    def __init__(self, screen: Surface):
+        self.screen: Surface = screen
+        self.screenshot: Surface = None
         self.clock = pygame.time.Clock()
         self.max_distance = Constants.WIDTH // 2
-        self.c64half = pygame.image.load("src/main/resources/c64half.png")
+        self.c64half: Surface = pygame.image.load("src/main/resources/c64half.png")
 
-    def scroll_right(self):
+    def scroll_right(self) -> None:
         scroll_distance = 0
         scroll_speed = 1 / 6
         c64half_x = -self.max_distance
-        self.screenshot = pygame.Surface((Constants.WIDTH, Constants.HEIGHT))
+        self.screenshot = Surface((Constants.WIDTH, Constants.HEIGHT))
         self.screenshot.blit(self.screen, (0, 0))
 
-        bitmap = pygame.Surface((3 * Constants.WIDTH // 2, Constants.HEIGHT))
+        bitmap = Surface((3 * Constants.WIDTH // 2, Constants.HEIGHT))
         bitmap.blit(self.c64half, (0, 0))
         bitmap.blit(self.screenshot, (Constants.WIDTH // 2 - 1, 0))
 
@@ -42,16 +43,16 @@ class ScrollingTransition:
                 break
             pygame.time.delay(2)
 
-    def scroll_and_fill(self):
+    def scroll_and_fill(self) -> None:
         scroll_distance = 0
-        running = True
+        running: bool = True
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-            self.screenshot = pygame.Surface((Constants.WIDTH, Constants.HEIGHT))
+            self.screenshot = Surface((Constants.WIDTH, Constants.HEIGHT))
             self.screenshot.blit(self.screen, (0, 0))
 
             if scroll_distance < self.TOTAL_DISTANCE:
@@ -79,7 +80,7 @@ class ScrollingTransition:
 
 if __name__ == "__main__":
     pygame.init()
-    screen = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
+    screen: Surface = pygame.display.set_mode((Constants.WIDTH, Constants.HEIGHT))
     pygame.display.set_caption("Scroll and Fill")
     scrolling_transition = ScrollingTransition(screen)
     scrolling_transition.draw_background("src/main/resources/amiga.png")

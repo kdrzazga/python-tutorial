@@ -2,6 +2,7 @@ import logging
 import sys
 
 import pygame
+from pygame import Surface, Rect
 
 
 class Ball:
@@ -51,7 +52,7 @@ class Ball:
 class BallAnimation:
     BALL_COLOR = (255, 255, 255)
 
-    def __init__(self, screen, boundaries, bg_color, bounce_wall):
+    def __init__(self, screen: Surface, boundaries: Rect, bg_color: tuple, bounce_wall: int):
         self.bounce_wall_x = bounce_wall
         self.rect = boundaries
         self.screen = screen

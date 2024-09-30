@@ -1,6 +1,7 @@
 import logging
 
 import pygame
+from pygame import Surface, Rect
 from src.main.computer import Computer
 from src.main.utils import Utils, Constants
 
@@ -9,11 +10,11 @@ class Amiga(Computer):
     h = 70
     window_x = 160 - 3
 
-    def __init__(self, screen):
+    def __init__(self, screen: Surface):
         super().__init__(Constants.AMIGA_BLUE, Constants.BLUE)
         self.screen = screen
 
-        self.background_bitmap = Utils.load_background("src/main/resources/amiga.png")
+        self.background_bitmap: Surface = Utils.load_background("src/main/resources/amiga.png")
         self.window_bitmap = pygame.image.load("src/main/resources/window2.png")
         self.streetfigher_icon_bitmap = pygame.image.load("src/main/resources/sf.png")
 
@@ -102,7 +103,7 @@ class Amiga(Computer):
 
         pygame.time.delay(3000)
 
-    def window_hit_bottom(self):
+    def window_hit_bottom(self) -> bool:
         wh = self.window_bitmap.get_height()
         bh = self.background_bitmap.get_height()
 
@@ -110,15 +111,15 @@ class Amiga(Computer):
 
         return wh + self.h > bh - 22
 
-    def get_catwalk_rect(self):
+    def get_catwalk_rect(self) -> Rect:
         x = -10
         y = self.background_bitmap.get_height() - 88
         width = self.window_x + 3
         height = 88
 
-        return pygame.Rect(x, y, width, height)
+        return Rect(x, y, width, height)
 
-    def honda_deflects_ball(self, x):
+    def honda_deflects_ball(self, x) -> None:
         self.honda.y = 485
         self.honda.punch()
         self.draw_honda(Constants.BLUE)

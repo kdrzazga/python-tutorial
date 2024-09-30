@@ -1,4 +1,5 @@
 import arcade
+from arcade import Texture
 from src.main.data import Data
 from src.main.project_globals import Constants, Globals
 
@@ -9,31 +10,31 @@ class Board:
 
     def __init__(self):
         self.dialog = False
-        self.message_ptr = Data.empty
+        self.message_ptr: dict = Data.empty
 
         self.ending = [False, False]
 
-        self.woman_pos = (270, 122)
-        self.woman_image = arcade.load_texture(Globals.woman_image_path)
+        self.woman_pos: tuple = 270, 122
+        self.woman_image: Texture = arcade.load_texture(Globals.woman_image_path)
 
         y_offset = 0
-        self.top_image = arcade.load_texture("resources/top.png")
+        self.top_image: Texture = arcade.load_texture("resources/top.png")
         self.top_offset = y_offset
 
         y_offset += self.top_image.height
-        self.throne_image = arcade.load_texture("resources/throne.png")
-        self.throne_dialog_image = arcade.load_texture("resources/throne_dialog.png")
+        self.throne_image: Texture = arcade.load_texture("resources/throne.png")
+        self.throne_dialog_image: Texture = arcade.load_texture("resources/throne_dialog.png")
         self.throne_offset = y_offset
 
         y_offset += self.throne_image.height
-        self.arena_image = arcade.load_texture("resources/arena.png")
+        self.arena_image: Texture = arcade.load_texture("resources/arena.png")
         self.arena_offset = y_offset
 
         y_offset += self.arena_image.height
-        self.bottom_image = arcade.load_texture("resources/bottom.png")
+        self.bottom_image: Texture = arcade.load_texture("resources/bottom.png")
         self.bottom_offset = y_offset
 
-        self.barbara_image = arcade.load_texture("resources/barbara.PNG")
+        self.barbara_image: Texture = arcade.load_texture("resources/barbara.PNG")
         self.barbara_pos = (0.5 * Constants.SCREEN_WIDTH + 0.405 * self.barbara_image.width
                             , self.arena_offset - 0.45 * self.barbara_image.height)
 
@@ -69,12 +70,12 @@ class Board:
                                       self.barbara_image.width, self.barbara_image.height, self.barbara_image)
 
     def draw_dialogue(self):
-        msg = self.message_ptr[Globals.version]
+        msg: str = self.message_ptr[Globals.version]
         fnt_size = self.message_ptr["size"]
         # print(msg)
         arcade.draw_text(msg, Constants.SCREEN_WIDTH // 3 - 90, self.arena_offset + 120, font_size=fnt_size)
 
-    def apply_boundaries(self, fighter):
+    def apply_boundaries(self, fighter) -> None:
         if fighter.x >= Board.MAX_X:
             fighter.x = Board.MAX_X - fighter.speed
         elif fighter.x <= Board.MIN_X:

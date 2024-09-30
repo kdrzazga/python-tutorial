@@ -1,17 +1,18 @@
 import logging
-import pygame
-import random
 import math
-
-from PIL import Image, ImageDraw, ImageFont
+import random
 from collections import deque
 from itertools import cycle
+
+import pygame
+from PIL import ImageFont
+from pygame import Surface
 
 
 class Scroll:
     BG_COLOR = (124, 112, 218)
 
-    def __init__(self, screen, canvas_width, canvas_height, scroll_speed):
+    def __init__(self, screen: Surface, canvas_width, canvas_height, scroll_speed):
         self.image_path = "src/main/resources/eod.png"
 
         self.caption_font = ImageFont.truetype("src/main/resources/AGENCYR.ttf", 20)
@@ -28,13 +29,13 @@ class Scroll:
         self.scroll_speed = scroll_speed
         self.background_x = 0
 
-        self.screen = screen
+        self.screen: Surface = screen
         self.clock = pygame.time.Clock()
 
         self.background_bitmap = pygame.image.load(self.image_path)
         self.double_bitmap_width = self.background_bitmap.get_width() * 2
         self.header_height = 40
-        self.double_bitmap = pygame.Surface((self.double_bitmap_width, self.canvas_height))
+        self.double_bitmap: Surface = pygame.Surface((self.double_bitmap_width, self.canvas_height))
         self.double_bitmap.blit(self.background_bitmap, (0, 0))
         self.double_bitmap.blit(self.background_bitmap, (self.background_bitmap.get_width(), 0))
 
@@ -71,11 +72,11 @@ class Scroll:
         pygame.display.flip()
         self.clock.tick(76)
 
-    def create_caption_surface(self, width, height):
+    def create_caption_surface(self, width, height) -> Surface:
         font = pygame.font.Font(None, 36)
-        rendered_text = font.render(self.get_text(), True, self.text_color)
-        
-        caption_surface = pygame.Surface((width, height))
+        rendered_text: Surface = font.render(self.get_text(), True, self.text_color)
+
+        caption_surface = Surface((width, height))
         caption_surface.fill(self.BG_COLOR)
         caption_surface.blit(rendered_text, (10, 10))
 
@@ -83,10 +84,10 @@ class Scroll:
             caption_surface = self.create_text_cover(caption_surface)
         return caption_surface
 
-    def get_color(self):
+    def get_color(self) -> tuple:
         return random.choice([(255, 0, 0), (0, 255, 0), (255, 255, 255), (255, 255, 0), (255, 0, 255)])
 
-    def create_text_cover(self, caption_surface):
+    def create_text_cover(self, caption_surface: Surface) -> Surface:
         self.adapt_square_size()
         spacing = 36
         for x in range(10, caption_surface.get_width(), spacing):
@@ -100,7 +101,7 @@ class Scroll:
         else:
             self.square_size = 0
 
-    def get_text(self):
+    def get_text(self) -> str:
         counter_max = 1499
         self.counter += 1
         if self.counter >= counter_max:

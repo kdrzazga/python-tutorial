@@ -1,4 +1,5 @@
 import pygame
+from pygame import Surface
 
 
 class Constants:
@@ -22,13 +23,13 @@ class Utils:
     color_index = 0
 
     @staticmethod
-    def get_next_color():
+    def get_next_color() -> tuple:
         available_colors = (Constants.GREEN, Constants.WHITE, Constants.CYAN, Constants.RED, Constants.YELLOW, (34, 177, 76), Constants.PURPLE, Constants.BROWN)
         Utils.color_index = (Utils.color_index + 1) % len(available_colors)
         return available_colors[Utils.color_index]
 
     @staticmethod
-    def load_background(path):
+    def load_background(path) -> Surface:
         return pygame.image.load(path)
 
     @staticmethod

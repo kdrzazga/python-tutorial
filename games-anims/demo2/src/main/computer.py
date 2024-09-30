@@ -2,6 +2,7 @@ import pygame
 
 from collections import deque
 
+from pygame import Surface
 from src.main.karateka import Karateka
 from src.main.utils import Constants, Utils, ClearScreen
 
@@ -51,7 +52,7 @@ class Computer:
 
         self.blurr_sequence = deque((blurred_honda_bitmap1, blurred_honda_bitmap2, blurred_honda_bitmap3))
 
-    def change_resolution(self, image, multiplier):
+    def change_resolution(self, image, multiplier) -> Surface:
         multiplier += 1
         original_width, original_height = image.get_size()
         new_image = pygame.Surface((original_width, original_height))
@@ -158,7 +159,7 @@ class Computer:
         self.clear_sprite(karateka_index)
         k.stand()
 
-    def check_ball_kill(self, ball_x):
+    def check_ball_kill(self, ball_x) -> None:
         for index, karateka in enumerate(self.get_karatekas_array()):
             if karateka.walk_phase != 'lying':
                 if karateka.x <= ball_x <= karateka.x + 30:
@@ -166,14 +167,14 @@ class Computer:
                     self.clear_karateka(karateka)
                     self.kill_karateka(index)
 
-    def kill_karateka(self, sprite_index):
+    def kill_karateka(self, sprite_index: int):
         karateka = self.get_karatekas_array()[sprite_index]
 
         karateka.walk_phase = 'lying'
         karateka.y += 24
         self.draw_sprite(karateka)
 
-    def question_mark(self):
+    def question_mark(self) -> None:
         x = self.karateka.x + self.sprite_bitmap.get_width() / 2
         y = self.karateka.y - self.sprite_bitmap.get_height() / 2
 
@@ -200,10 +201,10 @@ class Computer:
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)
 
-    def get_bg_color(self):
+    def get_bg_color(self) -> tuple:
         return self.bg_color
 
-    def get_karatekas_array(self):
+    def get_karatekas_array(self) -> list:
         return [self.karateka, self.karatekaGreen, self.karatekaRed, self.karatekaCyan, self.karatekaYellow, self.karatekaBrown, self.karatekaPurple]
 
     def get_karateka(self, color):

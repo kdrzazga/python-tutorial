@@ -52,6 +52,6 @@ class Data:
     }
 
     @staticmethod
-    def get_random():
+    def get_random() -> dict:
         shout = [Data.general_insult, Data.best_mage, Data.damn_it]
         return random.choice(shout)
