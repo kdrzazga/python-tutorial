@@ -1,16 +1,16 @@
 import math
-from enum import Enum
+from enum import Enum, auto
 
 import arcade
 from src.main.project_globals import Globals, Constants
 
 
 class GameState(Enum):
-    INTRO = 1
-    FIGHT = 2
-    KO_HONDA = 3
-    KO_KARATEKA = 4
-    END = 5
+    INTRO = auto()
+    FIGHT = auto()
+    KO_HONDA = auto()
+    KO_KARATEKA = auto()
+    END = auto()
 
 
 def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
