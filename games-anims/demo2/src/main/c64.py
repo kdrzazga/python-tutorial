@@ -2,6 +2,7 @@ import logging
 
 import pygame
 from PIL import Image, ImageDraw, ImageFont
+from pygame import Surface
 from src.main.computer import Computer
 from src.main.utils import Utils, Constants
 
@@ -43,7 +44,7 @@ class C64(Computer):
         self.screen = screen
         self.screenshot = None
         self.location = (52, 77)
-        self.background_bitmap = Utils.load_background("src/main/resources/c64slim.png")
+        self.background_bitmap: Surface = Utils.load_background("src/main/resources/c64slim.png")
         self.font_path = "src/main/resources/C64_Pro_Mono-STYLE.ttf"
         self.caption_font = ImageFont.truetype(self.font_path, 18)
         self.cursor = Cursor(self.location)

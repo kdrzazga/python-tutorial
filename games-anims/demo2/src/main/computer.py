@@ -1,7 +1,7 @@
-import pygame
-
 from collections import deque
 
+import pygame
+from pygame import Surface
 from src.main.karateka import Karateka
 from src.main.utils import Constants, Utils, ClearScreen
 
@@ -14,12 +14,12 @@ class Computer:
     karatekaBrown = Karateka(380, Constants.KARATEKA_Y, Constants.BROWN, False)
     karatekaPurple = Karateka(610, Constants.KARATEKA_Y, Constants.PURPLE, False)
 
-    def __init__(self, bg_color1, bg_color2):
+    def __init__(self, bg_color1: tuple[int, int, int], bg_color2):
         self.screen = None
         self.clock = pygame.time.Clock()
         self.bg_color = bg_color1
-        self.karateka = None # will be created in factory
-        self.honda = None # will be created in factory
+        self.karateka = None  # will be created in factory
+        self.honda = None  # will be created in factory
         self.location = (0, 0)
         self.sprite_bitmap = None
         self.qm_bitmap = pygame.image.load("src/main/resources/qm.png").convert_alpha()
@@ -47,15 +47,15 @@ class Computer:
                                      honda3_bitmap))
         self.walk_sequence = deque((step1_bitmap, honda1_bitmap, step2_bitmap))
         self.punch_sequence = deque((honda1_bitmap, punch_low_right_bitmap, honda2_bitmap, punch_low_left_bitmap,
-                                     honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap ))
+                                     honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap))
 
         self.blurr_sequence = deque((blurred_honda_bitmap1, blurred_honda_bitmap2, blurred_honda_bitmap3))
 
-    def change_resolution(self, image, multiplier):
+    def change_resolution(self, image, multiplier) -> Surface:
         multiplier += 1
         original_width, original_height = image.get_size()
         new_image = pygame.Surface((original_width, original_height))
-    
+
         for x in range(0, original_width, multiplier):
             for y in range(0, original_height, multiplier):
                 pixel_color = image.get_at((x, y))
@@ -65,7 +65,7 @@ class Computer:
                             new_x = x + dx
                             new_y = y + dy
                             new_image.set_at((new_x, new_y), pixel_color)
-    
+
         return new_image
 
     def clear_sprite(self, sprite_index):
@@ -100,12 +100,13 @@ class Computer:
         y = self.honda.y - self.sprite_bitmap.get_height() / 2
 
         pygame.draw.rect(self.screen, bg_color,
-                         ((self.honda.x - self.honda.width // 2 - 15, y - 10), (self.honda.width + 20, self.honda.height + 10)))
+                         ((self.honda.x - self.honda.width // 2 - 15, y - 10),
+                          (self.honda.width + 20, self.honda.height + 10)))
         self.draw_sprite(self.honda)
 
     def draw_karateka(self):
         for karateka in self.get_karatekas_array():
-            if karateka.visible:                
+            if karateka.visible:
                 self.draw_sprite(karateka)
 
     def start_walking_sounds(self):
@@ -114,7 +115,7 @@ class Computer:
     def stop_walking_sounds(self):
         self.walking_sound.stop()
 
-    def walk_honda(self, duration_ms, over_window = True):
+    def walk_honda(self, duration_ms, over_window=True):
         start_time = pygame.time.get_ticks()
         while pygame.time.get_ticks() - start_time <= duration_ms:
             self.honda.step()
@@ -124,7 +125,7 @@ class Computer:
             else:
                 self.draw_c64_right_bottom()
             self.draw_sprite(self.honda)
-            
+
             self.clock.tick(19)
 
     def walk_karateka(self, index, duration_ms, open_pass=False, bulk_walk=False):
@@ -158,7 +159,7 @@ class Computer:
         self.clear_sprite(karateka_index)
         k.stand()
 
-    def check_ball_kill(self, ball_x):
+    def check_ball_kill(self, ball_x) -> None:
         for index, karateka in enumerate(self.get_karatekas_array()):
             if karateka.walk_phase != 'lying':
                 if karateka.x <= ball_x <= karateka.x + 30:
@@ -166,14 +167,14 @@ class Computer:
                     self.clear_karateka(karateka)
                     self.kill_karateka(index)
 
-    def kill_karateka(self, sprite_index):
+    def kill_karateka(self, sprite_index: int):
         karateka = self.get_karatekas_array()[sprite_index]
 
         karateka.walk_phase = 'lying'
         karateka.y += 24
         self.draw_sprite(karateka)
 
-    def question_mark(self):
+    def question_mark(self) -> None:
         x = self.karateka.x + self.sprite_bitmap.get_width() / 2
         y = self.karateka.y - self.sprite_bitmap.get_height() / 2
 
@@ -200,11 +201,12 @@ class Computer:
     def clear_screen(self, color):
         ClearScreen.tile_screen(self.screen, color)
 
-    def get_bg_color(self):
+    def get_bg_color(self) -> tuple[int, int, int]:
         return self.bg_color
 
-    def get_karatekas_array(self):
-        return [self.karateka, self.karatekaGreen, self.karatekaRed, self.karatekaCyan, self.karatekaYellow, self.karatekaBrown, self.karatekaPurple]
+    def get_karatekas_array(self) -> list:
+        return [self.karateka, self.karatekaGreen, self.karatekaRed, self.karatekaCyan, self.karatekaYellow,
+                self.karatekaBrown, self.karatekaPurple]
 
     def get_karateka(self, color):
         return [k for k in self.get_karatekas_array() if k.color == color]
@@ -218,6 +220,6 @@ class Computer:
 
     def draw_window(self):
         pass
-        
+
     def honda_deflects_ball(self, x):
         pass

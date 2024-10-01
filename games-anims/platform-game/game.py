@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, auto
 
 import arcade
 
@@ -8,9 +8,9 @@ from globals import Constants
 
 
 class PlayerState(Enum):
-    STANDING = 0
-    RUNNING = 1
-    FALLING = 2
+    STANDING = auto()
+    RUNNING = auto()
+    FALLING = auto()
 
 
 class Player(arcade.Sprite):
@@ -22,7 +22,7 @@ class Player(arcade.Sprite):
         self.height = Constants.TILE_HEIGHT
         self.center_x = Constants.TILE_WIDTH // 2
         self.center_y = Constants.TILE_HEIGHT - 8
-        self.speed = 1.5
+        self.speed = 2 * Constants.GRAVITY
         self.board_position = [0, 0]
         self.state = PlayerState.STANDING
 
@@ -38,16 +38,16 @@ class Player(arcade.Sprite):
 
         self.snap_to_board_tile()
 
-    def conditional_falling(self, board: Board):
+    def conditional_falling(self, board: Board) -> None:
         below_position = [self.board_position[0], self.board_position[1] - 1]
         if not board.is_platform_at(below_position):
-            self.center_y -= 0.5
+            self.center_y -= Constants.GRAVITY
         else:
             self.state = PlayerState.STANDING
             self.center_y = (self.board_position[
                                  1] * Constants.TILE_HEIGHT) + Constants.TILE_HEIGHT - 8
 
-    def update_running(self, board: Board):
+    def update_running(self, board: Board) -> None:
         if arcade.key.UP in self.keys and self.center_y < Constants.SCREEN_HEIGHT - self.height:
             if board.is_ladder_above_or_at(self.board_position):
                 self.center_y += self.speed  # Move up if there's a ladder above
@@ -63,11 +63,11 @@ class Player(arcade.Sprite):
         elif arcade.key.RIGHT in self.keys and self.center_x < Constants.SCREEN_WIDTH - self.width // 2:
             self.center_x += self.speed
 
-    def snap_to_board_tile(self):
+    def snap_to_board_tile(self) -> None:
         self.board_position[0] = round(self.center_x / Constants.TILE_WIDTH)
         self.board_position[1] = round(self.center_y / Constants.TILE_HEIGHT)
 
-    def draw(self, *, filter=None, pixelated=None, blend_function=None):
+    def draw(self, *, filter=None, pixelated=None, blend_function=None) -> None:
         super().draw()
         arcade.draw_texture_rectangle(self.center_x, self.center_y,
                                       self.texture.width, self.texture.height,

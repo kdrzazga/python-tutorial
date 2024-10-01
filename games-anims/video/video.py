@@ -1,17 +1,17 @@
-import cv2 #pip install opencv-python-headless
+import cv2  # pip install opencv-python-headless
 import pygame
+from pygame import Surface
 from pygame.locals import *
+
 
 class VideoPlayer:
     def __init__(self):
         self.video_path = '2MB_MP4.MP4'
         self.background_path = 'bgnd.PNG'
-        self.init_pygame()
 
-    def init_pygame(self):
         pygame.init()
         self.width, self.height = 640, 480
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen: Surface = pygame.display.set_mode((self.width, self.height))
         self.clock = pygame.time.Clock()
         self.video_capture = cv2.VideoCapture(self.video_path)
 
@@ -34,9 +34,9 @@ class VideoPlayer:
                 break
 
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame = pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
+            frame2: Surface = pygame.image.frombuffer(frame.tobytes(), frame.shape[1::-1], "RGB")
 
-            self.screen.blit(frame, (0, 0))
+            self.screen.blit(frame2, (0, 0))
             pygame.display.flip()
 
             for event in pygame.event.get():
@@ -46,6 +46,7 @@ class VideoPlayer:
                     quit()
 
             self.clock.tick(30)
+
 
 if __name__ == "__main__":
     player = VideoPlayer()

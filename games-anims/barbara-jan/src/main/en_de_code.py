@@ -3,6 +3,8 @@ import arcade
 import base64
 import os
 
+from arcade import Texture
+
 
 def encode_png_to_base64(png_file_path, output_path):
     with open(png_file_path, "rb") as image_file:
@@ -12,7 +14,7 @@ def encode_png_to_base64(png_file_path, output_path):
         file.write(encoded_string)
 
 
-def decode_base64_to_texture(textfile):
+def decode_base64_to_texture(textfile: str) -> Texture:
     with open(textfile, "r") as file:
         base64string = file.read()
 

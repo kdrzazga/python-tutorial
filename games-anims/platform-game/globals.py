@@ -1,4 +1,4 @@
-import enum
+from enum import Enum, auto
 
 
 class Constants:
@@ -8,9 +8,10 @@ class Constants:
     TILE_HEIGHT = 46
     BOARD_WIDTH = 15
     BOARD_HEIGHT = 12
+    GRAVITY = 1.5
 
 
-class BoardTile(enum.Enum):
-    EMPTY = 0
-    PLATFORM = 1
-    LADDER = 2
+class BoardTile(Enum):
+    EMPTY = auto()
+    PLATFORM = auto()
+    LADDER = auto()

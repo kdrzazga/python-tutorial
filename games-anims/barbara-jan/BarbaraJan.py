@@ -39,7 +39,7 @@ class BarbaraJan(arcade.Window):
         self.time = 0
         self.key_state = self._initialize_key_state()
 
-    def _initialize_key_state(self):
+    def _initialize_key_state(self) -> dict:
         return {key: False for key in (
             KEYS["HONDA_RIGHT"],
             KEYS["HONDA_LEFT"],

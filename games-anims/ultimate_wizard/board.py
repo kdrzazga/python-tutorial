@@ -41,7 +41,7 @@ class Board:
 
         self.status = 'running'
 
-    def get_field(self, x, y):
+    def get_field(self, x, y) -> list[str]:
         content = []
         if 0 > x >= Board.sizeX and y < 0 or y >= Board.sizeY:
             logging.error("Field [%d, %d] out of bounds", x, y)
@@ -75,7 +75,7 @@ class Board:
                           target_y)
             self._perform_sprite_move(sprite, target_x, target_y)
 
-    def _perform_sprite_move(self, sprite, target_x, target_y):
+    def _perform_sprite_move(self, sprite, target_x, target_y) -> None:
         if (
                 abs(target_x - sprite.x) > 1
                 or abs(target_y - sprite.y) > 1
@@ -122,13 +122,13 @@ class Board:
         self.fireballs[1].y = self.player.y
         self.player.spells -= 1
 
-    def detect_player_collision(self, enemy):
+    def detect_player_collision(self, enemy) -> None:
         if enemy.x == self.player.x and enemy.y == self.player.y and self.player.active and enemy.active:
             self.player.energy -= 1
             if self.player.energy <= 0:
                 self.player.active = False
 
-    def detect_enemy_fb_collision(self, enemy):
+    def detect_enemy_fb_collision(self, enemy) -> None:
         for fb in self.fireballs:
             if enemy.x == fb.x and enemy.y == fb.y:
                 enemy.active = False
@@ -141,6 +141,6 @@ class Board:
 
         logging.debug('Sprite "%s" position (%d, %d)', sprite.name, sprite.x, sprite.y)
 
-    def has_platform_below(self, x, y):
+    def has_platform_below(self, x, y) -> bool:
         logging.debug('Field [%d, %d] contains %s', x, y, self.get_field(x, y))
         return 'platform' in self.get_field(x, y)

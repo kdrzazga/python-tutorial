@@ -1,28 +1,29 @@
 import time
 
 import arcade
-
+from arcade import Texture
 from src.main.helper import MovesRegistry, HondaMovesRegistry, KaratekaMovesRegistry, GameState
 from src.main.project_globals import Constants, Utils
 
 
 class Fighter:
     def __init__(self, arena_offset):
-        self.walk_phase = arcade.load_texture("resources/honda_stand.png")
+        self.walk_phase: Texture = arcade.load_texture("resources/honda_stand.png")
         self.x = Constants.SCREEN_WIDTH + 350
         self.y = 220
-        self.state = "idle"
+        self.state: str = "idle"
         self.speed = 3
         self.hp = 6
         self.punch_duration = 0.5
         self.punch_start_time = 0
         self.arena_offset = arena_offset
 
-        self.stand_image = None
-        self.punch_image = None
+        self.stand_image: Texture = None
+        self.punch_image: Texture = None
+        self.dead_image: Texture = None
 
         self.step_delay_counter = 0
-        self.moves_registry = MovesRegistry()
+        self.moves_registry: MovesRegistry = MovesRegistry()
 
         self.punch_sound = arcade.load_sound("resources/uaja.mp3")
 
@@ -111,6 +112,6 @@ class Karateka(Fighter):
         self.punch_sound = arcade.load_sound("resources/chuja.mp3")
 
     def change_color(self):
-        new_color = Utils.get_next_color()
+        new_color: tuple = Utils.get_next_color()
         self.stand_image = Utils.color_texture(self.stand_image, self.color, new_color)
         self.color = new_color
