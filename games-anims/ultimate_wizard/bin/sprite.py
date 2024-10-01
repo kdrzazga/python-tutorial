@@ -10,8 +10,8 @@ class Sprite:
     def get_sprite_path(self):
         return ""
 
-    def punch(self):
+    def punch(self) -> None:
         pass
         
-    def kick(self):
+    def kick(self) -> None:
         pass

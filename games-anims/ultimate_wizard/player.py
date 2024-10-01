@@ -10,7 +10,7 @@ class Player(Sprite):
         Sprite.__init__(self, x, y, "wizard")
         self.score = 0
         self.energy = 6
-        self.spells = Player.initial_spells
+        self.spells: int = Player.initial_spells
 
     def get_sprite_path(self):
         return Player.sprite_path if self.energy > 0 else Player.tobmstone_path

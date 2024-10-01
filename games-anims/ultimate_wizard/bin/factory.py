@@ -3,15 +3,15 @@ player_moves1 = ['l', 'r'] + ['l'] * 11 + ['r'] * 12 + ['l'] * 18 + ['r', 'r', '
 enemy_moves1 = ['r'] * 15 + ['u'] * 10
 
 
-def create_player_moves():
+def create_player_moves() -> list[str]:
     return player_moves1
 
 
-def create_enemy_moves():
+def create_enemy_moves() -> list[str]:
     return enemy_moves1
 
 
-def create_platforms(size_x, size_y):
+def create_platforms(size_x, size_y) -> list:
     platforms = []
 
     for x in range(size_x // 2 - 3):
@@ -41,5 +41,5 @@ def create_platforms(size_x, size_y):
     return platforms
 
 
-def create_ladders(size_y):
+def create_ladders(size_y) -> list:
     return []

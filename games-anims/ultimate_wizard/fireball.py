@@ -7,5 +7,5 @@ class Fireball(Sprite):
     def __init__(self, x, y):
         Sprite.__init__(self, x, y, "fireball")
 
-    def get_sprite_path(self):
+    def get_sprite_path(self) -> str:
         return Fireball.sprite_path

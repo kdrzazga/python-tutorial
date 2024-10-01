@@ -132,7 +132,7 @@ class Drawer:
         pygame.display.update()
         self.clock.tick(150)
 
-    def main_loop_auto(self, board, player_sequence, enemy_sequence):
+    def main_loop_auto(self, board: Board, player_sequence: list[str], enemy_sequence: list[str]):
         running = True
         FPS = 3
         while running:
@@ -150,20 +150,20 @@ class Drawer:
             self.draw(FPS, board)
         print("BYE!")
 
-    def draw(self, fps, board):
+    def draw(self, fps, board: Board):
         self.draw_board(board)
         self.draw_info(board)
         pygame.display.update()
         self.clock.tick(fps)
 
-    def move_fireballs(self, board):
+    def move_fireballs(self, board: Board):
         if self.animating_fireball:
             self.animating_fireball = board.move_fireballs()
             for enemy in board.enemies:
                 board.detect_enemy_fb_collision(enemy)
         board.free_fall(board.player)
 
-    def move_enemy(self, board, enemy_sequence):
+    def move_enemy(self, board: Board, enemy_sequence):
         for enemy in board.enemies:
             if len(enemy_sequence) > 0:
                 enemy_move = enemy_sequence.pop(0)
@@ -175,7 +175,7 @@ class Drawer:
             board.free_fall(enemy)
             board.detect_player_collision(enemy)
 
-    def move_player(self, board, player_sequence):
+    def move_player(self, board: Board, player_sequence):
         if len(player_sequence) > 0:
             player_move = player_sequence.pop(0)
         else:
@@ -185,7 +185,7 @@ class Drawer:
             board.move_sprite(board.player, player_move)
             board.player.score += 1
 
-    def keys_input(self, board):
+    def keys_input(self, board: Board) -> None:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RETURN] or keys[pygame.K_SPACE] or keys[pygame.K_RSHIFT] or keys[pygame.K_RALT] \
                 or keys[pygame.K_RCTRL]:
@@ -195,7 +195,7 @@ class Drawer:
                 self.animating_fireball = True
                 board.start_fireballs()
 
-    def clear_sprites(self, board):
+    def clear_sprites(self, board: Board):
         self.clear(board.player)
         for enemy in board.enemies:
             self.clear(enemy)

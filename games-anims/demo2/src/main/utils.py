@@ -1,5 +1,5 @@
 import pygame
-from pygame import Surface
+from pygame import Surface, Rect
 
 
 class Constants:
@@ -33,15 +33,15 @@ class Utils:
         return pygame.image.load(path)
 
     @staticmethod
-    def color_bitmap(bitmap, color):
+    def color_bitmap(bitmap, color) -> Surface:
         old_color = (255, 255, 255)
-        new_image = bitmap.copy()
+        new_image: Surface = bitmap.copy()
 
         width, height = bitmap.get_size()
 
         for x in range(width):
             for y in range(height):
-                pixel_color = bitmap.get_at((x, y))
+                pixel_color: tuple[int, int, int] = bitmap.get_at((x, y))
                 if pixel_color == old_color:
                     new_image.set_at((x, y), color)
         return new_image
@@ -62,7 +62,7 @@ class ClearScreen:
             pygame.display.flip()
 
     @staticmethod
-    def create_screen_tiles(width, height):
+    def create_screen_tiles(width, height) -> set:
         tiles = set()
         tile_size = 50
         for y in range(0, height, tile_size):
@@ -72,9 +72,9 @@ class ClearScreen:
         return tiles
 
     @staticmethod
-    def tile_screen(screen, color):
+    def tile_screen(screen: Surface, color):
         clock = pygame.time.Clock()
-        tiles = ClearScreen.create_screen_tiles(screen.get_width(), screen.get_height())
+        tiles: set[Rect] = ClearScreen.create_screen_tiles(screen.get_width(), screen.get_height())
         while len(tiles) > 0:
             pygame.draw.rect(screen, color, tiles.pop())
             pygame.display.flip()
