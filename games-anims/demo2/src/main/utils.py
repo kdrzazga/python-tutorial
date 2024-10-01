@@ -23,7 +23,7 @@ class Utils:
     color_index = 0
 
     @staticmethod
-    def get_next_color() -> tuple:
+    def get_next_color() -> tuple[int, int, int]:
         available_colors = (Constants.GREEN, Constants.WHITE, Constants.CYAN, Constants.RED, Constants.YELLOW, (34, 177, 76), Constants.PURPLE, Constants.BROWN)
         Utils.color_index = (Utils.color_index + 1) % len(available_colors)
         return available_colors[Utils.color_index]

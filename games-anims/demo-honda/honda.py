@@ -1,7 +1,8 @@
 import logging
-import pygame
-
 from collections import deque
+
+import pygame
+from pygame import Surface
 
 
 class Demo:
@@ -47,7 +48,7 @@ class Demo:
             self.screen.fill(Demo.BLACK)
 
             y += 1
-            bitmap = self.jump_bitmap if y > 3 * self.y_max // 8 else self.fall_bitmap
+            bitmap: Surface = self.jump_bitmap if y > 3 * self.y_max // 8 else self.fall_bitmap
             offset = 70 if y > 3 * self.y_max // 8 else 0
             self.screen.blit(bitmap, (offset, y))
 
@@ -64,7 +65,7 @@ class Demo:
 
             self.stand_sequence.rotate(-1)
             self.screen.fill(Demo.BLACK)
-            bitmap = self.stand_sequence[0]
+            bitmap: Surface = self.stand_sequence[0]
             self.screen.blit(bitmap, (0, self.HEIGHT - 5 - bitmap.get_height()))
 
             pygame.display.flip()

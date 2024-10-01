@@ -2,6 +2,7 @@ import math
 from enum import Enum, auto
 
 import arcade
+from arcade import Texture
 from src.main.project_globals import Globals, Constants
 
 
@@ -13,7 +14,7 @@ class GameState(Enum):
     END = auto()
 
 
-def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
+def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width) -> bool:
     d = math.fabs(honda_x - karateka_x)
     fighter_width = honda_width if d < 0 else karateka_width
     d -= fighter_width // 2
@@ -21,7 +22,7 @@ def check_distance(karateka_x: int, honda_x: int, karateka_width, honda_width):
     return d <= Constants.REQUIRED_HIT_DISTANCE
 
 
-def load_reward_pic():
+def load_reward_pic() -> Texture:
     image = arcade.load_texture(Globals.root_dir + "\\..\\..\\" + "barbara.PNG")
     return image
 
@@ -31,7 +32,7 @@ class MovesRegistry:
         self.img_dict = {}
         self.index = 0
 
-    def next(self):
+    def next(self) -> Texture:
         self.index = (self.index + 1) % len(self.img_dict)
         return self.img_dict[self.index]
 
