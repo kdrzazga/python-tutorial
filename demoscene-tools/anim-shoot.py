@@ -55,6 +55,9 @@ class AnimateAndShoot(arcade.View):
         self.counter_caption_end = self.counter_caption_start + 195
         self.index = 0
 
+        self.music = arcade.load_sound("sfx/intro1.mp3")
+        self.player = self.music.play(volume=1.0)
+
     def on_update(self, delta_time):
         self.anim_logo()
 
