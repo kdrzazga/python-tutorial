@@ -40,10 +40,11 @@ class AnimateAndShoot(arcade.View):
             caption.center_x = self.width // 2
             caption.center_y = center_y
             center_y += 100
+            caption.scale = 0.01
             self.caption_sprite_list.append(caption)
 
         self.counter = 0
-        self.counter_caption_start = 400
+        self.counter_caption_start = 444
         self.index = 0
 
     def on_update(self, delta_time):
@@ -53,7 +54,11 @@ class AnimateAndShoot(arcade.View):
             self.anim_caption()
 
     def anim_caption(self):
-        pass
+        for caption in self.caption_sprite_list:
+            if caption.scale[0] < 1:
+                s = caption.scale[0]
+                s += 0.01
+                caption.scale = s
 
     def anim_logo(self):
         self.counter += 1
@@ -87,6 +92,5 @@ if __name__ == "__main__":
     window = arcade.Window(width=850, height=600, title="Animate & screenshot")
 
     game = AnimateAndShoot()
-
     window.show_view(game)
     arcade.run()
