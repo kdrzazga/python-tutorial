@@ -1,119 +1,142 @@
-import logging
-from collections import deque
+import arcade
+import time
 
-import pygame
-from pygame import Surface
-
-
-class Demo:
-    BLACK = (0, 0, 0)
-
+class HondaDemo(arcade.Window):
     def __init__(self):
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        super().__init__(width=527, height=800, title="HONDA Demo")
+        arcade.set_background_color(arcade.color.BLACK)
 
-        self.WIDTH, self.HEIGHT = 527, 800
-        self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
-        pygame.display.set_caption("HONDA Demo")
-        self.clock = pygame.time.Clock()
-        self.jump_bitmap = pygame.image.load("resources/honda_jump.png").convert_alpha()
-        self.fall_bitmap = pygame.image.load("resources/honda_fall.png").convert_alpha()
+        # Load sprites
+        self.jump_sprite = arcade.Sprite("resources/honda_jump.png")
+        self.fall_sprite = arcade.Sprite("resources/honda_fall.png")
+        self.punch_sprites = [
+            arcade.Sprite("resources/honda_punch_lr.png"),
+            arcade.Sprite("resources/honda_punch_ll.png"),
+            arcade.Sprite("resources/honda_punch_hr.png"),
+            arcade.Sprite("resources/honda_punch_hl.png"),
+        ]
+        self.honda1_sprite = arcade.Sprite("resources/honda1.png")
+        self.honda2_sprite = arcade.Sprite("resources/honda2.png")
+        self.honda3_sprite = arcade.Sprite("resources/honda3.png")
+        self.step1_sprite = arcade.Sprite("resources/honda_step1.png")
+        self.step2_sprite = arcade.Sprite("resources/honda_step2.png")
 
-        punch_low_right_bitmap = pygame.image.load("resources/honda_punch_lr.png").convert_alpha()
-        punch_low_left_bitmap = pygame.image.load("resources/honda_punch_ll.png").convert_alpha()
-        punch_high_right_bitmap = pygame.image.load("resources/honda_punch_hr.png").convert_alpha()
-        punch_high_left_bitmap = pygame.image.load("resources/honda_punch_hl.png").convert_alpha()
-        honda1_bitmap = pygame.image.load("resources/honda1.png").convert_alpha()
-        honda2_bitmap = pygame.image.load("resources/honda2.png").convert_alpha()
-        honda3_bitmap = pygame.image.load("resources/honda3.png").convert_alpha()
-        step1_bitmap = pygame.image.load("resources/honda_step1.png").convert_alpha()
-        step2_bitmap = pygame.image.load("resources/honda_step2.png").convert_alpha()
+        # Sequences as sprite lists
+        self.stand_sequence = [self.honda1_sprite, self.honda2_sprite, self.honda1_sprite,
+                               self.honda2_sprite, self.honda1_sprite, self.honda1_sprite,
+                               self.honda2_sprite, self.honda1_sprite, self.honda2_sprite,
+                               self.honda1_sprite, self.honda3_sprite]
+        self.walk_sequence = [self.step1_sprite, self.honda1_sprite, self.step2_sprite]
+        self.punch_sequence = [
+            self.honda1_sprite, self.punch_sprites[0], self.honda2_sprite, self.punch_sprites[1],
+            self.honda1_sprite, self.punch_sprites[2], self.honda2_sprite, self.punch_sprites[3]
+        ]
 
-        self.stand_sequence = deque((honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
-                                     honda1_bitmap, honda2_bitmap, honda1_bitmap, honda2_bitmap, honda1_bitmap,
-                                     honda3_bitmap))
-        self.walk_sequence = deque((step1_bitmap, honda1_bitmap, step2_bitmap))
-        self.punch_sequence = deque((honda1_bitmap, punch_low_right_bitmap, honda2_bitmap, punch_low_left_bitmap,
-                                     honda1_bitmap, punch_high_right_bitmap, honda2_bitmap, punch_high_left_bitmap ))
+        # Current sprite for display
+        self.current_sprite = None
+        self.sprite_x = 0
+        self.sprite_y = 0
 
-        self.y_max = self.HEIGHT - 5 - self.jump_bitmap.get_height()
+        # For sequence animation
+        self.sequence_index = 0
+        self.sequence_timer = 0
+
+        # Timing control
+        self.phase_start_time = None
+        self.phase_duration = 0
+        self.phase_method = None
+
+        # For phase management
+        self.phase_list = [self.phase1, self.phase2, self.phase3, self.phase4]
+        self.current_phase_index = 0
+
+        # Initialize first phase
+        self.start_phase(self.phase_list[self.current_phase_index])
+
+    def start_phase(self, phase_func):
+        self.phase_start_time = time.time()
+        phase_func()
 
     def phase1(self):
-        logging.info("PHASE 1 - fall")
-        y = -self.jump_bitmap.get_height() - 5
-        while y <= self.y_max:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return
-
-            self.screen.fill(Demo.BLACK)
-
-            y += 1
-            bitmap: Surface = self.jump_bitmap if y > 3 * self.y_max // 8 else self.fall_bitmap
-            offset = 70 if y > 3 * self.y_max // 8 else 0
-            self.screen.blit(bitmap, (offset, y))
-
-            pygame.display.flip()
-            self.clock.tick(150)
+        # fall from top to y_max
+        self.y_max = self.height - 5 - self.jump_sprite.height
+        self.y_pos = -self.jump_sprite.height - 5
+        self.phase_active = True
+        self.phase_duration = None  # Indefinite until completed
+        self.phase_type = 'fall'
+        self.falling = True
 
     def phase2(self):
-        logging.info("PHASE 2 - stand")
-        start_time = pygame.time.get_ticks()
-        while pygame.time.get_ticks() - start_time <= 10000:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return
-
-            self.stand_sequence.rotate(-1)
-            self.screen.fill(Demo.BLACK)
-            bitmap: Surface = self.stand_sequence[0]
-            self.screen.blit(bitmap, (0, self.HEIGHT - 5 - bitmap.get_height()))
-
-            pygame.display.flip()
-            self.clock.tick(3)
+        # stand for 10 seconds
+        self.phase_start_time = time.time()
+        self.phase_duration = 10
+        self.current_sprite_list = self.stand_sequence
+        self.sequence_index = 0
+        self.phase_type = 'stand'
 
     def phase3(self):
-        logging.info("PHASE 3 - walk")
-        start_time = pygame.time.get_ticks()
-        while pygame.time.get_ticks() - start_time <= 12000:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return
-
-            self.walk_sequence.rotate(-1)
-            self.screen.fill(Demo.BLACK)
-            bitmap = self.walk_sequence[0]
-            self.screen.blit(bitmap, (0, self.HEIGHT - 5 - bitmap.get_height()))
-
-            pygame.display.flip()
-            self.clock.tick(3)
+        # walk for 12 seconds
+        self.phase_start_time = time.time()
+        self.phase_duration = 12
+        self.current_sprite_list = self.walk_sequence
+        self.sequence_index = 0
+        self.phase_type = 'walk'
 
     def phase4(self):
-        logging.info("PHASE 4 - punch")
-        start_time = pygame.time.get_ticks()
-        while pygame.time.get_ticks() - start_time <= 13000:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return
+        # punch for 13 seconds
+        self.phase_start_time = time.time()
+        self.phase_duration = 13
+        self.current_sprite_list = self.punch_sequence
+        self.sequence_index = 0
+        self.phase_type = 'punch'
 
-            self.punch_sequence.rotate(-1)
-            self.screen.fill(Demo.BLACK)
-            bitmap = self.punch_sequence[0]
-            self.screen.blit(bitmap, (0, self.HEIGHT - 5 - bitmap.get_height()))
+    def on_update(self, delta_time):
+        current_time = time.time()
 
-            pygame.display.flip()
-            self.clock.tick(3)
+        # Handle phase timing
+        if self.phase_type == 'fall':
+            # Animate fall
+            self.y_pos += 1
+            if self.y_pos > self.y_max:
+                self.y_pos = self.y_max
+                # Move to next phase
+                self.current_phase_index += 1
+                if self.current_phase_index < len(self.phase_list):
+                    self.start_phase(self.phase_list[self.current_phase_index])
+        elif self.phase_type in ['stand', 'walk', 'punch']:
+            # Animate sprite sequence
+            if current_time - self.phase_start_time >= self.phase_duration:
+                # Move to next phase
+                self.current_phase_index += 1
+                if self.current_phase_index < len(self.phase_list):
+                    self.start_phase(self.phase_list[self.current_phase_index])
+            else:
+                # Animate sequence
+                if self.sequence_timer <= 0:
+                    self.sequence_index = (self.sequence_index + 1) % len(self.current_sprite_list)
+                    self.current_sprite = self.current_sprite_list[self.sequence_index]
+                    self.sequence_timer = 0.2  # seconds per frame
+                else:
+                    self.sequence_timer -= delta_time
 
-    def run(self):
-        pygame.init()
+    def on_draw(self):
+        arcade.start_render()
+        if self.phase_type == 'fall':
+            # Draw the fall or jump sprite at position
+            if self.y_pos < 0:
+                bitmap = self.jump_sprite if self.y_pos > 3 * self.y_max // 8 else self.fall_sprite
+                offset = 70 if self.y_pos > 3 * self.y_max // 8 else 0
+                self.jump_sprite.set_position(offset, self.y_pos)
+                self.jump_sprite.draw()
+        elif self.phase_type in ['stand', 'walk', 'punch']:
+            # Draw current sprite
+            if self.current_sprite:
+                self.current_sprite.set_position(0, self.height - 5 - self.current_sprite.height)
+                self.current_sprite.draw()
 
-        self.phase1()
-        self.phase2()
-        self.phase3()
-        self.phase4()
-        logging.info("BYE !")
-
-        pygame.quit()
-
+def main():
+    window = HondaDemo()
+    arcade.run()
 
 if __name__ == "__main__":
-    Demo().run()
+    main()
