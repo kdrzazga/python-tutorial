@@ -21,38 +21,72 @@ class AnimateAndShoot(arcade.View):
         pic3.center_x = self.width + pic3.width // 2
         pic3.center_y = self.height + pic3.height // 2
 
-        self.sprite_list = arcade.SpriteList()
-        self.sprite_list.append(pic1)
-        self.sprite_list.append(pic2)
-        self.sprite_list.append(pic3)
+        self.logo_sprite_list = arcade.SpriteList()
+        self.logo_sprite_list.append(pic1)
+        self.logo_sprite_list.append(pic2)
+        self.logo_sprite_list.append(pic3)
+
+        caption1 = arcade.Sprite("pic/historia.png")
+        caption2 = arcade.Sprite("pic/gier.png")
+        caption3 = arcade.Sprite("pic/commodore.png")
+        caption4 = arcade.Sprite("pic/64.png")
+
+        all_captions = [caption4, caption3, caption2, caption1]
+
+        self.caption_sprite_list = arcade.SpriteList()
+
+        center_y = 250
+        for caption in all_captions:
+            caption.center_x = self.width // 2
+            caption.center_y = center_y
+            center_y += 100
+            self.caption_sprite_list.append(caption)
+
+        self.counter = 0
+        self.counter_caption_start = 400
+        self.index = 0
 
     def on_update(self, delta_time):
-        if self.sprite_list[0].center_x < self.width // 2 - self.sprite_list[0].width // 2 + 30:
-            self.sprite_list[0].center_x += 1
+        self.anim_logo()
 
-        if self.sprite_list[1].center_x > self.width // 2 + self.sprite_list[0].width // 2 - 15:
-            self.sprite_list[1].center_x -= 1
+        if self.counter > self.counter_caption_start:
+            self.anim_caption()
 
-        if self.sprite_list[1].center_y < self.height * 0.35 + 10:
-            self.sprite_list[1].center_y += 1
+    def anim_caption(self):
+        pass
 
-        if self.sprite_list[2].center_x > self.width // 2 + self.sprite_list[0].width // 2 - 15:
-            self.sprite_list[2].center_x -= 1
-
-        if self.sprite_list[2].center_y > self.height * 0.55 + 10: #blue flag
-            self.sprite_list[2].center_y -= 1
+    def anim_logo(self):
+        self.counter += 1
+        if self.counter % 2 == 0:
+            self.index += 1
+            self.take_screenshot()
+        if self.logo_sprite_list[0].center_x < self.width // 2 - self.logo_sprite_list[0].width // 2 + 30:
+            self.logo_sprite_list[0].center_x += 1
+        if self.logo_sprite_list[1].center_x > self.width // 2 + self.logo_sprite_list[0].width // 2 - 15:
+            self.logo_sprite_list[1].center_x -= 1
+        if self.logo_sprite_list[1].center_y < self.height * 0.35 + 10:
+            self.logo_sprite_list[1].center_y += 1
+        if self.logo_sprite_list[2].center_x > self.width // 2 + self.logo_sprite_list[0].width // 2 - 15:
+            self.logo_sprite_list[2].center_x -= 1
+        if self.logo_sprite_list[2].center_y > self.height * 0.55 + 10:  # blue flag
+            self.logo_sprite_list[2].center_y -= 1
 
     def on_draw(self):
         self.clear()
-        self.sprite_list.draw()
+        self.logo_sprite_list.draw()
+        if self.counter > self.counter_caption_start:
+            self.caption_sprite_list.draw()
+
+    def take_screenshot(self):
+        image = arcade.get_image()
+        image.save("screenshots./" + str(self.index) + ".png")
 
 
 if __name__ == "__main__":
 
-    window = arcade.Window(width=800, height=600, title="Animate & screenshot")
+    window = arcade.Window(width=850, height=600, title="Animate & screenshot")
 
     game = AnimateAndShoot()
-    #game.setup()
 
     window.show_view(game)
     arcade.run()
