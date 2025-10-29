@@ -43,15 +43,25 @@ class AnimateAndShoot(arcade.View):
             caption.scale = 0.01
             self.caption_sprite_list.append(caption)
 
+        self.whole_intro_screen_list = arcade.SpriteList()
+        whole_intro_screen = arcade.Sprite("pic/logo+caption.png")
+        whole_intro_screen.center_x = self.width // 2
+        whole_intro_screen.center_y = self.height // 2
+        whole_intro_screen.scale = 0.7
+        self.whole_intro_screen_list.append(whole_intro_screen)
+
         self.counter = 0
         self.counter_caption_start = 444
+        self.counter_caption_end = self.counter_caption_start + 195
         self.index = 0
 
     def on_update(self, delta_time):
         self.anim_logo()
 
-        if self.counter > self.counter_caption_start:
+        if self.counter_caption_start < self.counter < self.counter_caption_end:
             self.anim_caption()
+        elif self.counter >= self.counter_caption_end + 500:
+            pass#self.screen_goes_down()
 
     def anim_caption(self):
         for caption in self.caption_sprite_list:
@@ -78,13 +88,20 @@ class AnimateAndShoot(arcade.View):
 
     def on_draw(self):
         self.clear()
-        self.logo_sprite_list.draw()
+        if self.counter < self.counter_caption_end:
+            self.logo_sprite_list.draw()
+        else:
+            self.screen_goes_down()
+
         if self.counter > self.counter_caption_start:
             self.caption_sprite_list.draw()
 
     def take_screenshot(self):
         image = arcade.get_image()
         image.save("screenshots./" + str(self.index) + ".png")
+
+    def screen_goes_down(self):
+        self.whole_intro_screen_list[0].center_y += 1
 
 
 if __name__ == "__main__":
