@@ -1,5 +1,7 @@
 import arcade
 
+from datetime import datetime
+
 
 class AnimateAndShoot(arcade.View):
 
@@ -55,10 +57,12 @@ class AnimateAndShoot(arcade.View):
         self.counter_caption_end = self.counter_caption_start + 195
         self.index = 0
 
-        self.music = arcade.load_sound("sfx/intro1.mp3")
+        self.music = arcade.load_sound("sfx/intro1.wav")
         self.player = self.music.play(volume=1.0)
 
     def on_update(self, delta_time):
+
+        print(datetime.now())
         self.anim_logo()
 
         if self.counter_caption_start < self.counter < self.counter_caption_end:
