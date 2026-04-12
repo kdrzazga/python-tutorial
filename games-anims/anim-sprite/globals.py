@@ -1,7 +1,4 @@
 class Globals:
-	SCREEN_WIDTH = 800
-	SCREEN_HEIGHT = 600
-	SCREEN_TITLE = "Animated Sprite Example"
 
 	SPRITESHEET_PATH = "mikolaje.png"
 	FRAME_WIDTH = 266

@@ -6,12 +6,17 @@ from animated_sprite import AnimatedSprite
 
 class MyGame(arcade.Window):
     def __init__(self):
-        super().__init__(Globals.SCREEN_WIDTH, Globals.SCREEN_HEIGHT, Globals.SCREEN_TITLE)
+        super().__init__(800, 600, "Animated Sprite Example")
         arcade.set_background_color(arcade.color.WHITE)
+
+        window = arcade.get_window()
+        current_width = window.width
+        current_height = window.height
+
         self.animated_sprite = AnimatedSprite(
             Globals.SPRITESHEET_PATH,
-            position_x=Globals.SCREEN_WIDTH // 2,
-            position_y=Globals.SCREEN_HEIGHT // 2,
+            position_x=current_width // 2,
+            position_y=current_height // 2,
             frame_width= Globals.FRAME_WIDTH,
             frame_height=Globals.FRAME_HEIGHT,
             num_frames=Globals.NUM_FRAMES,

@@ -4,6 +4,7 @@ from arcade import Rect
 from arcade.color import WHITE
 from globals import Globals
 
+
 class AnimatedSprite:
     def __init__(self, spritesheet_path, position_x, position_y, frame_width, frame_height, num_frames,
                  frame_delay=0.2):
@@ -33,13 +34,17 @@ class AnimatedSprite:
             print("texture chnge")
 
     def draw(self):
+        window = arcade.get_window()
+        current_width = window.width
+        current_height = window.height
+
         rect = Rect(
-            x=Globals.SCREEN_WIDTH // 2,  # center x
-            y=Globals.SCREEN_HEIGHT // 2,  # center y
+            x=current_width // 2,  # center x
+            y=current_height // 2,  # center y
             width=Globals.FRAME_WIDTH,
             height=Globals.FRAME_HEIGHT,
-            left=Globals.SCREEN_WIDTH // 2,  # optional, defaults to x - width/2
-            right=Globals.SCREEN_HEIGHT // 2,  # optional, defaults to x + width/2
+            left=current_width // 2,  # optional, defaults to x - width/2
+            right=current_height // 2,  # optional, defaults to x + width/2
             bottom=0,  # optional, defaults to y - height/2
             top=0  # optional, defaults to y + height/2
         )
