@@ -2,13 +2,15 @@ import arcade
 
 from arcade import Rect
 from arcade.color import WHITE
-from globals import Globals
 
 
 class AnimatedSprite:
     def __init__(self, spritesheet_path, position_x, position_y, frame_width, frame_height, num_frames,
                  frame_delay=0.2):
         self.spritesheet = arcade.load_texture(spritesheet_path)
+        self.frame_width = frame_width
+        self.frame_height = frame_height
+
         self.frames = []
         for i in range(num_frames):
             x = i * frame_width
@@ -41,8 +43,8 @@ class AnimatedSprite:
         rect = Rect(
             x=current_width // 2,  # center x
             y=current_height // 2,  # center y
-            width=Globals.FRAME_WIDTH,
-            height=Globals.FRAME_HEIGHT,
+            width=self.frame_width,
+            height=self.frame_height,
             left=current_width // 2,  # optional, defaults to x - width/2
             right=current_height // 2,  # optional, defaults to x + width/2
             bottom=0,  # optional, defaults to y - height/2
