@@ -1,4 +1,8 @@
+from datetime import datetime
+
+
 class Globals:
     fullscreen = False
-    HEIGHT = 750
-    WIDTH = 1200
+    HEIGHT = 1024
+    WIDTH = 1024
+    start = datetime.now()

@@ -1,71 +1,36 @@
 import arcade
 
-from arcade import Rect
-
-from arcade.color import WHITE
+from arcade.color import WHITE, BLACK
 from common import Globals
+from stage1 import Stage1
+from stage2 import Stage2
 
 
-class Stage1(arcade.Window):
+class MainStage(arcade.Window):
 
     def __init__(self):
         super().__init__(Globals.WIDTH, Globals.HEIGHT, "DEMO")
+        self.stage2 = None
         self.set_fullscreen(Globals.fullscreen)
         self.timer = 0
-        self.logo = arcade.load_texture("res/logo.png")
-
-        background_music = arcade.load_sound("res/Fancyramos.mp3")
-        self.media_player = background_music.play()
-        self.media_player.loop = True
+        self.stage1 = Stage1()
 
     def on_draw(self):
-        self.clear()
+        self.clear(BLACK)
 
-        rect = Rect(
-            x=Globals.WIDTH // 2,  # center x
-            y=Globals.HEIGHT // 2,  # center y
-            width=self.logo.width,
-            height=self.logo.height,
-            left=Globals.WIDTH // 2,  # optional, defaults to x - width/2
-            right=Globals.HEIGHT // 2,  # optional, defaults to x + width/2
-            bottom=0,  # optional, defaults to y - height/2
-            top=0  # optional, defaults to y + height/2
-        )
+        if self.timer < 233:
+            self.stage1.on_draw(self.timer)
 
-        tr = min(2 * self.timer, 255)
+        if self.timer//1 == 200.0:
+            if not Stage2.ACTIVE:
+                self.stage2 = Stage2(self.timer)
+        elif 200 < self.timer < 446:
+            self.stage2.on_draw(self.timer)
 
-        arcade.draw_texture_rect(
-            texture=self.logo,
-            rect=rect,
-            color=WHITE,
-            angle=0.0,
-            blend=True,
-            alpha=tr,
-            pixelated=False
-        )
-        print(self.timer, end=' ')
+        # print(self.timer, end=' ')
         self.timer += 0.167
-
-        if self.timer > 200:
-            self.cover_rectangles()
-
-    def cover_rectangles(self):
-        rect_size = 5
-        #for x in range(self.)
-        rectLeft = Rect(
-            x=Globals.WIDTH // 2,  # center x
-            y=Globals.HEIGHT // 2,  # center y
-            width=self.logo.width,
-            height=self.logo.height,
-            left=Globals.WIDTH // 2,  # optional, defaults to x - width/2
-            right=Globals.HEIGHT // 2,  # optional, defaults to x + width/2
-            bottom=0,  # optional, defaults to y - height/2
-            top=0  # optional, defaults to y + height/2
-        )
-        arcade.draw_rect_filled(rectLeft, arcade.color.WHITE, 0)
-        #arcade.draw_rect_filled(rectRight, arcade.color.BLACK, 0)
 
 
 if __name__ == "__main__":
-    window = Stage1()
+    window = MainStage()
     arcade.run()
