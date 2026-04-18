@@ -48,7 +48,7 @@ class Stage2:
 
         for i, line in enumerate(lines):
             font_path = os.getcwd() + "res/C64_Pro_Mono-STYLE.ttf"
-            y = 11*Globals.HEIGHT//16 - i * 1.2*font_size + 5*timer/6 - 200
+            y = 12*Globals.HEIGHT//16 - i * 1.2*font_size + 0.45*timer - 200
 
             print(timer)
 
