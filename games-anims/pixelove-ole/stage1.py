@@ -1,7 +1,7 @@
 import arcade
 from arcade import Rect
 
-from arcade.color import WHITE
+from arcade.color import WHITE, BLACK
 from common import Globals
 
 
@@ -29,6 +29,7 @@ class Stage1:
 		)
 
 		tr = min(2 * timer, 255)
+
 
 		arcade.draw_texture_rect(
 		texture=self.logo,

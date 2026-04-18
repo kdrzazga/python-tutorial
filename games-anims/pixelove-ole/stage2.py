@@ -3,7 +3,7 @@ import os
 
 import arcade
 from arcade import Sprite
-from arcade.color import CYAN
+from arcade.color import CYAN, BLACK
 
 from common import Globals
 from datetime import datetime
@@ -21,17 +21,17 @@ class Stage2:
         self.media_player = invite_speech.play()
         self.media_player.loop = False
 
-        self.stripe = Sprite("res/stripe.jpg")
-        self.stripe.center_x = Globals.WIDTH//2
-        self.stripe.center_y = Globals.HEIGHT - self.stripe.height//2
+        self.topStripe1 = Sprite("res/stripe.jpg")
+        self.topStripe1.center_x = Globals.WIDTH // 2
+        self.topStripe1.center_y = Globals.HEIGHT - self.topStripe1.height // 2
 
-        self.stripe2 = Sprite("res/stripe.jpg")
-        self.stripe2.center_x = -Globals.WIDTH//2
-        self.stripe2.center_y = 3*self.stripe2.height//2
+        self.bottomStripe1 = Sprite("res/stripe.jpg")
+        self.bottomStripe1.center_x = 0#-self.topStripe1.center_x# - self.topStripe1.width
+        self.bottomStripe1.center_y = 3 * self.bottomStripe1.height // 2
 
         self.sprite_list = arcade.SpriteList()
-        self.sprite_list.append(self.stripe)
-        self.sprite_list.append(self.stripe2)
+        self.sprite_list.append(self.topStripe1)
+        self.sprite_list.append(self.bottomStripe1)
 
         print(datetime.now() - Globals.start)
 
@@ -57,6 +57,6 @@ class Stage2:
                              , font_name=font_path, anchor_x="center")
 
         self.sprite_list.draw()
-        self.sprite_list[0].center_x -= 1
-        self.sprite_list[1].center_x += 1
+        self.sprite_list[0].center_x -= 0.6
+        self.sprite_list[1].center_x += 0.5
 

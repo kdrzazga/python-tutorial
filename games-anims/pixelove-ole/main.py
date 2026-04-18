@@ -18,7 +18,7 @@ class MainStage(arcade.Window):
     def on_draw(self):
         self.clear(BLACK)
 
-        if self.timer < 233:
+        if self.timer < 200:
             self.stage1.on_draw(self.timer)
 
         if self.timer//1 == 200.0:
