@@ -5,12 +5,14 @@ from common import Globals
 from stage1 import Stage1
 from stage2 import Stage2
 from stage3 import Stage3
+from stage4 import Stage4
 
 
 class MainStage(arcade.Window):
 
     def __init__(self):
         super().__init__(Globals.WIDTH, Globals.HEIGHT, "DEMO")
+        self.stage4 = None
         self.stage3 = None
         self.stage2 = None
         self.set_fullscreen(Globals.fullscreen)
@@ -30,11 +32,15 @@ class MainStage(arcade.Window):
             self.stage2.on_draw(self.timer)
         elif self.timer//1 == Stage3.START_TIMER:
             self.stage3 = Stage3()
-        elif Stage3.START_TIMER < self.timer:
+        elif Stage3.START_TIMER < self.timer < Stage4.START_TIMER:
             self.stage3.on_draw(self.timer)
+        elif self.timer//1 == Stage4.START_TIMER:
+            self.stage4 = Stage4()
+        elif Stage4.START_TIMER < self.timer:
+            self.stage4.on_draw(self.timer)
 
         # print(self.timer, end=' ')
-        self.timer += 0.167
+        self.timer += Globals.TIMER_INC
 
 
 if __name__ == "__main__":
