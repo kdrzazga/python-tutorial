@@ -3,7 +3,7 @@ import arcade
 from arcade import Rect
 from arcade.color import WHITE, CYAN, MAGENTA, YELLOW, RED, GREEN
 
-from common import Globals
+from lib.common import Globals
 
 
 class Stage4:

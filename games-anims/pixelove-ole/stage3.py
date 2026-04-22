@@ -1,7 +1,7 @@
 import math
 
 from arcade import Sprite, SpriteList
-from common import Globals
+from lib.common import Globals
 
 
 class Stage3:
@@ -25,7 +25,7 @@ class Stage3:
 			self.slides.append(slide)
 
 	def on_draw(self, timer):
-		print('')
+		#print('')
 		self.rotate(timer)
 
 	def rotate(self, timer):
@@ -45,6 +45,6 @@ class Stage3:
 			self.slides.shuffle()
 		elif trunc_timer % 300 == 2:
 			self.move_coeff = -self.move_coeff
-			print(trunc_timer, end=' ')
+			#print(trunc_timer, end=' ')
 
 

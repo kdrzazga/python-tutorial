@@ -1,8 +1,8 @@
 import arcade
 from arcade import Rect
 
-from arcade.color import WHITE, BLACK
-from common import Globals
+from arcade.color import WHITE
+from lib.common import Globals
 
 
 class Stage1:

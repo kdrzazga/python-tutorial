@@ -2,11 +2,7 @@ import arcade
 import random
 import math
 from time import time
-
-class Globals:
-    WIDTH = 800
-    HEIGHT = 600
-    NUM_DOTS = 400
+from lib.common import Globals
 
 
 class Dot:
@@ -41,9 +37,10 @@ class Dot:
 
 
 class TunnelEffect:
-
     def __init__(self, enlarge_delay):
-        self.dots = [Dot() for _ in range(Globals.NUM_DOTS)]
+
+        NUM_DOTS = 400
+        self.dots = [Dot() for _ in range(NUM_DOTS)]
         self.dot_size = 1
         self.enlarge_time = time() + enlarge_delay
 
@@ -54,26 +51,8 @@ class TunnelEffect:
     def update(self):
         print(self.enlarge_time, time())
         if self.enlarge_time < time() and self.dot_size < 0.12*Globals.WIDTH:
-            self.dot_size += 0.05 + 0.01*self.dot_size**1.5
+            self.dot_size += 0.05 + 0.01*self.dot_size**1.75
 
         for dot in self.dots:
             dot.update()
 
-
-class TunnelWindow(arcade.Window):
-    def __init__(self):
-        super().__init__(Globals.WIDTH, Globals.HEIGHT, "Tunnel Effect")
-        arcade.set_background_color(arcade.color.BLACK)
-        self.effect = TunnelEffect(80)
-
-    def on_draw(self):
-        self.clear()
-        self.effect.draw()
-
-    def on_update(self, delta_time):
-        self.effect.update()
-
-
-if __name__ == "__main__":
-    window = TunnelWindow()
-    arcade.run()

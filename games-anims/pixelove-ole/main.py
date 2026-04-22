@@ -1,11 +1,12 @@
 import arcade
 
 from arcade.color import BLACK
-from common import Globals
+from lib.common import Globals
 from stage1 import Stage1
 from stage2 import Stage2
 from stage3 import Stage3
 from stage4 import Stage4
+from stage5 import Stage5
 
 
 class MainStage(arcade.Window):
@@ -36,8 +37,12 @@ class MainStage(arcade.Window):
             self.stage3.on_draw(self.timer)
         elif self.timer//1 == Stage4.START_TIMER:
             self.stage4 = Stage4()
-        elif Stage4.START_TIMER < self.timer:
+        elif Stage4.START_TIMER < self.timer < Stage5.START_TIMER:
             self.stage4.on_draw(self.timer)
+        elif self.timer//1 == Stage5.START_TIMER:
+            self.stage5 = Stage5()
+        elif Stage5.START_TIMER < self.timer:
+            self.stage5.on_draw(self.timer)
 
         # print(self.timer, end=' ')
         self.timer += Globals.TIMER_INC
