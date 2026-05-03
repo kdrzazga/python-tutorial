@@ -1,11 +1,10 @@
-import math
 import os
 
 import arcade
 from arcade import Sprite
-from arcade.color import CYAN, BLACK
+from arcade.color import CYAN
 
-from common import Globals
+from lib.common import Globals
 from datetime import datetime
 
 
@@ -50,7 +49,7 @@ class Stage2:
             font_path = os.getcwd() + "res/C64_Pro_Mono-STYLE.ttf"
             y = 11*Globals.HEIGHT//16 - i * 1.2*font_size + 0.65*timer - 200
 
-            print(timer)
+            #print(timer)
 
             arcade.draw_text(line, 0.5 * Globals.WIDTH, y, color=CYAN,
                              font_size=font_size
