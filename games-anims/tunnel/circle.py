@@ -1,3 +1,4 @@
+import math
 import random
 
 import arcade
@@ -28,6 +29,7 @@ class Circle:
 
 class CircleTunnel:
     def __init__(self):
+        self.timer = 0
         self.circles = []
         self.center_x = SCREEN_WIDTH // 2
         self.center_y = SCREEN_HEIGHT // 2
@@ -46,8 +48,23 @@ class CircleTunnel:
             arcade.draw_circle_outline(circle.center_x, circle.y, circle.radius, circle.color)
 
     def update(self):
+        self.timer += 1
+        modifier = 3*self.find_modifier()
+
         for circle in self.circles:
             circle.update()
+            if circle.radius < 150:
+                circle.center_x += modifier
+
+    def find_modifier(self):
+        cycle_time = (self.timer // 14) % 3
+        if cycle_time == 0:
+            modifier = 1
+        elif cycle_time == 1:
+            modifier = -1
+        else:  # cycle_time == 2
+            modifier = 0
+        return modifier
 
 
 class TunnelWindow(arcade.Window):
