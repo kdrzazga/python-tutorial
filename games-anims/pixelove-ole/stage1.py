@@ -9,7 +9,7 @@ class Stage1:
 
 	def __init__(self):
 		self.logo = arcade.load_texture("res/logo.png")
-		background_music = arcade.load_sound("res/Fancyramos.mp3")
+		background_music = arcade.load_sound("res/POtrack.mp3")
 
 		self.media_player = background_music.play()
 		self.media_player.loop = True

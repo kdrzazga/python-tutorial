@@ -5,9 +5,9 @@ import arcade
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-NUM_CIRCLES = 50
+NUM_CIRCLES = 400
 TUNNEL_DEPTH = 300
-SPEED = 2
+SPEED = 5
 
 class Circle:
     def __init__(self, center_x, y, radius, color):
@@ -35,7 +35,7 @@ class CircleTunnel:
         self.center_y = SCREEN_HEIGHT // 2
 
         for i in range(NUM_CIRCLES):
-            radius = 44 * i
+            radius = 3 * i
             color = (
                 random.randint(170, 255),
                 random.randint(0, 75),
