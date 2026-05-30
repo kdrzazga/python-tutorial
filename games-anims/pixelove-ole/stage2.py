@@ -20,7 +20,7 @@ class Stage2:
         self.media_player = invite_speech.play()
         self.media_player.loop = False
 
-        self.topStripe1 = Sprite("res/stripe.jpg")
+        self.topStripe1 = Sprite("res/stripe2.jpg")
         self.topStripe1.center_x = Globals.WIDTH // 2
         self.topStripe1.center_y = Globals.HEIGHT - self.topStripe1.height // 2
 

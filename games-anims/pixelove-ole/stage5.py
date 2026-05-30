@@ -34,7 +34,7 @@ class Stage5:
 		duration = 11
 		print(t)
 		x = 0.5 * Globals.WIDTH
-		y = Globals.HEIGHT - 82
+		y = Globals.HEIGHT - 112
 
 		if 2 < t < 2 + duration:
 			arcade.draw_text("Commodore 64", x, y, color=CYAN, font_size=60, anchor_x="center")

@@ -1,7 +1,7 @@
 import random
 import arcade
 from arcade import Rect
-from arcade.color import WHITE, CYAN, MAGENTA, YELLOW, RED, GREEN
+from arcade.color import WHITE, CYAN, MAGENTA, YELLOW, RED, GREEN, BLACK, YANKEES_BLUE, MEDIUM_SKY_BLUE
 
 from lib.common import Globals
 
@@ -12,6 +12,7 @@ class Stage4:
 
 	def __init__(self):
 		self.logo = arcade.load_texture("res/1.jpg")
+		arcade.load_font("res/C64_Pro_Mono-STYLE.ttf")
 
 	def on_draw(self, timer):
 		y_shift = 50
@@ -45,23 +46,34 @@ class Stage4:
 
 	def display_caption(self, timer, y_shift):
 
-		arcade.draw_text("Ekipa i przyjaciele", 0.5 * Globals.WIDTH, Globals.HEIGHT - 82, color=CYAN, font_size=60,
-	                 anchor_x="center")
+		arcade.draw_text("Ekipa i przyjaciele", 0.5 * Globals.WIDTH, Globals.HEIGHT - 112, color=CYAN, font_size=25
+	                 , font_name="C64 Pro Mono", anchor_x="center")
 		t = timer % 30
 		if 0 < t < 6 or 21 < t < 25:
-			arcade.draw_text("TECT", 0.59 * Globals.WIDTH, y_shift + 505 + random.randint(0,3), color=CYAN, font_size=20, anchor_x="center")
+			text = arcade.Text(text="TECT", x=0.55 * Globals.WIDTH, y=y_shift + 505 + random.randint(0, 3)
+			                   , color=CYAN, font_size=15, font_name="C64 Pro Mono", anchor_x="left")
+			text.draw()
+
 		if 3 < t < 9 or 25 < t < 29:
-			arcade.draw_text("Michal", 0.72 * Globals.WIDTH, y_shift + 505 + random.randint(0,3), color=RED, font_size=18, anchor_x="center")
+			text = arcade.Text(text="Michal", x=0.65 * Globals.WIDTH, y=y_shift + 505 + random.randint(0, 3)
+			                   , color=RED, font_size=15, font_name="C64 Pro Mono", anchor_x="left")
+			text.draw()
 		if 2 < t < 8:
-			arcade.draw_text("SMOK", 0.33 * Globals.WIDTH, y_shift + 490 + random.randint(0,3), color=YELLOW, font_size=33, anchor_x="center")
+			text = arcade.Text(text="SMOK", x=0.33 * Globals.WIDTH, y=y_shift + 490 + random.randint(0, 3)
+			                   , color=YELLOW, font_size=22, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
 		if 6 < t < 10:
-			arcade.draw_text("Borg", 0.5 * Globals.WIDTH, y_shift + 508 + random.randint(0, 3), color=WHITE, font_size=20,
-		                 anchor_x="center")
+			text = arcade.Text(text="Borg", x=0.5 * Globals.WIDTH, y=y_shift + 508 + random.randint(0, 3)
+			                   , color=WHITE, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
 		if 14 < t < 21:
-			arcade.draw_text("Brodaty", 0.52 * Globals.WIDTH, y_shift + 386 + random.randint(0, 3), color=MAGENTA, font_size=15,
-		                 anchor_x="center")
-			arcade.draw_text("Gracz", 0.52 * Globals.WIDTH, y_shift + 368 + random.randint(0, 3), color=MAGENTA, font_size=15,
-		                 anchor_x="center")
+			text1 = arcade.Text(text="Brodaty", x=0.52 * Globals.WIDTH, y=y_shift + 386 + random.randint(0, 3)
+			                   , color=MAGENTA, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
+			text1.draw()
+			text2 = arcade.Text(text="Gracz", x=0.52 * Globals.WIDTH, y=y_shift + 368 + random.randint(0, 3)
+			                   , color=MAGENTA, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
+			text2.draw()
 		if 18 < t < 26:
-			arcade.draw_text("MFX", 0.435 * Globals.WIDTH, y_shift + 508 + random.randint(0, 3), color=GREEN, font_size=20,
-		                 anchor_x="center")
+			text = arcade.Text(text="MFX", x=0.435 * Globals.WIDTH, y=y_shift + 508 + random.randint(0, 3)
+			                   , color=MEDIUM_SKY_BLUE, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
