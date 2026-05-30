@@ -49,7 +49,7 @@ class TunnelEffect:
             arcade.draw_circle_filled(dot.x, dot.y, self.dot_size, arcade.color.WHITE)
 
     def update(self):
-        print(self.enlarge_time, time())
+        #print(self.enlarge_time, time())
         if self.enlarge_time < time() and self.dot_size < 0.12*Globals.WIDTH:
             self.dot_size += 0.05 + 0.01*self.dot_size**1.75
 

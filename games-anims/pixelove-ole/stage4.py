@@ -1,7 +1,7 @@
 import random
 import arcade
-from arcade import Rect
-from arcade.color import WHITE, CYAN, MAGENTA, YELLOW, RED, GREEN, BLACK, YANKEES_BLUE, MEDIUM_SKY_BLUE
+from arcade import Rect, Sprite
+from arcade.color import WHITE, CYAN, MAGENTA, YELLOW, RED, GREEN, MEDIUM_SKY_BLUE
 
 from lib.common import Globals
 
@@ -13,6 +13,9 @@ class Stage4:
 	def __init__(self):
 		self.logo = arcade.load_texture("res/1.jpg")
 		arcade.load_font("res/C64_Pro_Mono-STYLE.ttf")
+		self.scroll = Sprite("res/greetings scroll.png")
+		self.scroll.center_y = Globals.HEIGHT - 12
+		self.scroll.center_x = Globals.WIDTH * 2.1
 
 	def on_draw(self, timer):
 		y_shift = 50
@@ -43,6 +46,9 @@ class Stage4:
 
 		if timer > 7:
 			self.display_caption(timer, y_shift)
+			arcade.draw_sprite(self.scroll)
+			self.scroll.center_x -= 1
+			print("scroll [" + str(self.scroll.center_x) + ", " + str(self.scroll.center_y) + "]")
 
 	def display_caption(self, timer, y_shift):
 
@@ -62,9 +68,17 @@ class Stage4:
 			text = arcade.Text(text="SMOK", x=0.33 * Globals.WIDTH, y=y_shift + 490 + random.randint(0, 3)
 			                   , color=YELLOW, font_size=22, font_name="C64 Pro Mono", anchor_x="center")
 			text.draw()
+		if 6 < t < 8:
+			text = arcade.Text(text="Mariusz", x=0.65 * Globals.WIDTH, y=y_shift + 525 + random.randint(0, 3)
+			                   , color=YELLOW, font_size=13, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
 		if 6 < t < 10:
 			text = arcade.Text(text="Borg", x=0.5 * Globals.WIDTH, y=y_shift + 508 + random.randint(0, 3)
 			                   , color=WHITE, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
+		if 12 < t < 16:
+			text = arcade.Text(text="KD", x=0.33 * Globals.WIDTH, y=y_shift + 380 + random.randint(0, 3)
+			                   , color=WHITE, font_size=17, font_name="C64 Pro Mono", anchor_x="center")
 			text.draw()
 		if 14 < t < 21:
 			text1 = arcade.Text(text="Brodaty", x=0.52 * Globals.WIDTH, y=y_shift + 386 + random.randint(0, 3)

@@ -32,7 +32,7 @@ class Stage2:
         self.sprite_list.append(self.topStripe1)
         self.sprite_list.append(self.bottomStripe1)
 
-        print(datetime.now() - Globals.start)
+        #print(datetime.now() - Globals.start)
 
     def on_draw(self, timer):
 
@@ -41,7 +41,7 @@ class Stage2:
                  "w świecie klasycznych komputerów i konsol.",
                  " Przyjdź 23 lipca 2026 roku i spędź niezapomniany dzień pełen gier,",
                  " muzyki i wspomnień!",
-                 " Czekamy na Ciebie, ty głupi poyebie!")
+                 "", " Czekamy na Ciebie !!!")
 
         font_size = 22
 

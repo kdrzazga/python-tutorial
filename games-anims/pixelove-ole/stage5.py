@@ -34,7 +34,7 @@ class Stage5:
 	def display_text(self, timer):
 		t = timer - Stage5.START_TIMER
 		duration = 11
-		print(t)
+		#print(t)
 		x = 0.5 * Globals.WIDTH
 		y = Globals.HEIGHT - 112
 
@@ -80,6 +80,12 @@ class Stage5:
 			print("Restarting...")
 			python = sys.executable
 			os.execl(python, python, *sys.argv)
+
+		if t > 5*duration:
+			cred_kd = arcade.Text(text="Music: TECT", x=0.02 * Globals.WIDTH, y=Globals.HEIGHT - 36, color=BLACK, font_size=15, anchor_x="left")
+			cred_kd.draw()
+			cred_tect = arcade.Text(text="Code: KD", x=0.02 * Globals.WIDTH, y=Globals.HEIGHT - 20, color=BLACK, font_size=15, anchor_x="left")
+			cred_tect.draw()
 
 	def draw_pic(self, pic):
 		rect = Rect(
