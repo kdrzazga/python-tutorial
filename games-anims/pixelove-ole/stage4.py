@@ -77,3 +77,10 @@ class Stage4:
 			text = arcade.Text(text="MFX", x=0.435 * Globals.WIDTH, y=y_shift + 508 + random.randint(0, 3)
 			                   , color=MEDIUM_SKY_BLUE, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
 			text.draw()
+		if 10 < t < 15:
+			text = arcade.Text(text="T_mex111", x=0.57 * Globals.WIDTH, y=y_shift + 441 + random.randint(0, 3)
+			                   , color=GREEN, font_size=11, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
+			text = arcade.Text(text="Tomek", x=0.73 * Globals.WIDTH, y=y_shift + 386 + random.randint(0, 3)
+			                   , color=WHITE, font_size=15, font_name="C64 Pro Mono", anchor_x="center")
+			text.draw()
