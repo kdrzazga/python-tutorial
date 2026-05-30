@@ -21,6 +21,8 @@ class Stage5:
 		self.a500 = arcade.load_texture("res/computers/a500.png")
 		self.amstrad = arcade.load_texture("res/computers/amstrad.png")
 		self.nes = arcade.load_texture("res/computers/nes.png")
+		self.sega = arcade.load_texture("res/computers/segaMega.png")
+		self.playstation = arcade.load_texture("res/computers/gejstejszyn.png")
 		arcade.set_background_color(arcade.color.BLACK)
 		self.effect = TunnelEffect(9)
 
@@ -32,9 +34,9 @@ class Stage5:
 	def display_text(self, timer):
 		t = timer - Stage5.START_TIMER
 		duration = 11
-		print(t)
+		#print(t)
 		x = 0.5 * Globals.WIDTH
-		y = Globals.HEIGHT - 82
+		y = Globals.HEIGHT - 112
 
 		if 2 < t < 2 + duration:
 			arcade.draw_text("Commodore 64", x, y, color=CYAN, font_size=60, anchor_x="center")
@@ -58,9 +60,11 @@ class Stage5:
 
 		elif 2 + 5*duration + 4 < t < 2 + 6*duration + 2:
 			arcade.draw_text("Playstation", x, y, color=AQUA, font_size=60, anchor_x="center")
+			self.draw_pic(self.playstation)
 
 		elif 2 + 6*duration + 4 < t < 2 + 7*duration + 2:
-			arcade.draw_text("VIC-20", x, y, color=ARCADE_YELLOW, font_size=60, anchor_x="center")
+			arcade.draw_text("Sega Mega Drive", x, y, color=ARCADE_YELLOW, font_size=60, anchor_x="center")
+			self.draw_pic(self.sega)
 
 		elif 2 + 9*duration + 2 < t < 12.5 * duration:
 			arcade.draw_text("Pixelove OLE", x, y-10, color=BLACK, font_size=77, anchor_x="center")
@@ -76,6 +80,12 @@ class Stage5:
 			print("Restarting...")
 			python = sys.executable
 			os.execl(python, python, *sys.argv)
+
+		if t > 5*duration:
+			cred_kd = arcade.Text(text="Music: TECT", x=0.02 * Globals.WIDTH, y=Globals.HEIGHT - 36, color=BLACK, font_size=15, anchor_x="left")
+			cred_kd.draw()
+			cred_tect = arcade.Text(text="Code: KD", x=0.02 * Globals.WIDTH, y=Globals.HEIGHT - 20, color=BLACK, font_size=15, anchor_x="left")
+			cred_tect.draw()
 
 	def draw_pic(self, pic):
 		rect = Rect(
