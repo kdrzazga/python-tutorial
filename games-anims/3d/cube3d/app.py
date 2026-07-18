@@ -13,6 +13,8 @@ from OpenGL.GL import (
     glEnable,
     glLoadIdentity,
     glMatrixMode,
+    glPopMatrix,
+    glPushMatrix,
     glRotatef,
     glTranslatef,
     GL_MODELVIEW,
@@ -40,10 +42,14 @@ class CubeApp:
         self.rotation_speed_y = 18
         self.camera_z = -6.0
 
+        self.second_cube_offset = (-3.0, 0.0, -5.0)  # left and back of the original
+
         self.generators = None
         self.cube = None
+        self.second_cube = None
         self.overlay = None
         self.angle_x, self.angle_y = 20.0, 30.0
+        self.second_angle_x, self.second_angle_y = 20.0, 30.0
         self.auto_rotate = True
         self.dragging = False
         self.last_mouse = (0, 0)
@@ -76,6 +82,7 @@ class CubeApp:
             OscilloscopeFace(TEX_SIZE),
         ]
         self.cube = Cube(TEX_SIZE)
+        self.second_cube = Cube(TEX_SIZE)
         self.overlay = TextOverlay(WINDOW_SIZE)
 
         prev_time = start_time
@@ -91,14 +98,18 @@ class CubeApp:
 
             surfaces = [gen.render(t) for gen in self.generators]
             self.cube.upload(surfaces)
+            if 33 < t:
+                self.second_cube.upload(surfaces)
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()
             glTranslatef(0.0, 0.0, self.camera_z)
-            glRotatef(self.angle_x, 1, 0, 0)
-            glRotatef(self.angle_y, 0, 1, 0)
 
-            self.cube.draw()
+            self._draw_cube(self.cube, self.angle_x, self.angle_y)
+            if 33 < t:
+                self._draw_cube(self.second_cube, self.second_angle_x, self.second_angle_y,
+                                self.second_cube_offset)
+
             self.overlay.draw(t)
 
             pygame.display.flip()
@@ -116,6 +127,14 @@ class CubeApp:
                 self.rotation_speed_y -= 5
 
         pygame.quit()
+
+    def _draw_cube(self, cube, angle_x, angle_y, offset=(0.0, 0.0, 0.0)):
+        glPushMatrix()
+        glTranslatef(*offset)
+        glRotatef(angle_x, 1, 0, 0)
+        glRotatef(angle_y, 0, 1, 0)
+        cube.draw()
+        glPopMatrix()
 
     def _handle_events(self, dt):
         for event in pygame.event.get():
@@ -141,5 +160,9 @@ class CubeApp:
         if self.auto_rotate and not self.dragging:
             self.angle_y += self.rotation_speed_y * dt
             self.angle_x += self.rotation_speed_x * dt
+
+        # The second cube rotates on its own, unaffected by mouse or keyboard.
+        self.second_angle_y += self.rotation_speed_y * dt
+        self.second_angle_x += self.rotation_speed_x * dt
 
         return True
