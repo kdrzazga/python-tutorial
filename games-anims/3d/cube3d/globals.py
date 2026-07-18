@@ -25,7 +25,7 @@ INFO_LINES1 = (
 INFO_LINES2 = (
     "",
     "Controls:",
-    "  Left mouse drag  - rotate the cube manually",
-    "  Space            - toggle auto-rotation",
-    "  Esc / close      - quit",
+    "  Left mouse drag - rotate the cube manually",
+    "  Space - toggle auto-rotation",
+    "  Esc / close - quit",
 )
