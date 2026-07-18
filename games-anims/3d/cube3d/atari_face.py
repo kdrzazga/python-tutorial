@@ -5,13 +5,10 @@ from .face import Face
 
 
 class AtariFace(Face):
-    """Atari 8-bit BASIC boot screen: light blue background, cyan 'READY'
-    caption, and a blinking block cursor beneath it."""
-
     def __init__(self, size):
         super().__init__(size, ATARI_BLUE)
         self.margin = int(size * 0.08)
-        font_size = max(5, size // 10)
+        font_size = 8#max(5, size // 10)
         self.font = pygame.font.SysFont("couriernew,consolas,monospace", font_size, bold=True)
         self.line_height = self.font.get_linesize()
         self.cursor_w = self.font.size("@")[0]
@@ -24,7 +21,10 @@ class AtariFace(Face):
         surf.blit(self.ready_surf, (x, y))
 
         cursor_y = y + self.line_height
-        if int(t * 2) % 2 == 0:
-            pygame.draw.rect(surf, ATARI_CYAN, (x, cursor_y, self.cursor_w, self.line_height - 2))
+        self.conditionally_draw_cursor(surf, t, x, cursor_y)
 
         return surf
+
+    def conditionally_draw_cursor(self, surf, t, x, cursor_y):
+        if int(t * 2) % 2 == 0:
+            pygame.draw.rect(surf, ATARI_CYAN, (x, cursor_y, self.cursor_w, self.line_height - 2))

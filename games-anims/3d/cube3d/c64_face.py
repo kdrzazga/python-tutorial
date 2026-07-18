@@ -3,12 +3,10 @@ import pygame
 from .colors import C64_DARK_BLUE, C64_LIGHT_BLUE, C64_TEXT_COLOR
 from .face import Face
 from .font_utils import fit_font_size
-from .paths import C64_FONT_PATH
+from .globals import C64_FONT_PATH
 
 
 class C64Face(Face):
-    """Commodore 64 style BASIC boot screen with a blinking cursor."""
-
     LINES = [
         "**** COMMODORE 64 BASIC V2 ****",
         "",
@@ -24,6 +22,7 @@ class C64Face(Face):
 
         content_width = size - 2 * self.margin - 2 * self.inner_pad
         fitted_size = fit_font_size(C64_FONT_PATH, self.LINES, content_width, start_size=size // 15)
+
         self.font = pygame.font.Font(C64_FONT_PATH, fitted_size + 1)
         self.line_height = self.font.get_linesize()
         self.cursor_w = self.font.size("@")[0]
@@ -37,7 +36,7 @@ class C64Face(Face):
 
         rendered = [self.font.render(line, True, C64_TEXT_COLOR) for line in self.LINES]
         start_y = screen_rect.top + self.inner_pad
-        left_x = screen_rect.left + self.inner_pad
+        left_x = screen_rect.left
 
         for i, (line, text_surf) in enumerate(zip(self.LINES, rendered)):
             if line == "READY.":
@@ -52,7 +51,7 @@ class C64Face(Face):
         if int(t * 2) % 2 == 0:
             pygame.draw.rect(
                 surf, C64_TEXT_COLOR,
-                (left_x, cursor_y, self.cursor_w, self.line_height - 2)
+                (left_x, cursor_y, self.cursor_w, self.line_height)
             )
 
         return surf

@@ -15,10 +15,6 @@ from .font_utils import fit_sysfont_size
 
 
 class AmigaDOSFace(Face):
-    """AmigaDOS boot screen: light blue desktop, a white-outlined
-    'AmigaDOS' shell window with a blinking orange prompt cursor, and a
-    classic red arrow mouse pointer drifting around the screen."""
-
     LINES = [
         "Copyright ©1987 Commodore-Amiga, Inc.",
         "All rights reserved.",
@@ -55,28 +51,11 @@ class AmigaDOSFace(Face):
         win = self.win_rect
         pygame.draw.rect(surf, AMIGA_WHITE, win, width=2)
 
-        title_rect = pygame.Rect(win.left, win.top, win.width, self.title_h)
-        pygame.draw.rect(surf, AMIGA_BLACK, title_rect)
-        pygame.draw.rect(surf, AMIGA_WHITE, title_rect, width=2)
-
-        gadget_size = self.title_h - 8
-        gadget2 = pygame.Rect(title_rect.right - gadget_size - 4, title_rect.top + 4,
-                               gadget_size, gadget_size)
-        gadget1 = pygame.Rect(gadget2.left - gadget_size - 3, title_rect.top + 4,
-                               gadget_size, gadget_size)
-        pygame.draw.rect(surf, AMIGA_BLACK, gadget1)
-        pygame.draw.rect(surf, AMIGA_WHITE, gadget1, 1)
-        pygame.draw.rect(surf, AMIGA_WHITE, gadget2, 1)
-
-        title_surf = self.title_font.render("AmigaDOS", True, AMIGA_WHITE)
-        surf.blit(title_surf, (title_rect.left + 6, title_rect.centery - title_surf.get_height() // 2))
+        title_rect = self.draw_title_bar(surf)
 
         x = win.left + self.pad
         y = title_rect.bottom + self.pad
-        for line in self.LINES:
-            line_surf = self.font.render(line, True, AMIGA_WHITE)
-            surf.blit(line_surf, (x, y))
-            y += self.line_height
+        y = self.write_lines(surf, x, y)
 
         surf.blit(self.prompt_surf, (x, y))
         if int(t * 2) % 2 == 0:
@@ -90,3 +69,38 @@ class AmigaDOSFace(Face):
         pygame.draw.polygon(surf, AMIGA_POINTER_DARK, arrow, 1)
 
         return surf
+
+    def draw_title_bar(self, surf):
+        win = self.win_rect
+        title_rect = pygame.Rect(win.left, win.top, win.width, self.title_h)
+        #pygame.draw.rect(surf, AMIGA_BLACK, title_rect)
+        pygame.draw.rect(surf, AMIGA_WHITE, title_rect)
+
+        icon_size = self.title_h - 8
+        icon2 = pygame.Rect(title_rect.right - icon_size - 4, title_rect.top + 4,
+                               icon_size, icon_size)
+        icon1 = pygame.Rect(icon2.left - icon_size - 3, title_rect.top + 4,
+                               icon_size, icon_size)
+        pygame.draw.rect(surf, AMIGA_BLACK, icon1)
+        pygame.draw.rect(surf, AMIGA_WHITE, icon1, 1)
+        pygame.draw.rect(surf, AMIGA_BG, icon2, 1)
+
+        title_surf = self.title_font.render("AmigaDOS", True, AMIGA_BG)
+        text_x = title_rect.left + 6
+        text_y = title_rect.centery - title_surf.get_height() // 2
+        surf.blit(title_surf, (text_x, text_y))
+
+        stripe_left = text_x + title_surf.get_width() + 4
+        stripe_width = max(0, icon1.left - stripe_left) - 5
+        pygame.draw.rect(surf, AMIGA_BG, (stripe_left, text_y + 2, stripe_width, 3))
+        pygame.draw.rect(surf, AMIGA_BG,
+                          (stripe_left, text_y + title_surf.get_height() *0.7, stripe_width, 3))
+
+        return title_rect
+
+    def write_lines(self, surf, x, y):
+        for line in self.LINES:
+            line_surf = self.font.render(line, True, AMIGA_WHITE)
+            surf.blit(line_surf, (x, y))
+            y += self.line_height
+        return y
