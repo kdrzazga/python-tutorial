@@ -3,7 +3,7 @@ import pygame
 from .colors import ZX_BLACK, ZX_BLUE, ZX_WHITE
 from .face import Face
 from .font_utils import fit_font
-from .paths import ZX_FONT_PATH
+from .globals import ZX_FONT_PATH
 
 
 class ZXSpectrumFace(Face):

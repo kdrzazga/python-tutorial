@@ -52,8 +52,8 @@ class AmigaDOSFace(Face):
         pygame.draw.rect(surf, AMIGA_WHITE, win, width=2)
 
         title_rect = pygame.Rect(win.left, win.top, win.width, self.title_h)
-        pygame.draw.rect(surf, AMIGA_BLACK, title_rect)
-        pygame.draw.rect(surf, AMIGA_WHITE, title_rect, width=2)
+        #pygame.draw.rect(surf, AMIGA_BLACK, title_rect)
+        pygame.draw.rect(surf, AMIGA_WHITE, title_rect)
 
         gadget_size = self.title_h - 8
         gadget2 = pygame.Rect(title_rect.right - gadget_size - 4, title_rect.top + 4,
@@ -62,9 +62,9 @@ class AmigaDOSFace(Face):
                                gadget_size, gadget_size)
         pygame.draw.rect(surf, AMIGA_BLACK, gadget1)
         pygame.draw.rect(surf, AMIGA_WHITE, gadget1, 1)
-        pygame.draw.rect(surf, AMIGA_WHITE, gadget2, 1)
+        pygame.draw.rect(surf, AMIGA_BG, gadget2, 1)
 
-        title_surf = self.title_font.render("AmigaDOS", True, AMIGA_WHITE)
+        title_surf = self.title_font.render("AmigaDOS", True, AMIGA_BG)
         surf.blit(title_surf, (title_rect.left + 6, title_rect.centery - title_surf.get_height() // 2))
 
         x = win.left + self.pad

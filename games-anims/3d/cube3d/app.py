@@ -25,7 +25,7 @@ from .atari_face import AtariFace
 from .c64_face import C64Face
 from .cube import Cube
 from .oscilloscope_face import OscilloscopeFace
-from .paths import MUSIC_PATH
+from .globals import MUSIC_PATH
 from .plasma_face import PlasmaFace
 from .zx_spectrum_face import ZXSpectrumFace
 

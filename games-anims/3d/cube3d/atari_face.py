@@ -21,7 +21,10 @@ class AtariFace(Face):
         surf.blit(self.ready_surf, (x, y))
 
         cursor_y = y + self.line_height
-        if int(t * 2) % 2 == 0:
-            pygame.draw.rect(surf, ATARI_CYAN, (x, cursor_y, self.cursor_w, self.line_height - 2))
+        self.conditionally_draw_cursor(surf, t, x, cursor_y)
 
         return surf
+
+    def conditionally_draw_cursor(self, surf, t, x, cursor_y):
+        if int(t * 2) % 2 == 0:
+            pygame.draw.rect(surf, ATARI_CYAN, (x, cursor_y, self.cursor_w, self.line_height - 2))
