@@ -5,13 +5,10 @@ from .face import Face
 
 
 class AtariFace(Face):
-    """Atari 8-bit BASIC boot screen: light blue background, cyan 'READY'
-    caption, and a blinking block cursor beneath it."""
-
     def __init__(self, size):
         super().__init__(size, ATARI_BLUE)
         self.margin = int(size * 0.08)
-        font_size = max(5, size // 10)
+        font_size = 8#max(5, size // 10)
         self.font = pygame.font.SysFont("couriernew,consolas,monospace", font_size, bold=True)
         self.line_height = self.font.get_linesize()
         self.cursor_w = self.font.size("@")[0]

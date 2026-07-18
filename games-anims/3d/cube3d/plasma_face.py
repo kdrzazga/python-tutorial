@@ -6,8 +6,6 @@ from .face import Face
 
 
 class PlasmaFace(Face):
-    """Classic sine-based color plasma."""
-
     def __init__(self, size):
         super().__init__(size, (0, 0, 0))
         y, x = np.mgrid[0:size, 0:size].astype(np.float32)

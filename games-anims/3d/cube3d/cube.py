@@ -20,9 +20,6 @@ from OpenGL.GL import (
 
 
 class Cube:
-    """The textured 3D cube: owns the GL texture ids for its 6 faces and
-    knows how to upload live pixel data and draw itself."""
-
     VERTICES = [
         (-1, -1, -1), (1, -1, -1), (1, 1, -1), (-1, 1, -1),
         (-1, -1, 1), (1, -1, 1), (1, 1, 1), (-1, 1, 1),
@@ -55,7 +52,6 @@ class Cube:
         return tex_id
 
     def upload(self, surfaces):
-        """Push a freshly rendered pygame.Surface for each face to its GL texture."""
         for tex_id, surface in zip(self.tex_ids, surfaces):
             data = pygame.image.tostring(surface, "RGB", True)
             glBindTexture(GL_TEXTURE_2D, tex_id)

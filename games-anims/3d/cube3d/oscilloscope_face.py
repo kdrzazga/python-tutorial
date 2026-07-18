@@ -6,8 +6,6 @@ from .face import Face
 
 
 class OscilloscopeFace(Face):
-    """Scrolling Lissajous / waveform scope, like an old analog scope."""
-
     def __init__(self, size):
         super().__init__(size, (5, 10, 5))
         self.history = []

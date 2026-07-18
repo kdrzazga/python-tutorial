@@ -15,10 +15,6 @@ from .font_utils import fit_sysfont_size
 
 
 class AmigaDOSFace(Face):
-    """AmigaDOS boot screen: light blue desktop, a white-outlined
-    'AmigaDOS' shell window with a blinking orange prompt cursor, and a
-    classic red arrow mouse pointer drifting around the screen."""
-
     LINES = [
         "Copyright ©1987 Commodore-Amiga, Inc.",
         "All rights reserved.",

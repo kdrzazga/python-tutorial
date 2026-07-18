@@ -7,10 +7,6 @@ from .paths import ZX_FONT_PATH
 
 
 class ZXSpectrumFace(Face):
-    """ZX Spectrum 128 startup menu: a bordered box with 'Tape Loader',
-    '128 BASIC', 'Calculator' and '48 BASIC', a moving selection bar,
-    and the Amstrad copyright notice at the very bottom of the screen."""
-
     HEADER = "128"
     MENU_ITEMS = ["Tape Loader", "128 BASIC", "Calculator", "48 BASIC", ""]
     COPYRIGHT_LINES = ["(c)1985, (c)1982 Amstrad", "Consumer Electronics plc"]

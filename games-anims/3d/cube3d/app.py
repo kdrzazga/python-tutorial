@@ -34,9 +34,6 @@ WINDOW_SIZE = (900, 700)
 
 
 class CubeApp:
-    """Owns the pygame/OpenGL window, the live cube-face generators, and
-    the main event/render loop."""
-
     def __init__(self):
         self.generators = None
         self.cube = None
@@ -103,8 +100,6 @@ class CubeApp:
         pygame.quit()
 
     def _handle_events(self, dt):
-        """Process pending input, updating rotation state. Returns False
-        when the app should quit."""
         for event in pygame.event.get():
             if event.type == QUIT:
                 return False
