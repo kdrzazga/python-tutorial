@@ -27,6 +27,7 @@ from .cube import Cube
 from .oscilloscope_face import OscilloscopeFace
 from .globals import MUSIC_PATH
 from .plasma_face import PlasmaFace
+from .text_overlay import TextOverlay
 from .zx_spectrum_face import ZXSpectrumFace
 
 TEX_SIZE = 256
@@ -37,6 +38,7 @@ class CubeApp:
     def __init__(self):
         self.generators = None
         self.cube = None
+        self.overlay = None
         self.angle_x, self.angle_y = 20.0, 30.0
         self.auto_rotate = True
         self.dragging = False
@@ -70,6 +72,7 @@ class CubeApp:
             OscilloscopeFace(TEX_SIZE),
         ]
         self.cube = Cube(TEX_SIZE)
+        self.overlay = TextOverlay(WINDOW_SIZE)
 
         start_time = time.time()
         prev_time = start_time
@@ -93,6 +96,7 @@ class CubeApp:
             glRotatef(self.angle_y, 0, 1, 0)
 
             self.cube.draw()
+            self.overlay.draw(t)
 
             pygame.display.flip()
             clock.tick(60)

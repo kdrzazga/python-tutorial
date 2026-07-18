@@ -9,10 +9,17 @@ MUSIC_PATH = os.path.join(ASSETS_DIR, "dance_all_night.mp3")
 
 INFO_LINES1 = (
     "",
-    "A spinning 3D cube where every face is a live, animated texture,",
-    "each recreating a different classic home computer boot/startup screen:",
-    "Commodore 64, ZX Spectrum 128, Atari 8-bit, AmigaDOS, plus a plasma",
-    "and an oscilloscope face for extra generative graphics."
+    "A spinning 3D cube where",
+    " every face is a live,",
+    " animated texture,",
+    "each recreating",
+    " a different classic ",
+    "home computer boot/startup screen:",
+    "Commodore 64, ZX Spectrum 128,",
+    " Atari 8-bit, AmigaDOS,",
+    " plus a plasma",
+    "and an oscilloscope face",
+    " for extra generative graphics."
 )
 
 INFO_LINES2 = (
