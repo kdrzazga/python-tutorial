@@ -1,4 +1,7 @@
 import os
+import time
+
+start_time = time.time()
 
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.dirname(PACKAGE_DIR)

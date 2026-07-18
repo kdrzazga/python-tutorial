@@ -25,7 +25,7 @@ from .atari_face import AtariFace
 from .c64_face import C64Face
 from .cube import Cube
 from .oscilloscope_face import OscilloscopeFace
-from .globals import MUSIC_PATH
+from .globals import start_time, MUSIC_PATH
 from .plasma_face import PlasmaFace
 from .text_overlay import TextOverlay
 from .zx_spectrum_face import ZXSpectrumFace
@@ -36,6 +36,10 @@ WINDOW_SIZE = (900, 700)
 
 class CubeApp:
     def __init__(self):
+        self.rotation_speed_x = 10
+        self.rotation_speed_y = 18
+        self.camera_z = -6.0
+
         self.generators = None
         self.cube = None
         self.overlay = None
@@ -47,7 +51,7 @@ class CubeApp:
     def run(self):
         pygame.init()
         pygame.display.set_mode(WINDOW_SIZE, DOUBLEBUF | OPENGL)
-        pygame.display.set_caption("Live 3D Cube - Commodore 64 Edition")
+        pygame.display.set_caption("Retro Screens on a CUBE")
         clock = pygame.time.Clock()
 
         if os.path.exists(MUSIC_PATH):
@@ -74,7 +78,6 @@ class CubeApp:
         self.cube = Cube(TEX_SIZE)
         self.overlay = TextOverlay(WINDOW_SIZE)
 
-        start_time = time.time()
         prev_time = start_time
 
         running = True
@@ -91,7 +94,7 @@ class CubeApp:
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()
-            glTranslatef(0.0, 0.0, -6.0)
+            glTranslatef(0.0, 0.0, self.camera_z)
             glRotatef(self.angle_x, 1, 0, 0)
             glRotatef(self.angle_y, 0, 1, 0)
 
@@ -100,6 +103,17 @@ class CubeApp:
 
             pygame.display.flip()
             clock.tick(60)
+
+            print(t)
+
+            if 20 < t < 22:
+                self.camera_z -= 0.4
+            elif 22 < t < 24:
+                self.camera_z += 0.4
+            elif 24 < t < 26:
+                self.rotation_speed_y += 5
+            elif 31 < t < 33:
+                self.rotation_speed_y -= 5
 
         pygame.quit()
 
@@ -125,7 +139,7 @@ class CubeApp:
                 self.last_mouse = event.pos
 
         if self.auto_rotate and not self.dragging:
-            self.angle_y += 18 * dt
-            self.angle_x += 9 * dt
+            self.angle_y += self.rotation_speed_y * dt
+            self.angle_x += self.rotation_speed_x * dt
 
         return True
