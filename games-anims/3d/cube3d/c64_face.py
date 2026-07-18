@@ -24,6 +24,7 @@ class C64Face(Face):
 
         content_width = size - 2 * self.margin - 2 * self.inner_pad
         fitted_size = fit_font_size(C64_FONT_PATH, self.LINES, content_width, start_size=size // 15)
+
         self.font = pygame.font.Font(C64_FONT_PATH, fitted_size + 1)
         self.line_height = self.font.get_linesize()
         self.cursor_w = self.font.size("@")[0]
