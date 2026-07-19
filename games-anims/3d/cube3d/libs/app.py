@@ -28,12 +28,17 @@ from cube3d.c64_face import C64Face
 from cube3d.oscilloscope_face import OscilloscopeFace
 from cube3d.plasma_face import PlasmaFace
 from cube3d.zx_spectrum_face import ZXSpectrumFace
+from .caption import Caption
 from .cube import Cube
 from .globals import start_time, MUSIC_PATH
 from .text_overlay import TextOverlay
 
 TEX_SIZE = 256
 WINDOW_SIZE = (900, 700)
+
+CAPTION_Z = -16.0       # depth the scrolling caption sits at
+CAPTION_SPEED = 3.0     # world units per second, right to left
+CAPTION_MARGIN = 9.0    # extra travel so it fully leaves the screen before wrapping
 
 
 class CubeApp:
@@ -43,6 +48,14 @@ class CubeApp:
         self.camera_z = -6.0
 
         self.second_cube_offset = (-3.0, 0.0, -5.0)  # left and back of the original
+
+        text = ("Retro computers such as the Commodore, Atari, ZX Spectrum, and Amiga played a pivotal role in shaping"
+                " home computing and gaming.   These machines are remembered for their innovative features and their influence"
+                " on the development of digital entertainment")
+        self.caption1 = Caption(text)
+        # Start fully off-screen to the right, then scroll left and wrap.
+        self.caption_span = self.caption1.world_width / 2 + CAPTION_MARGIN
+        self.caption_x = self.caption_span
 
         self.generators = None
         self.cube = None
@@ -84,6 +97,7 @@ class CubeApp:
         self.cube = Cube(TEX_SIZE)
         self.second_cube = Cube(TEX_SIZE)
         self.overlay = TextOverlay(WINDOW_SIZE)
+        self.caption1.prepare()   # pre-build now; avoids a freeze when the scroll starts
 
         prev_time = start_time
 
@@ -112,11 +126,6 @@ class CubeApp:
 
             self.overlay.draw(t)
 
-            pygame.display.flip()
-            clock.tick(60)
-
-            print(t)
-
             if 20 < t < 22:
                 self.camera_z -= 0.4
             elif 22 < t < 24:
@@ -125,6 +134,12 @@ class CubeApp:
                 self.rotation_speed_y += 5
             elif 31 < t < 33:
                 self.rotation_speed_y -= 5
+            elif 50 < t:
+                self.move_caption(dt)
+
+            pygame.display.flip()
+            clock.tick(60)
+            print(t)
 
         pygame.quit()
 
@@ -166,3 +181,14 @@ class CubeApp:
         self.second_angle_x += self.rotation_speed_x * dt
 
         return True
+
+    def move_caption(self, dt):
+        self.caption_x -= CAPTION_SPEED * dt
+        if self.caption_x < -self.caption_span:
+            self.caption_x = self.caption_span
+
+        glPushMatrix()
+        glLoadIdentity()
+        glTranslatef(self.caption_x, 0.0, CAPTION_Z)
+        self.caption1.render()
+        glPopMatrix()
