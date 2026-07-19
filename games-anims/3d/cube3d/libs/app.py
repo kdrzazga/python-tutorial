@@ -129,45 +129,43 @@ class CubeApp:
             glLoadIdentity()
             glTranslatef(0.0, self.camera_y, self.camera_z)
 
-            self._draw_cube(self.cube, self.angle_x, self.angle_y, self.cube_offset)
-            if 33 < t:
-                self._draw_cube(self.second_cube, self.second_angle_x, self.second_angle_y,
-                                self.second_cube_offset)
-            self.overlay.draw(t)
-
-            if 20 < t < 22:
-                self.camera_z -= 0.4
-            elif 22 < t < 24:
-                self.camera_z += 0.4
-            elif 24 < t < 26:
-                self.rotation_speed_y += 5
-            elif 31 < t < 33:
-                self.rotation_speed_y -= 5
-            elif 50 < t:
-                self.move_caption(dt)
-
-            if 53 < t < 57:
-                self.cube_offset[2] -= 0.08
-
-            if 54 < t < 68:
-                self.second_cube_offset[2] -= 0.08
-
-            if 65 < t < 75:
-                self.caption1.lean += 0.11
-            if 75 < t < 95:
-                self.caption1.lean -= 0.11
-
-            if t > 80 and self.camera_y > -5:
-                self.camera_y -= 0.01
-
-            if t > 90:
-                self.tunnel.render(dt)
+            self.procedure(dt, t)
 
             pygame.display.flip()
             clock.tick(60)
             self._print_elapsed(t)
 
         pygame.quit()
+
+    def procedure(self, dt, t):
+        if t < 100:
+            self._draw_cube(self.cube, self.angle_x, self.angle_y, self.cube_offset)
+        if 33 < t:
+            self._draw_cube(self.second_cube, self.second_angle_x, self.second_angle_y,
+                            self.second_cube_offset)
+        self.overlay.draw(t)
+        if 20 < t < 22:
+            self.camera_z -= 0.4
+        elif 22 < t < 24:
+            self.camera_z += 0.4
+        elif 24 < t < 26:
+            self.rotation_speed_y += 5
+        elif 31 < t < 33:
+            self.rotation_speed_y -= 5
+        elif 50 < t:
+            self.move_caption(dt)
+        if 53 < t < 57:
+            self.cube_offset[2] -= 0.08
+        if 54 < t < 68:
+            self.second_cube_offset[2] -= 0.08
+        if 65 < t < 75:
+            self.caption1.lean += 0.11
+        if 75 < t < 95:
+            self.caption1.lean -= 0.11
+        if t > 80 and self.camera_y > -5:
+            self.camera_y -= 0.01
+        if t > 90:
+            self.tunnel.render(dt)
 
     def _print_elapsed(self, t):
         for i, line in enumerate(INFO_LINES1):
