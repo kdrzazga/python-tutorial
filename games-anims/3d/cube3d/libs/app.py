@@ -32,6 +32,7 @@ from cube3d.plasma_face import PlasmaFace
 from cube3d.zx_spectrum_face import ZXSpectrumFace
 from .caption import Caption
 from .cube import Cube
+from .amiga_ball import AmigaBall
 from .globals import start_time, MUSIC_PATH, INFO_LINES1, INFO_LINES2
 from .text_overlay import TextOverlay
 from .tunnel_effect import TunnelEffect
@@ -42,6 +43,8 @@ WINDOW_SIZE = (900, 700)
 CAPTION_Z = -16.0       # depth the scrolling caption sits at
 CAPTION_SPEED = 3.0     # world units per second, right to left
 CAPTION_MARGIN = 9.0    # extra travel so it fully leaves the screen before wrapping
+BALL_Z = -8.0           # depth the Amiga ball sits at
+
 
 
 class CubeApp:
@@ -66,6 +69,7 @@ class CubeApp:
         self.caption_x = self.caption_span
 
         self.tunnel = TunnelEffect()
+        self.amiga_ball = AmigaBall(radius = 1.5)
 
         self.generators = None
         self.cube = None
@@ -170,6 +174,23 @@ class CubeApp:
             self.camera_y -= 0.01
         if t > 90:
             self.tunnel.render(dt)
+        if 100 < t < 160:
+            self.draw_amiga_ball(dt)
+            if 110 < t < 130:
+                self.amiga_ball.spin_speed += 0.5
+            elif 130 < t < 150:
+                self.amiga_ball.spin_speed -= 0.5
+            if t> 130:
+                self.amiga_ball.tilt += 1
+
+    def draw_amiga_ball(self, dt):
+        self.amiga_ball.update(dt)
+
+        glPushMatrix()
+        glLoadIdentity()          # ignore camera_y, which by now is far below the view
+        glTranslatef(0.0, 0.0, BALL_Z)
+        self.amiga_ball.render()
+        glPopMatrix()
 
     def _display_mode(self):
         """Window size and pygame flags; fullscreen uses the desktop resolution."""
