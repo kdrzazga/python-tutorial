@@ -22,15 +22,15 @@ from OpenGL.GL import (
 )
 from OpenGL.GLU import gluPerspective
 
-from .amiga_dos_face import AmigaDOSFace
-from .atari_face import AtariFace
-from .c64_face import C64Face
+from cube3d.amiga_dos_face import AmigaDOSFace
+from cube3d.atari_face import AtariFace
+from cube3d.c64_face import C64Face
+from cube3d.oscilloscope_face import OscilloscopeFace
+from cube3d.plasma_face import PlasmaFace
+from cube3d.zx_spectrum_face import ZXSpectrumFace
 from .cube import Cube
-from .oscilloscope_face import OscilloscopeFace
 from .globals import start_time, MUSIC_PATH
-from .plasma_face import PlasmaFace
 from .text_overlay import TextOverlay
-from .zx_spectrum_face import ZXSpectrumFace
 
 TEX_SIZE = 256
 WINDOW_SIZE = (900, 700)

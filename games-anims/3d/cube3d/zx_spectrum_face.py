@@ -1,9 +1,9 @@
 import pygame
 
-from .colors import ZX_BLACK, ZX_WHITE, ZX_CYAN, ZX_RED, ZX_YELLOW, ZX_GREEN
+from libs.colors import ZX_BLACK, ZX_WHITE, ZX_CYAN, ZX_RED, ZX_YELLOW, ZX_GREEN
 from .face import Face
-from .font_utils import fit_font
-from .globals import ZX_FONT_PATH
+from libs.font_utils import fit_font
+from libs.globals import ZX_FONT_PATH
 
 
 class ZXSpectrumFace(Face):
