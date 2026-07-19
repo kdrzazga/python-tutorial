@@ -4,7 +4,7 @@ import time
 import colorama
 from colorama import Cursor
 import pygame
-from pygame.locals import DOUBLEBUF, KEYDOWN, K_ESCAPE, K_SPACE, OPENGL, QUIT
+from pygame.locals import DOUBLEBUF, FULLSCREEN, KEYDOWN, K_ESCAPE, K_SPACE, OPENGL, QUIT
 from OpenGL.GL import (
     GL_COLOR_BUFFER_BIT,
     GL_DEPTH_BUFFER_BIT,
@@ -45,7 +45,10 @@ CAPTION_MARGIN = 9.0    # extra travel so it fully leaves the screen before wrap
 
 
 class CubeApp:
-    def __init__(self):
+    def __init__(self, windowed=False):
+        self.windowed = windowed
+        self.window_size = WINDOW_SIZE   # replaced by the real size in run()
+
         self.rotation_speed_x = 10
         self.rotation_speed_y = 18
         self.camera_y = 0.0
@@ -79,7 +82,8 @@ class CubeApp:
         print(colorama.ansi.clear_screen(), end="")
 
         pygame.init()
-        pygame.display.set_mode(WINDOW_SIZE, DOUBLEBUF | OPENGL)
+        self.window_size, flags = self._display_mode()
+        pygame.display.set_mode(self.window_size, flags)
         pygame.display.set_caption("Retro Screens on a CUBE")
         clock = pygame.time.Clock()
 
@@ -92,7 +96,7 @@ class CubeApp:
         glClearColor(0.05, 0.05, 0.08, 1.0)
 
         glMatrixMode(GL_PROJECTION)
-        gluPerspective(45, WINDOW_SIZE[0] / WINDOW_SIZE[1], 0.1, 50.0)
+        gluPerspective(45, self.window_size[0] / self.window_size[1], 0.1, 50.0)
         glMatrixMode(GL_MODELVIEW)
 
         # Face generators load fonts, so they must be built after pygame.init().
@@ -106,7 +110,7 @@ class CubeApp:
         ]
         self.cube = Cube(TEX_SIZE)
         self.second_cube = Cube(TEX_SIZE)
-        self.overlay = TextOverlay(WINDOW_SIZE)
+        self.overlay = TextOverlay(self.window_size)
         self.caption1.prepare()   # pre-build now; avoids a freeze when the scroll starts
 
         prev_time = start_time
@@ -166,6 +170,14 @@ class CubeApp:
             self.camera_y -= 0.01
         if t > 90:
             self.tunnel.render(dt)
+
+    def _display_mode(self):
+        """Window size and pygame flags; fullscreen uses the desktop resolution."""
+        if self.windowed:
+            return WINDOW_SIZE, DOUBLEBUF | OPENGL
+
+        desktop = pygame.display.Info()
+        return (desktop.current_w, desktop.current_h), DOUBLEBUF | OPENGL | FULLSCREEN
 
     def _print_elapsed(self, t):
         for i, line in enumerate(INFO_LINES1):
