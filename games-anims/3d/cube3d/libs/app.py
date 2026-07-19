@@ -1,6 +1,8 @@
 import os
 import time
 
+import colorama
+from colorama import Cursor
 import pygame
 from pygame.locals import DOUBLEBUF, KEYDOWN, K_ESCAPE, K_SPACE, OPENGL, QUIT
 from OpenGL.GL import (
@@ -30,8 +32,9 @@ from cube3d.plasma_face import PlasmaFace
 from cube3d.zx_spectrum_face import ZXSpectrumFace
 from .caption import Caption
 from .cube import Cube
-from .globals import start_time, MUSIC_PATH
+from .globals import start_time, MUSIC_PATH, INFO_LINES1, INFO_LINES2
 from .text_overlay import TextOverlay
+from .tunnel_effect import TunnelEffect
 
 TEX_SIZE = 256
 WINDOW_SIZE = (900, 700)
@@ -45,9 +48,11 @@ class CubeApp:
     def __init__(self):
         self.rotation_speed_x = 10
         self.rotation_speed_y = 18
+        self.camera_y = 0.0
         self.camera_z = -6.0
 
-        self.second_cube_offset = (-3.0, 0.0, -5.0)  # left and back of the original
+        self.cube_offset = [0.0, 0.0, 0.0]
+        self.second_cube_offset = [-3.0, 0.0, -5.0]  # left and back of the original
 
         text = ("Retro computers such as the Commodore, Atari, ZX Spectrum, and Amiga played a pivotal role in shaping"
                 " home computing and gaming.   These machines are remembered for their innovative features and their influence"
@@ -56,6 +61,8 @@ class CubeApp:
         # Start fully off-screen to the right, then scroll left and wrap.
         self.caption_span = self.caption1.world_width / 2 + CAPTION_MARGIN
         self.caption_x = self.caption_span
+
+        self.tunnel = TunnelEffect()
 
         self.generators = None
         self.cube = None
@@ -68,6 +75,9 @@ class CubeApp:
         self.last_mouse = (0, 0)
 
     def run(self):
+        colorama.init()
+        print(colorama.ansi.clear_screen(), end="")
+
         pygame.init()
         pygame.display.set_mode(WINDOW_SIZE, DOUBLEBUF | OPENGL)
         pygame.display.set_caption("Retro Screens on a CUBE")
@@ -117,13 +127,12 @@ class CubeApp:
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             glLoadIdentity()
-            glTranslatef(0.0, 0.0, self.camera_z)
+            glTranslatef(0.0, self.camera_y, self.camera_z)
 
-            self._draw_cube(self.cube, self.angle_x, self.angle_y)
+            self._draw_cube(self.cube, self.angle_x, self.angle_y, self.cube_offset)
             if 33 < t:
                 self._draw_cube(self.second_cube, self.second_angle_x, self.second_angle_y,
                                 self.second_cube_offset)
-
             self.overlay.draw(t)
 
             if 20 < t < 22:
@@ -137,11 +146,33 @@ class CubeApp:
             elif 50 < t:
                 self.move_caption(dt)
 
+            if 53 < t < 57:
+                self.cube_offset[2] -= 0.08
+
+            if 54 < t < 68:
+                self.second_cube_offset[2] -= 0.08
+
+            if 65 < t < 75:
+                self.caption1.lean += 0.11
+            if 75 < t < 95:
+                self.caption1.lean -= 0.11
+
+            if t > 80 and self.camera_y > -5:
+                self.camera_y -= 0.01
+
+            if t > 90:
+                self.tunnel.render(dt)
+
             pygame.display.flip()
             clock.tick(60)
-            print(t)
+            self._print_elapsed(t)
 
         pygame.quit()
+
+    def _print_elapsed(self, t):
+        for i, line in enumerate(INFO_LINES1):
+            print(Cursor.POS(1, i+2) + line, flush=True)
+        print(Cursor.POS(1, len(INFO_LINES1) + 2) + f"elapsed: {t:7.2f} s", end="", flush=True)
 
     def _draw_cube(self, cube, angle_x, angle_y, offset=(0.0, 0.0, 0.0)):
         glPushMatrix()
@@ -189,6 +220,6 @@ class CubeApp:
 
         glPushMatrix()
         glLoadIdentity()
-        glTranslatef(self.caption_x, 0.0, CAPTION_Z)
+        glTranslatef(self.caption_x, self.camera_y, CAPTION_Z)
         self.caption1.render()
         glPopMatrix()

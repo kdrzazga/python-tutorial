@@ -17,6 +17,7 @@ from OpenGL.GL import (
     glNewList,
     glPopMatrix,
     glPushMatrix,
+    glRotatef,
     glScalef,
     glVertex3f,
 )
@@ -74,6 +75,7 @@ def _cell_polygons(tl, tr, br, bl, gx, gy):
 class Caption:
     def __init__(self, text):
         self.text = text
+        self.lean = 0.0          # degrees; tilts the caption back about the x axis
         self.display_list = None
 
     @property
@@ -95,6 +97,7 @@ class Caption:
 
         glDisable(GL_TEXTURE_2D)
         glPushMatrix()
+        glRotatef(self.lean, 1, 0, 0)
         glScalef(SCALE, SCALE, SCALE)
         glCallList(self.display_list)
         glPopMatrix()
