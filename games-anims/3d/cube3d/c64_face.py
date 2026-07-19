@@ -1,9 +1,9 @@
 import pygame
 
-from libs.colors import C64_DARK_BLUE, C64_LIGHT_BLUE, C64_TEXT_COLOR
+from .libs.colors import C64_DARK_BLUE, C64_LIGHT_BLUE, C64_TEXT_COLOR
 from .face import Face
-from libs.font_utils import fit_font_size
-from libs.globals import C64_FONT_PATH
+from .libs.font_utils import fit_font_size
+from .libs.globals import C64_FONT_PATH
 
 
 class C64Face(Face):

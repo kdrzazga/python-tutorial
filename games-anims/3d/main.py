@@ -1,5 +1,5 @@
-from libs.app import CubeApp
-from libs.globals import INFO_LINES1, INFO_LINES2
+from cube3d.libs.app import CubeApp
+from cube3d.libs.globals import INFO_LINES1, INFO_LINES2
 
 
 def info():

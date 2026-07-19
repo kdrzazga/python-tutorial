@@ -1,6 +1,6 @@
 import pygame
 
-from libs.colors import ATARI_BLUE, ATARI_CYAN
+from .libs.colors import ATARI_BLUE, ATARI_CYAN
 from .face import Face
 
 

@@ -3,7 +3,7 @@ import math
 import pygame
 
 from .face import Face
-from libs.colors import OSC_DARK_GREEN
+from .libs.colors import OSC_DARK_GREEN
 
 
 class OscilloscopeFace(Face):
