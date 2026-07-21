@@ -26,6 +26,11 @@ INFO_LINES1 = (
     " for extra generative graphics."
 )
 
+CREDITS_LINES = (
+    "CODE: KD (15%)+ Claude AI (85%)",
+    "MSX: Gasman from Hooy-Program",
+)
+
 INFO_LINES2 = (
     "",
     "Controls:",

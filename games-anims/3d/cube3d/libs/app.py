@@ -2,7 +2,8 @@ import os
 import time
 
 import colorama
-from colorama import Cursor
+from colorama import Cursor, Fore, Style
+import numpy as np
 import pygame
 from pygame.locals import DOUBLEBUF, FULLSCREEN, KEYDOWN, K_ESCAPE, K_SPACE, OPENGL, QUIT
 from OpenGL.GL import (
@@ -41,8 +42,12 @@ TEX_SIZE = 256
 WINDOW_SIZE = (900, 700)
 
 CAPTION_Z = -16.0       # depth the scrolling caption sits at
-CAPTION_SPEED = 3.0     # world units per second, right to left
 CAPTION_MARGIN = 9.0    # extra travel so it fully leaves the screen before wrapping
+CAPTION_START = 50.0    # when the scroll begins
+MUSIC_DURATION = 204.0  # fallback only; the real track length is measured at startup
+CREDITS_DURATION = 4.0  # credits shown over the final seconds
+EXIT_DELAY = 2.0        # quit this long after the music ends
+SILENCE_LEVEL = 0.02    # share of peak below which the track counts as silent
 BALL_Z = -8.0           # depth the Amiga ball sits at
 
 
@@ -60,13 +65,16 @@ class CubeApp:
         self.cube_offset = [0.0, 0.0, 0.0]
         self.second_cube_offset = [-3.0, 0.0, -5.0]  # left and back of the original
 
-        text = ("Retro computers such as the Commodore, Atari, ZX Spectrum, and Amiga played a pivotal role in shaping"
+        text = ("     Retro computers such as the Commodore, Atari, ZX Spectrum, and Amiga played a pivotal role in shaping"
                 " home computing and gaming.   These machines are remembered for their innovative features and their influence"
-                " on the development of digital entertainment")
+                " on the development of digital entertainment          ")
         self.caption1 = Caption(text)
         # Start fully off-screen to the right, then scroll left and wrap.
         self.caption_span = self.caption1.world_width / 2 + CAPTION_MARGIN
         self.caption_x = self.caption_span
+        # Pace the single pass so it finishes exactly when the chiptune does.
+        self.show_end = MUSIC_DURATION      # refined in run() from the real track
+        self.caption_speed = 2 * self.caption_span / (self.show_end - CAPTION_START)
 
         self.tunnel = TunnelEffect()
         self.amiga_ball = AmigaBall(radius = 1.5)
@@ -89,11 +97,11 @@ class CubeApp:
         self.window_size, flags = self._display_mode()
         pygame.display.set_mode(self.window_size, flags)
         pygame.display.set_caption("Retro Screens on a CUBE")
+        pygame.mouse.set_visible(False)
         clock = pygame.time.Clock()
 
-        if os.path.exists(MUSIC_PATH):
-            pygame.mixer.music.load(MUSIC_PATH)
-            pygame.mixer.music.play(loops=-1)
+        self.show_end = self._start_music()
+        self.caption_speed = 2 * self.caption_span / (self.show_end - CAPTION_START)
 
         glEnable(GL_DEPTH_TEST)
         glEnable(GL_TEXTURE_2D)
@@ -126,7 +134,7 @@ class CubeApp:
             dt = now - prev_time
             prev_time = now
 
-            running = self._handle_events(dt)
+            running = self._handle_events(dt) and t < self.show_end + EXIT_DELAY
 
             surfaces = [gen.render(t) for gen in self.generators]
             self.cube.upload(surfaces)
@@ -160,7 +168,7 @@ class CubeApp:
             self.rotation_speed_y += 5
         elif 31 < t < 33:
             self.rotation_speed_y -= 5
-        elif 50 < t:
+        elif CAPTION_START < t:
             self.move_caption(dt)
         if 53 < t < 57:
             self.cube_offset[2] -= 0.08
@@ -182,6 +190,29 @@ class CubeApp:
                 self.amiga_ball.spin_speed -= 0.5
             if t> 130:
                 self.amiga_ball.tilt += 1
+        if t > self.show_end - CREDITS_DURATION:
+            self.overlay.draw_credits()
+
+    def _start_music(self):
+        """Play the chiptune; returns when it will finish, in seconds from start_time."""
+        if not os.path.exists(MUSIC_PATH):
+            return MUSIC_DURATION
+
+        duration = self._audible_length(pygame.mixer.Sound(MUSIC_PATH))
+        pygame.mixer.music.load(MUSIC_PATH)
+        pygame.mixer.music.play()
+        return (time.time() - start_time) + duration
+
+    def _audible_length(self, sound):
+        """Track length without the trailing silence, so the show ends with the music."""
+        magnitude = np.abs(pygame.sndarray.array(sound))
+        if magnitude.ndim > 1:
+            magnitude = magnitude.max(axis=1)
+
+        audible = np.nonzero(magnitude > magnitude.max() * SILENCE_LEVEL)[0]
+        if not len(audible):
+            return sound.get_length()
+        return (audible[-1] + 1) / pygame.mixer.get_init()[0]
 
     def draw_amiga_ball(self, dt):
         self.amiga_ball.update(dt)
@@ -202,8 +233,11 @@ class CubeApp:
 
     def _print_elapsed(self, t):
         for i, line in enumerate(INFO_LINES1):
-            print(Cursor.POS(1, i+2) + line, flush=True)
-        print(Cursor.POS(1, len(INFO_LINES1) + 2) + f"elapsed: {t:7.2f} s", end="", flush=True)
+            print(Cursor.POS(1, i+2) + Fore.CYAN + line, flush=True)
+        print(Cursor.POS(1, len(INFO_LINES1) + 2)
+              + Fore.RED + "elapsed:"
+              + Fore.LIGHTWHITE_EX + f" {t:7.2f} s"
+              + Style.RESET_ALL, end="", flush=True)
 
     def _draw_cube(self, cube, angle_x, angle_y, offset=(0.0, 0.0, 0.0)):
         glPushMatrix()
@@ -245,7 +279,7 @@ class CubeApp:
         return True
 
     def move_caption(self, dt):
-        self.caption_x -= CAPTION_SPEED * dt
+        self.caption_x -= self.caption_speed * dt
         if self.caption_x < -self.caption_span:
             self.caption_x = self.caption_span
 

@@ -32,7 +32,7 @@ LETTER_GAP = 2       # empty columns between letters
 OVERSHOOT = 4        # M and W are drawn 4px wider than their cell on each side
 OVERSIZED = ("M", "W")
 DEPTH = 1.5
-SCALE = 0.10
+SCALE = 0.05
 
 FRONT_COLOR = (0.95, 0.95, 1.0)
 BACK_COLOR = (0.45, 0.45, 0.65)
