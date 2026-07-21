@@ -99,11 +99,12 @@ class LogoSlab:
         glTexCoord2f(1.0, 1.0); glVertex3f(self.half_w, self.half_h, front)
         glTexCoord2f(0.0, 1.0); glVertex3f(-self.half_w, self.half_h, front)
 
-        # mirrored so the artwork also reads correctly from behind
-        glTexCoord2f(1.0, 0.0); glVertex3f(-self.half_w, -self.half_h, back)
-        glTexCoord2f(0.0, 0.0); glVertex3f(self.half_w, -self.half_h, back)
-        glTexCoord2f(0.0, 1.0); glVertex3f(self.half_w, self.half_h, back)
-        glTexCoord2f(1.0, 1.0); glVertex3f(-self.half_w, self.half_h, back)
+        # same footprint as the front, so both faces line up with the walls;
+        # seen from behind it reads as a horizontal flip, as a solid should
+        glTexCoord2f(0.0, 0.0); glVertex3f(-self.half_w, -self.half_h, back)
+        glTexCoord2f(1.0, 0.0); glVertex3f(self.half_w, -self.half_h, back)
+        glTexCoord2f(1.0, 1.0); glVertex3f(self.half_w, self.half_h, back)
+        glTexCoord2f(0.0, 1.0); glVertex3f(-self.half_w, self.half_h, back)
         glEnd()
 
     def _draw_walls(self):
