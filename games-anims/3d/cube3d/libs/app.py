@@ -34,6 +34,9 @@ from cube3d.zx_spectrum_face import ZXSpectrumFace
 from .caption import Caption
 from .cube import Cube
 from .amiga_ball import AmigaBall
+from .atari_logo import AtariLogo
+from .zx_logo import ZxLogo
+from .c64logo import C64Logo
 from .globals import start_time, MUSIC_PATH, INFO_LINES1, INFO_LINES2
 from .text_overlay import TextOverlay
 from .tunnel_effect import TunnelEffect
@@ -44,12 +47,11 @@ WINDOW_SIZE = (900, 700)
 CAPTION_Z = -16.0       # depth the scrolling caption sits at
 CAPTION_MARGIN = 9.0    # extra travel so it fully leaves the screen before wrapping
 CAPTION_START = 50.0    # when the scroll begins
-MUSIC_DURATION = 204.0  # fallback only; the real track length is measured at startup
+MUSIC_DURATION = 205.0  # fallback only; the real track length is measured at startup
 CREDITS_DURATION = 4.0  # credits shown over the final seconds
 EXIT_DELAY = 2.0        # quit this long after the music ends
 SILENCE_LEVEL = 0.02    # share of peak below which the track counts as silent
 BALL_Z = -8.0           # depth the Amiga ball sits at
-
 
 
 class CubeApp:
@@ -78,6 +80,10 @@ class CubeApp:
 
         self.tunnel = TunnelEffect()
         self.amiga_ball = AmigaBall(radius = 1.5)
+        self.atari_logo = AtariLogo(height=3.0)
+        self.initial_zx_time = 150
+        self.zx_logo = ZxLogo(self.initial_zx_time, height=2.5)
+        self.c64_logo = C64Logo()
 
         self.generators = None
         self.cube = None
@@ -182,14 +188,23 @@ class CubeApp:
             self.camera_y -= 0.01
         if t > 90:
             self.tunnel.render(dt)
-        if 100 < t < 160:
+        if 100 < t < 130:
             self.draw_amiga_ball(dt)
-            if 110 < t < 130:
+            if 110 < t < 120:
                 self.amiga_ball.spin_speed += 0.5
-            elif 130 < t < 150:
+            elif 120 < t < 130:
                 self.amiga_ball.spin_speed -= 0.5
-            if t> 130:
+            if t > 115:
                 self.amiga_ball.tilt += 1
+        if 130 < t < self.initial_zx_time:
+            self.atari_logo.update(dt)
+            self.atari_logo.render()
+        if self.initial_zx_time < t < 165:
+            self.zx_logo.update(dt, t)
+            self.zx_logo.render()
+        if 165 < t < 180:
+            self.c64_logo.update(dt, t)
+            self.c64_logo.render()
         if t > self.show_end - CREDITS_DURATION:
             self.overlay.draw_credits()
 
@@ -236,7 +251,7 @@ class CubeApp:
             print(Cursor.POS(1, i+2) + Fore.CYAN + line, flush=True)
         print(Cursor.POS(1, len(INFO_LINES1) + 2)
               + Fore.RED + "elapsed:"
-              + Fore.LIGHTWHITE_EX + f" {t:7.2f} s"
+              + Fore.LIGHTWHITE_EX + f" {int(t) // 60:02d}:{int(t) % 60:02d}"
               + Style.RESET_ALL, end="", flush=True)
 
     def _draw_cube(self, cube, angle_x, angle_y, offset=(0.0, 0.0, 0.0)):
@@ -279,9 +294,10 @@ class CubeApp:
         return True
 
     def move_caption(self, dt):
+        if self.caption_x < -self.caption_span:   # one pass only, no wrap
+            return
+
         self.caption_x -= self.caption_speed * dt
-        if self.caption_x < -self.caption_span:
-            self.caption_x = self.caption_span
 
         glPushMatrix()
         glLoadIdentity()

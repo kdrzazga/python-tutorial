@@ -10,6 +10,9 @@ C64_FONT_PATH = os.path.join(ASSETS_DIR, "C64_Pro_Mono-STYLE.ttf")
 ZX_FONT_PATH = os.path.join(ASSETS_DIR, "zx-spectrum.ttf")
 MUSIC_PATH = os.path.join(ASSETS_DIR, "dance_all_night.mp3")
 ALPHABET_PATH = os.path.join(ASSETS_DIR, "alphabet_row.png")
+ATARI_LOGO_PATH = os.path.join(ASSETS_DIR, "AtariLogo.png")
+ZX_LOGO_PATH = os.path.join(ASSETS_DIR, "zx.png")
+C64_LOGO_PATH = os.path.join(ASSETS_DIR, "c64.png")
 
 INFO_LINES1 = (
     "",
