@@ -51,10 +51,10 @@ class TextOverlay:
         size2 = fit_sysfont_size(FONT_NAME, INFO_LINES2, max_width, start_size=window_size[0] // 6)
         self.font2 = pygame.font.SysFont(FONT_NAME, size2, bold=True)
 
-        credits_width = int(window_size[0] * 0.45)
+        credits_width = int(window_size[0] * 0.25)
         size3 = fit_sysfont_size(FONT_NAME, CREDITS_LINES, credits_width,
                                  start_size=window_size[0] // 20)
-        self.credits_font = pygame.font.SysFont(FONT_NAME, size3-5, bold=True)
+        self.credits_font = pygame.font.SysFont(FONT_NAME, size3, bold=False)
 
         shout_size = max(8, int(window_size[1] * SHOUT_HEIGHT))
         self.shout_font = pygame.font.SysFont(FONT_NAME, shout_size, bold=True)
