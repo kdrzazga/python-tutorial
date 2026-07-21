@@ -1,9 +1,9 @@
 import pygame
 
-from .colors import ZX_BLACK, ZX_WHITE, ZX_CYAN
+from .libs.colors import ZX_BLACK, ZX_WHITE, ZX_CYAN, ZX_RED, ZX_YELLOW, ZX_GREEN
 from .face import Face
-from .font_utils import fit_font
-from .globals import ZX_FONT_PATH
+from .libs.font_utils import fit_font
+from .libs.globals import ZX_FONT_PATH
 
 
 class ZXSpectrumFace(Face):
@@ -45,23 +45,45 @@ class ZXSpectrumFace(Face):
         header_y = self.box_rect.top + self.pad
         header_row = pygame.Rect(self.box_rect.left + self.pad, header_y,
                                   self.box_rect.width - 2 * self.pad, self.line_height)
+        self.draw_header(surf, header_row)
+        self.draw_items(surf, t, header_y + self.line_height)
+
+    def draw_header(self, surf, header_row):
         pygame.draw.rect(surf, ZX_BLACK, header_row)
         header_surf = self.menu_font.render(self.HEADER, True, ZX_WHITE)
-        surf.blit(header_surf, (header_row.left, header_y))
+        surf.blit(header_surf, (header_row.left, header_row.top))
+        stripes_left = header_row.left + header_surf.get_width() + self.pad
+        self.draw_header_stripes(surf, header_row, stripes_left)
 
-        menu_top = header_y + self.line_height
+    def draw_header_stripes(self, surf, header_row, stripes_left):
+        stripe_colors = (ZX_RED, ZX_YELLOW, ZX_GREEN, ZX_CYAN)
+        slant = header_row.height
+        stripe_width = (header_row.right - stripes_left) / len(stripe_colors) * 0.25
+        stripes_start = header_row.right - stripe_width * len(stripe_colors) - 10
+        top, bottom = header_row.top, header_row.bottom
+
+        previous_clip = surf.get_clip()
+        surf.set_clip(header_row)
+        for index, color in enumerate(stripe_colors):
+            left = stripes_start + index * stripe_width
+            right = left + stripe_width
+            trapeze = [(left, bottom), (left + slant, top),
+                       (right + slant, top), (right, bottom)]
+            pygame.draw.polygon(surf, color, trapeze)
+        surf.set_clip(previous_clip)
+
+    def draw_items(self, surf, t, menu_top):
         selected = int(t / 1.2) % 4  # cycle through the 4 real options, forever "browsing" the menu
-
-        for i, item in enumerate(self.MENU_ITEMS):
-            y = menu_top + i * self.line_height
+        for index, item in enumerate(self.MENU_ITEMS):
+            if not item:
+                continue
+            y = menu_top + index * self.line_height
             row_rect = pygame.Rect(self.box_rect.left + self.pad, y,
                                     self.box_rect.width - 2 * self.pad, self.line_height)
-            if item and i == selected:
+            if index == selected:
                 pygame.draw.rect(surf, ZX_CYAN, row_rect)
-            text_color = ZX_BLACK
-            if item:
-                item_surf = self.menu_font.render(item, True, text_color)
-                surf.blit(item_surf, (row_rect.left, y))
+            item_surf = self.menu_font.render(item, True, ZX_BLACK)
+            surf.blit(item_surf, (row_rect.left, y))
 
     def draw_footer(self, surf):
         for i, line in enumerate(self.COPYRIGHT_LINES):

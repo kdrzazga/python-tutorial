@@ -2,7 +2,7 @@ import math
 
 import pygame
 
-from .colors import (
+from .libs.colors import (
     AMIGA_BG,
     AMIGA_BLACK,
     AMIGA_CURSOR,
@@ -11,7 +11,7 @@ from .colors import (
     AMIGA_WHITE,
 )
 from .face import Face
-from .font_utils import fit_sysfont_size
+from .libs.font_utils import fit_sysfont_size
 
 
 class AmigaDOSFace(Face):

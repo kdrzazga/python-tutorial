@@ -1,4 +1,7 @@
 import os
+import time
+
+start_time = time.time()
 
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 ASSETS_DIR = os.path.dirname(PACKAGE_DIR)
@@ -6,6 +9,10 @@ ASSETS_DIR = os.path.dirname(PACKAGE_DIR)
 C64_FONT_PATH = os.path.join(ASSETS_DIR, "C64_Pro_Mono-STYLE.ttf")
 ZX_FONT_PATH = os.path.join(ASSETS_DIR, "zx-spectrum.ttf")
 MUSIC_PATH = os.path.join(ASSETS_DIR, "dance_all_night.mp3")
+ALPHABET_PATH = os.path.join(ASSETS_DIR, "alphabet_row.png")
+ATARI_LOGO_PATH = os.path.join(ASSETS_DIR, "AtariLogo.png")
+ZX_LOGO_PATH = os.path.join(ASSETS_DIR, "zx.png")
+C64_LOGO_PATH = os.path.join(ASSETS_DIR, "c64.png")
 
 INFO_LINES1 = (
     "",
@@ -20,6 +27,11 @@ INFO_LINES1 = (
     " plus a plasma",
     "and an oscilloscope face",
     " for extra generative graphics."
+)
+
+CREDITS_LINES = (
+    "CODE & GFX: KD",
+    "MSX: Gasman",
 )
 
 INFO_LINES2 = (

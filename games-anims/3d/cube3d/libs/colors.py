@@ -1,5 +1,29 @@
 import numpy as np
 
+C64_LIGHT_BLUE = (128, 176, 255)
+C64_DARK_BLUE = (37, 30, 156)
+C64_TEXT_COLOR = (170, 189, 255)
+
+ZX_BLACK = (0, 0, 0)
+ZX_WHITE = (255, 255, 255)
+ZX_CYAN = (0, 255, 255)
+ZX_BLUE = (0, 0, 215)
+ZX_RED = (255, 0, 0)
+ZX_YELLOW = (255, 255, 0)
+ZX_GREEN = (0, 255, 0)
+
+ATARI_BLUE = (19, 173, 235)
+ATARI_CYAN = (186, 243, 244)
+
+AMIGA_BG = (60, 90, 220)
+AMIGA_WHITE = (255, 255, 255)
+AMIGA_BLACK = (0, 0, 0)
+AMIGA_CURSOR = (255, 140, 0)
+AMIGA_POINTER = (220, 60, 40)
+AMIGA_POINTER_DARK = (120, 20, 10)
+
+OSC_DARK_GREEN = (60, 255, 90)
+
 
 def hsv_to_rgb_array(hsv):
     h, s, v = hsv[..., 0], hsv[..., 1], hsv[..., 2]

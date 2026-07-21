@@ -1,7 +1,7 @@
 import numpy as np
 import pygame
 
-from .color_utils import hsv_to_rgb_array
+from .libs.colors import hsv_to_rgb_array
 from .face import Face
 
 

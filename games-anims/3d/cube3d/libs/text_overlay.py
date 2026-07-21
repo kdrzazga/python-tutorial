@@ -33,7 +33,7 @@ from OpenGL.GL import (
 )
 
 from .font_utils import fit_sysfont_size
-from .globals import INFO_LINES1, INFO_LINES2
+from .globals import CREDITS_LINES, INFO_LINES1, INFO_LINES2
 
 FONT_NAME = "couriernew,consolas,monospace"
 TEXT_COLOR = (200, 200, 200)
@@ -49,6 +49,11 @@ class TextOverlay:
 
         size2 = fit_sysfont_size(FONT_NAME, INFO_LINES2, max_width, start_size=window_size[0] // 6)
         self.font2 = pygame.font.SysFont(FONT_NAME, size2, bold=True)
+
+        credits_width = int(window_size[0] * 0.45)
+        size3 = fit_sysfont_size(FONT_NAME, CREDITS_LINES, credits_width,
+                                 start_size=window_size[0] // 20)
+        self.credits_font = pygame.font.SysFont(FONT_NAME, size3-5, bold=True)
 
         self.tex_id = self._create_texture()
 
@@ -69,6 +74,22 @@ class TextOverlay:
         surf = self._render_surface(lines, font)
         self._upload(surf)
         self._draw_quad()
+
+    def draw_credits(self):
+        self._upload(self._render_corner_surface(CREDITS_LINES, self.credits_font))
+        self._draw_quad()
+
+    def _render_corner_surface(self, lines, font):
+        w, h = self.window_size
+        surf = pygame.Surface((w, h), pygame.SRCALPHA)
+
+        margin = int(w * 0.02)
+        line_height = font.get_linesize()
+        for i, line in enumerate(lines):
+            line_surf = font.render(line, True, TEXT_COLOR)
+            surf.blit(line_surf, (w - margin - line_surf.get_width(), margin + i * line_height))
+
+        return surf
 
     def _lines_for(self, t):
         if 10 <= t < 25:
