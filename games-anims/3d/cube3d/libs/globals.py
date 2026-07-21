@@ -30,8 +30,8 @@ INFO_LINES1 = (
 )
 
 CREDITS_LINES = (
-    "CODE: KD (15%)+ Claude AI (85%)",
-    "MSX: Gasman from Hooy-Program",
+    "CODE & GFX: KD",
+    "MSX: Gasman",
 )
 
 INFO_LINES2 = (

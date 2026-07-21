@@ -48,7 +48,7 @@ CAPTION_Z = -16.0       # depth the scrolling caption sits at
 CAPTION_MARGIN = 9.0    # extra travel so it fully leaves the screen before wrapping
 CAPTION_START = 50.0    # when the scroll begins
 MUSIC_DURATION = 205.0  # fallback only; the real track length is measured at startup
-CREDITS_DURATION = 4.0  # credits shown over the final seconds
+CREDITS_DURATION = 2.0  # credits shown over the final seconds
 EXIT_DELAY = 2.0        # quit this long after the music ends
 SILENCE_LEVEL = 0.02    # share of peak below which the track counts as silent
 BALL_Z = -8.0           # depth the Amiga ball sits at
@@ -202,7 +202,7 @@ class CubeApp:
         if self.initial_zx_time < t < 165:
             self.zx_logo.update(dt, t)
             self.zx_logo.render()
-        if 165 < t < 180:
+        if 165 < t < 203:
             self.c64_logo.update(dt, t)
             self.c64_logo.render()
         if t > self.show_end - CREDITS_DURATION:

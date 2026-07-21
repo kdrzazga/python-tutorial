@@ -53,7 +53,7 @@ class TextOverlay:
         credits_width = int(window_size[0] * 0.45)
         size3 = fit_sysfont_size(FONT_NAME, CREDITS_LINES, credits_width,
                                  start_size=window_size[0] // 20)
-        self.credits_font = pygame.font.SysFont(FONT_NAME, size3, bold=True)
+        self.credits_font = pygame.font.SysFont(FONT_NAME, size3-5, bold=True)
 
         self.tex_id = self._create_texture()
 
