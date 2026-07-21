@@ -1,4 +1,5 @@
 import os
+import random
 import time
 
 import colorama
@@ -37,7 +38,9 @@ from .amiga_ball import AmigaBall
 from .atari_logo import AtariLogo
 from .zx_logo import ZxLogo
 from .c64logo import C64Logo
-from .globals import start_time, MUSIC_PATH, INFO_LINES1, INFO_LINES2
+from .glitch_overlay import GlitchOverlay
+from .globals import start_time, ASSETS_DIR, MUSIC_PATH, INFO_LINES1, INFO_LINES2
+from .screen_image import ScreenImage
 from .text_overlay import TextOverlay
 from .tunnel_effect import TunnelEffect
 
@@ -51,7 +54,33 @@ MUSIC_DURATION = 205.0  # fallback only; the real track length is measured at st
 CREDITS_DURATION = 2.0  # credits shown over the final seconds
 EXIT_DELAY = 2.0        # quit this long after the music ends
 SILENCE_LEVEL = 0.02    # share of peak below which the track counts as silent
+BLINK_DURATION = 0.5    # how long a blinked picture stays on screen
+BLINK_INTERFERENCE = 0.25   # share of scanlines dropped when the signal breaks up
+GLITCH_CHANCE = 0.25        # share of frames that break up; the rest show it clean
 BALL_Z = -8.0           # depth the Amiga ball sits at
+
+SCENE_INTERFERENCE = 0.20   # share of bands dropped when the whole frame breaks up
+GLITCH_BURST = 0.18         # seconds a break-up lasts
+GLITCH_GAP = (4.0, 9.0)     # seconds of clean picture between break-ups
+GLITCH_WINDOW = (60.0, 90.0)    # the stretch that breaks up now and then
+PHOTO_FLASHES = (               # picture and the moment it flashes up
+    ("a500full.png", 110.0),
+    ("a500full.png", 116.0),
+    ("c64full.png", 178.0),     # 2 min 58 s
+)
+GLITCH_PAD = 0.6            # break-up wrapped around each flash, so the photo
+                            # looks like it arrived with the interference
+CLEAR_GLIMPSE = 0.15        # mid-flash moment where the signal locks on and the
+                            # photo is shown perfectly clean
+
+SHOUT_DURATION = 2.0        # how long a shout stays up
+SHOUT_WHITE = (255, 255, 255)
+SHOUT_YELLOW = (255, 235, 60)
+SHOUTS = (                  # thrown up by the first break-ups, in order
+    ("OOPS !", SHOUT_YELLOW, (0.30, 0.32)),
+    ("GLITCH !", SHOUT_WHITE, (0.68, 0.62)),
+    ("GLITCH, AGAIN !", SHOUT_YELLOW, (0.42, 0.72)),
+)
 
 
 class CubeApp:
@@ -77,6 +106,16 @@ class CubeApp:
         # Pace the single pass so it finishes exactly when the chiptune does.
         self.show_end = MUSIC_DURATION      # refined in run() from the real track
         self.caption_speed = 2 * self.caption_span / (self.show_end - CAPTION_START)
+
+        self.elapsed = 0.0        # animation time, kept for blink_image
+        self.blink_images = {}
+
+        self.glitch = None        # needs the window size, so built in run()
+        self.glitch_until = 0.0
+        self.next_glitch = GLITCH_WINDOW[0]
+        self.glitch_count = 0     # first few break-ups each get a shout
+        self.shout = None
+        self.shout_until = 0.0
 
         self.tunnel = TunnelEffect()
         self.amiga_ball = AmigaBall(radius = 1.5)
@@ -129,6 +168,7 @@ class CubeApp:
         self.cube = Cube(TEX_SIZE)
         self.second_cube = Cube(TEX_SIZE)
         self.overlay = TextOverlay(self.window_size)
+        self.glitch = GlitchOverlay(self.window_size)
         self.caption1.prepare()   # pre-build now; avoids a freeze when the scroll starts
 
         prev_time = start_time
@@ -139,6 +179,7 @@ class CubeApp:
             t = now - start_time
             dt = now - prev_time
             prev_time = now
+            self.elapsed = t
 
             running = self._handle_events(dt) and t < self.show_end + EXIT_DELAY
 
@@ -152,6 +193,7 @@ class CubeApp:
             glTranslatef(0.0, self.camera_y, self.camera_z)
 
             self.procedure(dt, t)
+            self._apply_scene_glitch()
 
             pygame.display.flip()
             clock.tick(60)
@@ -196,6 +238,9 @@ class CubeApp:
                 self.amiga_ball.spin_speed -= 0.5
             if t > 115:
                 self.amiga_ball.tilt += 1
+        for filename, blink_at in PHOTO_FLASHES:
+            self.blink_image(filename, blink_at)
+        self._draw_shouts()
         if 130 < t < self.initial_zx_time:
             self.atari_logo.update(dt)
             self.atari_logo.render()
@@ -207,6 +252,60 @@ class CubeApp:
             self.c64_logo.render()
         if t > self.show_end - CREDITS_DURATION:
             self.overlay.draw_credits()
+
+    def _start_shout(self):
+        """Each of the first break-ups throws up its own caption."""
+        self.glitch_count += 1
+        if self.glitch_count <= len(SHOUTS):
+            self.shout = SHOUTS[self.glitch_count - 1]
+            self.shout_until = self.elapsed + SHOUT_DURATION
+
+    def _draw_shouts(self):
+        if self.shout and self.elapsed < self.shout_until:
+            self.overlay.draw_shout(*self.shout)
+
+    def _apply_scene_glitch(self):
+        """The frame breaks up during GLITCH_WINDOW, and solidly around each
+        Amiga flash so the photo looks like part of the interference."""
+        if any(self._in_glimpse(at) for _, at in PHOTO_FLASHES):
+            return                      # signal locked on; leave the frame alone
+
+        if self._flashing_photo():
+            self.glitch.apply(SCENE_INTERFERENCE)
+            return
+
+        if not GLITCH_WINDOW[0] <= self.elapsed < GLITCH_WINDOW[1]:
+            return
+
+        if self.elapsed >= self.glitch_until and self.elapsed >= self.next_glitch:
+            self.glitch_until = self.elapsed + GLITCH_BURST
+            self.next_glitch = self.glitch_until + random.uniform(*GLITCH_GAP)
+            self._start_shout()
+
+        if self.elapsed < self.glitch_until:
+            self.glitch.apply(SCENE_INTERFERENCE)
+
+    def _flashing_photo(self):
+        return any(at - GLITCH_PAD <= self.elapsed < at + BLINK_DURATION + GLITCH_PAD
+                   for _, at in PHOTO_FLASHES)
+
+    def _in_glimpse(self, start_time):
+        """The steady moment in the middle of a flash."""
+        offset = (BLINK_DURATION - CLEAR_GLIMPSE) / 2
+        return start_time + offset <= self.elapsed < start_time + offset + CLEAR_GLIMPSE
+
+    def blink_image(self, filename, start_time, interference=BLINK_INTERFERENCE):
+        """Show a picture full screen, fitted to the window, for BLINK_DURATION."""
+        if not start_time <= self.elapsed < start_time + BLINK_DURATION:
+            return
+
+        image = self.blink_images.get(filename)
+        if image is None:
+            image = ScreenImage(os.path.join(ASSETS_DIR, filename))
+            self.blink_images[filename] = image
+
+        breaking_up = random.random() < GLITCH_CHANCE and not self._in_glimpse(start_time)
+        image.draw(self.window_size, interference if breaking_up else 0.0)
 
     def _start_music(self):
         """Play the chiptune; returns when it will finish, in seconds from start_time."""
