@@ -99,7 +99,7 @@ class TextOverlay:
         w, h = self.window_size
         surf = pygame.Surface((w, h), pygame.SRCALPHA)
 
-        margin = int(w * 0.02)
+        margin = int(w * 0.07)
         line_height = font.get_linesize()
         for i, line in enumerate(lines):
             line_surf = font.render(line, True, TEXT_COLOR)
