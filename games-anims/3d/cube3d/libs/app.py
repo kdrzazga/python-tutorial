@@ -84,8 +84,9 @@ SHOUTS = (                  # thrown up by the first break-ups, in order
 
 
 class CubeApp:
-    def __init__(self, windowed=False):
+    def __init__(self, windowed=False, triggered=False):
         self.windowed = windowed
+        self.triggered = triggered
         self.window_size = WINDOW_SIZE   # replaced by the real size in run()
 
         self.rotation_speed_x = 10
@@ -142,6 +143,14 @@ class CubeApp:
         self.window_size, flags = self._display_mode()
         pygame.display.set_mode(self.window_size, flags)
         pygame.display.set_caption("Retro Screens on a CUBE")
+
+        if self.triggered:
+            if not self._wait_for_click():
+                pygame.quit()
+                return
+            global start_time      # restart the clock so the show begins on the click
+            start_time = time.time()
+
         pygame.mouse.set_visible(False)
         clock = pygame.time.Clock()
 
@@ -259,6 +268,18 @@ class CubeApp:
         if self.glitch_count <= len(SHOUTS):
             self.shout = SHOUTS[self.glitch_count - 1]
             self.shout_until = self.elapsed + SHOUT_DURATION
+
+    def _wait_for_click(self):
+        """Hold on a black screen until the window is clicked; False means quit."""
+        glClear(GL_COLOR_BUFFER_BIT)
+        pygame.display.flip()
+        while True:
+            for event in pygame.event.get():
+                if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                    return False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return True
+            pygame.time.wait(10)
 
     def _draw_shouts(self):
         if self.shout and self.elapsed < self.shout_until:
