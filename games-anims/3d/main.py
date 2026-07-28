@@ -1,3 +1,4 @@
+#pyinstaller --onefile main.py
 import sys
 
 from cube3d.libs.app import CubeApp
