@@ -83,7 +83,7 @@ class NebulaApp:
             self.time += self.clock.tick(self.config.fps) / 1000.0
             self._events()
             if self.time >= self.config.move_away_delay:
-                self.scene.camera.move_away()
+                self.scene.camera.move_away(1)
             self.scene.update(self.time)
             for nebula in self.round_nebulas:
                 nebula.update(self.time)
