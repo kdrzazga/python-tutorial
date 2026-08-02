@@ -58,7 +58,11 @@ class NebulaApp:
     def _build_round_nebulas(self):
         glow = self.textures.glow
         return (
-            RoundNebula(glow, center=(-230.0, 55.0, -95.0), radius=30.0, seed=3),
+            RoundNebula(glow, center=(-530.0, 55.0, -95.0), radius=130.0, seed=3, spin_speed=10.1),
+            RoundNebula(glow, center=(-630.0, -255.0, 155.0), radius=30.0, seed=2,  inner_color=(0.1, 0.96, 0.1)),
+            RoundNebula(glow, center=(0.0, 0.0, 1500.0), radius=130.0, seed=2, spin_speed=0.1, rim_color=(0.0, 0.94, 0.30)),
+            RoundNebula(glow, center=(-400.0, -400.0, 1600.0), radius=120.0, seed=5, spin_speed=-0.9, rim_color=(0.0, 0.15, 0.99)),
+            RoundNebula(glow, center=(300.0, 450.0, 1650.0), radius=110.0, seed=1, spin_speed=-5.5),
             RoundNebula(glow, center=(255.0, -65.0, -150.0), radius=42.0, seed=6,
                         rim_color=(1.0, 0.34, 0.30), shell_color=(1.0, 0.58, 0.34),
                         inner_color=(0.40, 0.46, 0.92), spin_speed=-0.045),
