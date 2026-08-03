@@ -1,8 +1,11 @@
+import math
+
 from building_floor import BuildingFloor
 from color_palette import BuildingColorPalette
 from elliptical_footprint import EllipticalFootprint
 from ground_plane import GroundPlane
 from illumination_scheme import WindowIlluminationScheme
+from projecting_sign_panel import ProjectingSignPanel
 from staircase_shaft import StaircaseShaft
 
 
@@ -13,7 +16,10 @@ class RingBuilding:
                  pillar_placement_angle=0.9, palette=None, illumination_scheme=None,
                  window_protrusion=0.1, ground_window_margin_ratio=0.05,
                  ground_window_sill_ratio=0.10, upper_window_margin_ratio=0.16,
-                 upper_window_sill_ratio=0.18):
+                 upper_window_sill_ratio=0.18, signage_column_offset_from_corner=2,
+                 signage_column_span=3, signage_top_floor_from_top=2,
+                 signage_height_in_floors=1.5, signage_protrusion=1.0,
+                 signage_rightward_shift=2.0):
         self.pillar_availability = pillar_availability
         self.palette = palette if palette is not None else BuildingColorPalette()
         illumination = illumination_scheme if illumination_scheme is not None else WindowIlluminationScheme()
@@ -30,6 +36,10 @@ class RingBuilding:
         self.roof_ring_quads = self.build_roof_ring_quads()
         self.ground_plane = GroundPlane()
         self.staircase_shaft = self.build_staircase_shaft(pillar_placement_angle, upper_floor_count)
+        self.signage_panel = self.build_signage_panel(
+            upper_segment_count, upper_floor_height, signage_column_offset_from_corner,
+            signage_column_span, signage_top_floor_from_top, signage_height_in_floors,
+            signage_protrusion, signage_rightward_shift)
 
     def build_stacked_floors(self, upper_floor_count, upper_floor_height, ground_floor_height,
                              illumination, ground_window_margin_ratio, ground_window_sill_ratio,
@@ -75,11 +85,41 @@ class RingBuilding:
             window_row_count=upper_floor_count + 2,
             palette=self.palette)
 
+    def build_signage_panel(self, upper_segment_count, upper_floor_height,
+                            column_offset_from_corner, column_span, top_floor_from_top,
+                            height_in_floors, protrusion, rightward_shift):
+        left_corner_boundary_index = upper_segment_count // 2
+        near_boundary_index = left_corner_boundary_index - column_offset_from_corner + 1
+        far_boundary_index = near_boundary_index - column_span
+        start_angle = self.upper_boundary_angles[far_boundary_index]
+        end_angle = self.upper_boundary_angles[near_boundary_index]
+        angular_shift = self.horizontal_shift_to_angular_shift(rightward_shift, 0.5 * (start_angle + end_angle))
+        start_angle += angular_shift
+        end_angle += angular_shift
+        top_height = self.total_height - (top_floor_from_top - 1) * upper_floor_height
+        bottom_height = top_height - height_in_floors * upper_floor_height
+        panel_front_footprint = self.outer_footprint.resized_by(protrusion)
+        return self.assemble_signage_panel(
+            panel_front_footprint, start_angle, end_angle, bottom_height, top_height)
+
+    def horizontal_shift_to_angular_shift(self, rightward_shift, center_angle):
+        horizontal_derivative = -self.outer_footprint.semi_width * math.sin(center_angle)
+        if horizontal_derivative == 0.0:
+            return 0.0
+        return rightward_shift / horizontal_derivative
+
+    def assemble_signage_panel(self, panel_front_footprint, start_angle, end_angle,
+                               bottom_height, top_height):
+        return ProjectingSignPanel(
+            self.outer_footprint, panel_front_footprint, start_angle, end_angle,
+            bottom_height, top_height)
+
     def render_using(self, renderer):
         self.ground_plane.render_using(renderer, self.palette)
         for floor in self.floors:
             floor.render_using(renderer, self.palette)
         for quad in self.roof_ring_quads:
             renderer.render_shaded_quad(quad, self.palette.roof_color)
+        self.signage_panel.render_using(renderer, self.palette)
         if self.pillar_availability:
             self.staircase_shaft.render_using(renderer, self.palette)
