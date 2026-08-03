@@ -5,6 +5,7 @@ from ground_plane import GroundPlane
 
 from .building_floor import BuildingFloor
 from .elliptical_footprint import EllipticalFootprint
+from .facade_color_scheme import FacadeColorScheme
 from .illumination_scheme import WindowIlluminationScheme
 from .projecting_sign_panel import ProjectingSignPanel
 from .staircase_shaft import StaircaseShaft
@@ -15,7 +16,7 @@ class RingBuilding:
                  upper_floor_count=8, upper_floor_height=2.4, ground_floor_height=4.4,
                  upper_segment_count=64, ground_segment_count=32, pillar_availability=True,
                  pillar_placement_angle=0.9, palette=None, illumination_scheme=None,
-                 window_protrusion=0.1, ground_window_margin_ratio=0.05,
+                 color_scheme=None, window_protrusion=0.1, ground_window_margin_ratio=0.05,
                  ground_window_sill_ratio=0.10, upper_window_margin_ratio=0.16,
                  upper_window_sill_ratio=0.18, signage_column_offset_from_corner=2,
                  signage_column_span=3, signage_top_floor_from_top=2,
@@ -24,6 +25,7 @@ class RingBuilding:
         self.pillar_availability = pillar_availability
         self.palette = palette if palette is not None else BuildingColorPalette()
         illumination = illumination_scheme if illumination_scheme is not None else WindowIlluminationScheme()
+        self.color_scheme = color_scheme if color_scheme is not None else FacadeColorScheme()
         self.outer_footprint = EllipticalFootprint(outer_semi_width, outer_semi_depth)
         self.inner_footprint = self.outer_footprint.resized_by(-wall_depth)
         self.window_footprint = self.outer_footprint.resized_by(window_protrusion)
@@ -48,14 +50,14 @@ class RingBuilding:
         stacked_floors = [BuildingFloor(
             0, 0.0, ground_floor_height, self.ground_boundary_angles, self.outer_footprint,
             self.inner_footprint, self.window_footprint, ground_window_margin_ratio,
-            ground_window_sill_ratio, illumination)]
+            ground_window_sill_ratio, illumination, self.color_scheme)]
         for upper_index in range(upper_floor_count):
             bottom_height = ground_floor_height + upper_index * upper_floor_height
             top_height = bottom_height + upper_floor_height
             stacked_floors.append(BuildingFloor(
                 upper_index + 1, bottom_height, top_height, self.upper_boundary_angles,
                 self.outer_footprint, self.inner_footprint, self.window_footprint,
-                upper_window_margin_ratio, upper_window_sill_ratio, illumination))
+                upper_window_margin_ratio, upper_window_sill_ratio, illumination, self.color_scheme))
         return tuple(stacked_floors)
 
     def build_roof_ring_quads(self):
@@ -89,6 +91,7 @@ class RingBuilding:
     def build_signage_panel(self, upper_segment_count, upper_floor_height,
                             column_offset_from_corner, column_span, top_floor_from_top,
                             height_in_floors, protrusion, rightward_shift):
+
         left_corner_boundary_index = upper_segment_count // 2
         near_boundary_index = left_corner_boundary_index - column_offset_from_corner + 1
         far_boundary_index = near_boundary_index - column_span
@@ -100,6 +103,7 @@ class RingBuilding:
         top_height = self.total_height - (top_floor_from_top - 1) * upper_floor_height
         bottom_height = top_height - height_in_floors * upper_floor_height
         panel_front_footprint = self.outer_footprint.resized_by(protrusion)
+
         return self.assemble_signage_panel(
             panel_front_footprint, start_angle, end_angle, bottom_height, top_height)
 

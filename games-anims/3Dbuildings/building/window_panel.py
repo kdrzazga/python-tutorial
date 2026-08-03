@@ -1,10 +1,7 @@
 class WindowPanel:
-    def __init__(self, corner_points, is_illuminated):
+    def __init__(self, corner_points, window_color):
         self.corner_points = corner_points
-        self.is_illuminated = is_illuminated
+        self.window_color = window_color
 
-    def render_using(self, renderer, palette):
-        if self.is_illuminated:
-            renderer.render_emissive_quad(self.corner_points, palette.lit_window_color)
-        else:
-            renderer.render_shaded_quad(self.corner_points, palette.unlit_window_color)
+    def render_using(self, renderer):
+        renderer.render_emissive_quad(self.corner_points, self.window_color)
