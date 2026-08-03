@@ -8,18 +8,16 @@ from OpenGL.GLU import gluPerspective
 
 
 class BuildingApplication:
-    def __init__(self, building, camera, renderer, window_width=1220, window_height=740,
+    def __init__(self, scene, window_width=1220, window_height=740,
                  background_color=(0.05, 0.06, 0.12), vertical_field_of_view=55.0,
                  window_title="Donut Headquarters Building"):
-        self.building = building
-        self.camera = camera
-        self.renderer = renderer
+        self.scene = scene
         self.window_width = window_width
         self.window_height = window_height
         self.background_color = background_color
         self.vertical_field_of_view = vertical_field_of_view
         self.window_title = window_title
-        self.automatic_rotation_enabled = True
+        self.building_movement_enabled = True
         self.is_dragging_orbit = False
         self.keep_running = True
 
@@ -45,26 +43,24 @@ class BuildingApplication:
                 self.handle_key_press(event.key)
             elif event.type == MOUSEBUTTONDOWN and event.button == 1:
                 self.is_dragging_orbit = True
-                self.automatic_rotation_enabled = False
             elif event.type == MOUSEBUTTONUP and event.button == 1:
                 self.is_dragging_orbit = False
             elif event.type == MOUSEMOTION and self.is_dragging_orbit:
-                self.camera.orbit_by(event.rel[0] * 0.01, -event.rel[1] * 0.01)
+                self.scene.camera.orbit_by(event.rel[0] * 0.01, -event.rel[1] * 0.01)
             elif event.type == MOUSEWHEEL:
-                self.camera.zoom_by(-event.y * 3.0)
+                self.scene.camera.zoom_by(-event.y * 3.0)
 
     def handle_key_press(self, key_code):
         if key_code == K_ESCAPE:
             self.keep_running = False
         elif key_code == K_SPACE:
-            self.automatic_rotation_enabled = not self.automatic_rotation_enabled
+            self.building_movement_enabled = not self.building_movement_enabled
         elif key_code == K_p:
-            self.building.pillar_availability = not self.building.pillar_availability
+            self.scene.building.pillar_availability = not self.scene.building.pillar_availability
 
     def render_single_frame(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        self.camera.apply_view_transform()
-        self.building.render_using(self.renderer)
+        self.scene.draw()
         pygame.display.flip()
 
     def run(self):
@@ -73,7 +69,7 @@ class BuildingApplication:
         while self.keep_running:
             elapsed_seconds = frame_clock.tick(60) / 1000.0
             self.process_pending_events()
-            if self.automatic_rotation_enabled:
-                self.camera.advance_automatic_rotation(elapsed_seconds)
+            if self.building_movement_enabled:
+                self.scene.update(elapsed_seconds)
             self.render_single_frame()
         pygame.quit()
