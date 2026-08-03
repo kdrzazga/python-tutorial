@@ -14,7 +14,7 @@ class Stage4:
 		self.logo = arcade.load_texture("res/1.jpg")
 		arcade.load_font("res/C64_Pro_Mono-STYLE.ttf")
 		self.scroll = Sprite("res/greetings scroll.png")
-		self.scroll.center_y = Globals.HEIGHT - 12
+		self.scroll.center_y = Globals.HEIGHT - 133
 		self.scroll.center_x = Globals.WIDTH * 2.1
 
 	def on_draw(self, timer):
@@ -48,11 +48,11 @@ class Stage4:
 			self.display_caption(timer, y_shift)
 			arcade.draw_sprite(self.scroll)
 			self.scroll.center_x -= 1
-			print("scroll [" + str(self.scroll.center_x) + ", " + str(self.scroll.center_y) + "]")
+			#print("scroll [" + str(self.scroll.center_x) + ", " + str(self.scroll.center_y) + "]")
 
 	def display_caption(self, timer, y_shift):
 
-		arcade.draw_text("Ekipa i przyjaciele", 0.5 * Globals.WIDTH, Globals.HEIGHT - 112, color=CYAN, font_size=25
+		arcade.draw_text("Ekipa i przyjaciele", 0.5 * Globals.WIDTH, Globals.HEIGHT - 105, color=CYAN, font_size=25
 	                 , font_name="C64 Pro Mono", anchor_x="center")
 		t = timer % 30
 		if 0 < t < 6 or 21 < t < 25:

@@ -37,6 +37,7 @@ from .globals import CREDITS_LINES, INFO_LINES1, INFO_LINES2
 
 FONT_NAME = "couriernew,consolas,monospace"
 TEXT_COLOR = (200, 200, 200)
+SHOUT_HEIGHT = 0.04     # shout font height, as a share of the window height
 
 
 class TextOverlay:
@@ -50,10 +51,13 @@ class TextOverlay:
         size2 = fit_sysfont_size(FONT_NAME, INFO_LINES2, max_width, start_size=window_size[0] // 6)
         self.font2 = pygame.font.SysFont(FONT_NAME, size2, bold=True)
 
-        credits_width = int(window_size[0] * 0.45)
+        credits_width = int(window_size[0] * 0.25)
         size3 = fit_sysfont_size(FONT_NAME, CREDITS_LINES, credits_width,
                                  start_size=window_size[0] // 20)
-        self.credits_font = pygame.font.SysFont(FONT_NAME, size3-5, bold=True)
+        self.credits_font = pygame.font.SysFont(FONT_NAME, size3, bold=False)
+
+        shout_size = max(8, int(window_size[1] * SHOUT_HEIGHT))
+        self.shout_font = pygame.font.SysFont(FONT_NAME, shout_size, bold=True)
 
         self.tex_id = self._create_texture()
 
@@ -79,11 +83,23 @@ class TextOverlay:
         self._upload(self._render_corner_surface(CREDITS_LINES, self.credits_font))
         self._draw_quad()
 
+    def draw_shout(self, text, color, spot):
+        """A short caption thrown on screen at `spot`, given in 0..1 of the window."""
+        width, height = self.window_size
+        surf = pygame.Surface((width, height), pygame.SRCALPHA)
+
+        rendered = self.shout_font.render(text, True, color)
+        surf.blit(rendered, (int(spot[0] * width) - rendered.get_width() // 2,
+                             int(spot[1] * height) - rendered.get_height() // 2))
+
+        self._upload(surf)
+        self._draw_quad()
+
     def _render_corner_surface(self, lines, font):
         w, h = self.window_size
         surf = pygame.Surface((w, h), pygame.SRCALPHA)
 
-        margin = int(w * 0.02)
+        margin = int(w * 0.07)
         line_height = font.get_linesize()
         for i, line in enumerate(lines):
             line_surf = font.render(line, True, TEXT_COLOR)

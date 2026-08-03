@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import arcade
 
 from arcade.color import BLACK
@@ -44,7 +46,8 @@ class MainStage(arcade.Window):
         elif Stage5.START_TIMER < self.timer:
             self.stage5.on_draw(self.timer)
 
-        # print(self.timer, end=' ')
+        dur = datetime.now() - Globals.start
+        print(dur)
         self.timer += Globals.TIMER_INC
 
 
