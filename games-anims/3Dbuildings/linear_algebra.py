@@ -36,9 +36,5 @@ class Vector3:
         return self.scaled_by(1.0 / length)
 
 
-def point_on_circular_ring(radius, angle_radians, height):
-    return Vector3(radius * math.cos(angle_radians), height, radius * math.sin(angle_radians))
-
-
 def clamp_value(value, minimum, maximum):
     return max(minimum, min(maximum, value))
