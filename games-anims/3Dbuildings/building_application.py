@@ -9,7 +9,7 @@ from OpenGL.GLU import gluPerspective
 
 class BuildingApplication:
     def __init__(self, scene, window_width=1220, window_height=740,
-                 background_color=(0.05, 0.06, 0.12), vertical_field_of_view=55.0,
+                 background_color=(0.059, 0.275, 0.627), vertical_field_of_view=55.0,
                  window_title="Donut Headquarters Building"):
         self.scene = scene
         self.window_width = window_width

@@ -7,6 +7,8 @@ class BuildingColorPalette:
                  shaft_color=(0.52, 0.55, 0.60),
                  roof_color=(0.44, 0.46, 0.50),
                  sign_panel_color=(0.55, 0.56, 0.58),
+                 sign_background_color=(0.05, 0.05, 0.06),
+                 sign_bar_color=(0.93, 0.94, 0.96),
                  ground_color=(0.07, 0.08, 0.10)):
         self.facade_color = facade_color
         self.courtyard_wall_color = courtyard_wall_color
@@ -15,4 +17,6 @@ class BuildingColorPalette:
         self.shaft_color = shaft_color
         self.roof_color = roof_color
         self.sign_panel_color = sign_panel_color
+        self.sign_background_color = sign_background_color
+        self.sign_bar_color = sign_bar_color
         self.ground_color = ground_color

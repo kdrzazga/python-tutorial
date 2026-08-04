@@ -13,7 +13,8 @@ from .staircase_shaft import StaircaseShaft
 
 class RingBuilding:
     def __init__(self, outer_semi_width=30.0, outer_semi_depth=7.5, wall_depth=3.0,
-                 upper_floor_count=8, upper_floor_height=2.4, ground_floor_height=4.4,
+                 wall_bulge_amount=0.08, upper_floor_count=8, upper_floor_height=2.4,
+                 ground_floor_height=4.4,
                  upper_segment_count=64, ground_segment_count=32, pillar_availability=True,
                  pillar_placement_angle=0.9, palette=None, illumination_scheme=None,
                  color_scheme=None, window_protrusion=0.1, ground_window_margin_ratio=0.05,
@@ -27,10 +28,11 @@ class RingBuilding:
         self.palette = palette if palette is not None else BuildingColorPalette()
         illumination = illumination_scheme if illumination_scheme is not None else WindowIlluminationScheme()
         self.color_scheme = color_scheme if color_scheme is not None else FacadeColorScheme()
-        self.outer_footprint = EllipticalFootprint(outer_semi_width, outer_semi_depth)
+        self.total_height = ground_floor_height + upper_floor_count * upper_floor_height
+        self.outer_footprint = EllipticalFootprint(
+            outer_semi_width, outer_semi_depth, self.total_height, wall_bulge_amount)
         self.inner_footprint = self.outer_footprint.resized_by(-wall_depth)
         self.window_footprint = self.outer_footprint.resized_by(window_protrusion)
-        self.total_height = ground_floor_height + upper_floor_count * upper_floor_height
         self.upper_boundary_angles = self.outer_footprint.evenly_spaced_boundary_angles(upper_segment_count)
         self.ground_boundary_angles = self.outer_footprint.evenly_spaced_boundary_angles(ground_segment_count)
         self.floors = self.build_stacked_floors(
