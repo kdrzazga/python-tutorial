@@ -13,12 +13,14 @@ from .staircase_shaft import StaircaseShaft
 
 class RingBuilding:
     def __init__(self, outer_semi_width=30.0, outer_semi_depth=7.5, wall_depth=3.0,
-                 upper_floor_count=8, upper_floor_height=2.4, ground_floor_height=4.4,
+                 wall_bulge_amount=0.08, upper_floor_count=8, upper_floor_height=2.4,
+                 ground_floor_height=4.4,
                  upper_segment_count=64, ground_segment_count=32, pillar_availability=True,
                  pillar_placement_angle=0.9, palette=None, illumination_scheme=None,
                  color_scheme=None, window_protrusion=0.1, ground_window_margin_ratio=0.05,
                  ground_window_sill_ratio=0.10, upper_window_margin_ratio=0.16,
-                 upper_window_sill_ratio=0.18, signage_column_offset_from_corner=2,
+                 upper_window_sill_ratio=0.18, ground_window_rows_per_floor=1,
+                 upper_window_rows_per_floor=2, signage_column_offset_from_corner=2,
                  signage_column_span=3, signage_top_floor_from_top=2,
                  signage_height_in_floors=1.5, signage_protrusion=1.0,
                  signage_rightward_shift=2.0):
@@ -26,16 +28,18 @@ class RingBuilding:
         self.palette = palette if palette is not None else BuildingColorPalette()
         illumination = illumination_scheme if illumination_scheme is not None else WindowIlluminationScheme()
         self.color_scheme = color_scheme if color_scheme is not None else FacadeColorScheme()
-        self.outer_footprint = EllipticalFootprint(outer_semi_width, outer_semi_depth)
+        self.total_height = ground_floor_height + upper_floor_count * upper_floor_height
+        self.outer_footprint = EllipticalFootprint(
+            outer_semi_width, outer_semi_depth, self.total_height, wall_bulge_amount)
         self.inner_footprint = self.outer_footprint.resized_by(-wall_depth)
         self.window_footprint = self.outer_footprint.resized_by(window_protrusion)
-        self.total_height = ground_floor_height + upper_floor_count * upper_floor_height
         self.upper_boundary_angles = self.outer_footprint.evenly_spaced_boundary_angles(upper_segment_count)
         self.ground_boundary_angles = self.outer_footprint.evenly_spaced_boundary_angles(ground_segment_count)
         self.floors = self.build_stacked_floors(
             upper_floor_count, upper_floor_height, ground_floor_height, illumination,
             ground_window_margin_ratio, ground_window_sill_ratio,
-            upper_window_margin_ratio, upper_window_sill_ratio)
+            upper_window_margin_ratio, upper_window_sill_ratio,
+            ground_window_rows_per_floor, upper_window_rows_per_floor)
         self.roof_ring_quads = self.build_roof_ring_quads()
         self.ground_plane = GroundPlane()
         self.staircase_shaft = self.build_staircase_shaft(pillar_placement_angle, upper_floor_count)
@@ -46,18 +50,20 @@ class RingBuilding:
 
     def build_stacked_floors(self, upper_floor_count, upper_floor_height, ground_floor_height,
                              illumination, ground_window_margin_ratio, ground_window_sill_ratio,
-                             upper_window_margin_ratio, upper_window_sill_ratio):
+                             upper_window_margin_ratio, upper_window_sill_ratio,
+                             ground_window_rows_per_floor, upper_window_rows_per_floor):
         stacked_floors = [BuildingFloor(
             0, 0.0, ground_floor_height, self.ground_boundary_angles, self.outer_footprint,
             self.inner_footprint, self.window_footprint, ground_window_margin_ratio,
-            ground_window_sill_ratio, illumination, self.color_scheme)]
+            ground_window_sill_ratio, ground_window_rows_per_floor, illumination, self.color_scheme)]
         for upper_index in range(upper_floor_count):
             bottom_height = ground_floor_height + upper_index * upper_floor_height
             top_height = bottom_height + upper_floor_height
             stacked_floors.append(BuildingFloor(
                 upper_index + 1, bottom_height, top_height, self.upper_boundary_angles,
                 self.outer_footprint, self.inner_footprint, self.window_footprint,
-                upper_window_margin_ratio, upper_window_sill_ratio, illumination, self.color_scheme))
+                upper_window_margin_ratio, upper_window_sill_ratio, upper_window_rows_per_floor,
+                illumination, self.color_scheme))
         return tuple(stacked_floors)
 
     def build_roof_ring_quads(self):

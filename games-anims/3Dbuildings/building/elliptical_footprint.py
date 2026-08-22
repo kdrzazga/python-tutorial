@@ -4,12 +4,21 @@ from linear_algebra import Vector3
 
 
 class EllipticalFootprint:
-    def __init__(self, semi_width, semi_depth):
+    def __init__(self, semi_width, semi_depth, total_height=0.0, bulge_amount=0.0):
         self.semi_width = semi_width
         self.semi_depth = semi_depth
+        self.total_height = total_height
+        self.bulge_amount = bulge_amount
+
+    def bulge_factor_at(self, height):
+        if self.total_height <= 0.0 or self.bulge_amount == 0.0:
+            return 1.0
+        return 1.0 + self.bulge_amount * math.sin(math.pi * height / self.total_height)
 
     def perimeter_point(self, angle, height):
-        return Vector3(self.semi_width * math.cos(angle), height, self.semi_depth * math.sin(angle))
+        radial_factor = self.bulge_factor_at(height)
+        return Vector3(self.semi_width * radial_factor * math.cos(angle), height,
+                       self.semi_depth * radial_factor * math.sin(angle))
 
     def outward_normal_at(self, angle):
         return Vector3(math.cos(angle) / self.semi_width, 0.0, math.sin(angle) / self.semi_depth).normalized()
@@ -18,7 +27,8 @@ class EllipticalFootprint:
         return Vector3(-self.semi_width * math.sin(angle), 0.0, self.semi_depth * math.cos(angle)).normalized()
 
     def resized_by(self, offset):
-        return EllipticalFootprint(self.semi_width + offset, self.semi_depth + offset)
+        return EllipticalFootprint(self.semi_width + offset, self.semi_depth + offset,
+                                   self.total_height, self.bulge_amount)
 
     def evenly_spaced_boundary_angles(self, segment_count, sample_count=2000):
         full_revolution = 2.0 * math.pi
