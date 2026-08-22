@@ -103,7 +103,7 @@ if __name__ == "__main__":
         Star(WIDTH, HEIGHT),
         Snowflake(WIDTH, HEIGHT),
         Snowflake2(WIDTH, HEIGHT),
-        Snowman(WIDTH, HEIGHT),
+        Snowman(WIDTH, HEIGHT, scale=200),
         Scarf(WIDTH, HEIGHT),
         Mittens(WIDTH, HEIGHT),
         WinterCap(WIDTH, HEIGHT),
