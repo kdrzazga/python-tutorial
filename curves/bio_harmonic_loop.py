@@ -12,6 +12,7 @@ class BioHarmonicLoop:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "BioHarmonicLoop"
+        self.formula = "r(θ) = 2 + cos(3θ) + 0.5·sin(7θ)"
 
     def polar_point(self, theta):
         r = 2 + math.cos(3 * theta) + 0.5 * math.sin(7 * theta)

@@ -12,6 +12,7 @@ class ShiftedButterfly:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "ShiftedButterfly"
+        self.formula = "r(θ) = e^(cos θ) − 1.5·sin(4θ)"
 
     def polar_point(self, theta):
         r = math.pow(math.e, math.cos(theta)) - 1.5 * math.sin(4 * theta)

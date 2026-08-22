@@ -12,6 +12,7 @@ class ThreePetalRose:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "ThreePetalRose"
+        self.formula = "r(θ) = 4·sin(3θ)"
 
     def polar_point(self, theta):
         r = 4 * math.sin(3 * theta)

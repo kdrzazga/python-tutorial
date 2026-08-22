@@ -12,6 +12,7 @@ class SmoothDualLoop:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "SmoothDualLoop"
+        self.formula = "r(θ) = 2 + 2·cos(2θ)"
 
     def polar_point(self, theta):
         r = 2 + 2 * math.cos(2 * theta)

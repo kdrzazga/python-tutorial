@@ -12,6 +12,7 @@ class LimaconTrisectrix:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "LimaconTrisectrix"
+        self.formula = "r(θ) = 1 + 2·cos(θ)"
 
     def polar_point(self, theta):
         r = 1 + 2 * math.cos(theta)

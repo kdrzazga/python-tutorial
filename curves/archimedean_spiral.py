@@ -13,6 +13,7 @@ class ArchimedeanSpiral:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "ArchimedeanSpiral"
+        self.formula = "r(θ) = θ / 2"
 
     def polar_point(self, theta):
         r = theta / 2

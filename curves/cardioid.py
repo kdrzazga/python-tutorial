@@ -12,6 +12,7 @@ class Cardioid:
         self.progress = 0.0
         self.center = (width // 2, height // 2)
         self.title = "Cardioid"
+        self.formula = "r(θ) = 2·(1 − cos θ)"
 
     def polar_point(self, theta):
         r = 2 * (1 - math.cos(theta))
