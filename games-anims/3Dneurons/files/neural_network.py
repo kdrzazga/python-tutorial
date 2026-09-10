@@ -1,6 +1,6 @@
-from vector3 import Vector3
-from neuron import Neuron
-from synapse import Synapse
+from files.vector3 import Vector3
+from files.neuron import Neuron
+from files.synapse import Synapse
 
 
 class NeuralNetwork:

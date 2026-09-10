@@ -1,4 +1,4 @@
-from signal_pulse import SignalPulse
+from files.signal_pulse import SignalPulse
 
 
 class Synapse:

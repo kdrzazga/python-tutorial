@@ -2,13 +2,13 @@ import random
 
 import pygame
 
-from perspective_projector import PerspectiveProjector
-from world_rotation import WorldRotation
-from glow_sprite_factory import GlowSpriteFactory
-from neuron_renderer import NeuronRenderer
-from synapse_renderer import SynapseRenderer
-from scene_renderer import SceneRenderer
-from neural_network import NeuralNetwork
+from files.perspective_projector import PerspectiveProjector
+from files.world_rotation import WorldRotation
+from files.glow_sprite_factory import GlowSpriteFactory
+from files.neuron_renderer import NeuronRenderer
+from files.synapse_renderer import SynapseRenderer
+from files.scene_renderer import SceneRenderer
+from files.neural_network import NeuralNetwork
 
 
 class NeuronAnimationApplication:

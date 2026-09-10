@@ -1,5 +1,5 @@
-from animation_configuration import AnimationConfiguration
-from neuron_animation_application import NeuronAnimationApplication
+from files.animation_configuration import AnimationConfiguration
+from files.neuron_animation_application import NeuronAnimationApplication
 
 
 def main():

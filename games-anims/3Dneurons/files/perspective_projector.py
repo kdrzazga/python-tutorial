@@ -1,4 +1,4 @@
-from projected_point import ProjectedPoint
+from files.projected_point import ProjectedPoint
 
 
 class PerspectiveProjector:
