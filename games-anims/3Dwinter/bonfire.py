@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 
 
 class Bonfire:
-    def __init__(self, x, y, z, scale=1.0, seed=0):
+    def __init__(self, x, y, z, scale=1.0, seed=0, smoke_fade_height=8.0):
         self.x = x
         self.y = y
         self.z = z
@@ -14,11 +14,16 @@ class Bonfire:
         self.log_color = (0.36, 0.22, 0.11)
         self.flame_colors = ((0.85, 0.10, 0.02), (1.0, 0.45, 0.05), (1.0, 0.85, 0.25))
         self.flame_base_y = 0.2
+        self.smoke_color = (0.72, 0.72, 0.75)
+        self.smoke_start = 1.5
+        self.smoke_fade_height = smoke_fade_height
+        self.smoke_rise_rate = 0.12
         self.time = 0.0
         self.quadric = gluNewQuadric()
         gluQuadricNormals(self.quadric, GLU_SMOOTH)
         self.logs = self._build_logs()
         self.flames = self._build_flames()
+        self.smoke_puffs = self._build_smoke()
 
     def update(self, dt):
         self.time += dt
@@ -115,6 +120,40 @@ class Bonfire:
         glDisable(GL_BLEND)
         glEnable(GL_LIGHTING)
 
+    def _build_smoke(self):
+        puffs = []
+        count = 20
+        for index in range(count):
+            phase = index / count
+            sway_phase = self.random_generator.uniform(0.0, math.tau)
+            sway_amp = self.random_generator.uniform(0.12, 0.30)
+            puffs.append((phase, sway_phase, sway_amp))
+        return puffs
+
+    def _draw_smoke(self):
+        glPushMatrix()
+        glTranslatef(self.x, self.y, self.z)
+        glDisable(GL_LIGHTING)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glDepthMask(GL_FALSE)
+        rise = self.smoke_fade_height - self.smoke_start
+        for phase, sway_phase, sway_amp in self.smoke_puffs:
+            progress = (self.time * self.smoke_rise_rate + phase) % 1.0
+            drift = sway_amp * progress * progress
+            offset_x = math.sin(progress * 3.0 + sway_phase) * drift
+            offset_z = math.cos(progress * 2.4 + sway_phase * 1.3) * drift
+            alpha = 0.34 * min(progress * 4.0, 1.0) * (1.0 - progress)
+            glColor4f(self.smoke_color[0], self.smoke_color[1], self.smoke_color[2], alpha)
+            glPushMatrix()
+            glTranslatef(offset_x, self.smoke_start + progress * rise, offset_z)
+            gluSphere(self.quadric, 0.05 + 0.6 * progress * progress, 8, 8)
+            glPopMatrix()
+        glDepthMask(GL_TRUE)
+        glDisable(GL_BLEND)
+        glEnable(GL_LIGHTING)
+        glPopMatrix()
+
     def draw(self):
         glPushMatrix()
         glTranslatef(self.x, self.y, self.z)
@@ -122,3 +161,4 @@ class Bonfire:
         self._draw_logs()
         self._draw_flames()
         glPopMatrix()
+        self._draw_smoke()

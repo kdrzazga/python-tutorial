@@ -49,7 +49,8 @@ class WinterScene:
                            self.flatty_land.surface_height(0.0, 0.0),
                            base_radius=3.5, layers_count=6)
         self.igloo_patch = GroundPatch(0.0, 0.0, self.igloo.base_radius * 4.0, self.flatty_land)
-        self.bonfire = Bonfire(self.igloo.x, self.igloo.ground_height, self.igloo.z, scale=0.9)
+        self.bonfire = Bonfire(self.igloo.x, self.igloo.ground_height, self.igloo.z, scale=0.9,
+                               smoke_fade_height=3.0 * self.igloo.base_radius)
         self.snow = Snow(220, (-22.0, 22.0, -20.0, 20.0, -1.5, 18.0))
         self.igloo_snow = Snow(200, (self.flatty_offset[0] - 22.0, self.flatty_offset[0] + 22.0,
                                      self.flatty_offset[2] - 20.0, self.flatty_offset[2] + 20.0,

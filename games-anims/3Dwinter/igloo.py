@@ -12,6 +12,7 @@ class Igloo:
         self.blocks_per_layer = blocks_per_layer
         self.door_layers = 1
         self.door_half_angle = math.radians(24.0)
+        self.ceiling_hole_radius = base_radius * 0.03
         self.tunnel_radius = base_radius * 0.42
         self.tunnel_near_z = base_radius * 0.82
         self.tunnel_far_z = self.tunnel_near_z + base_radius * 0.5
@@ -31,9 +32,10 @@ class Igloo:
     def _dome_blocks(self):
         blocks = []
         half_pi = math.pi / 2.0
+        top_latitude = math.acos(self.ceiling_hole_radius / self.base_radius)
         for layer in range(self.layers_count):
-            latitude_low = half_pi * layer / self.layers_count
-            latitude_high = half_pi * (layer + 1) / self.layers_count
+            latitude_low = top_latitude * layer / self.layers_count
+            latitude_high = top_latitude * (layer + 1) / self.layers_count
             for block in range(self.blocks_per_layer):
                 longitude_low = 2.0 * math.pi * block / self.blocks_per_layer
                 longitude_high = 2.0 * math.pi * (block + 1) / self.blocks_per_layer
