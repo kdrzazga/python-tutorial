@@ -89,6 +89,13 @@ class Snow:
         for flake in self.flakes:
             flake.update(dt)
 
+    def _billboard_matrix(self):
+        view = glGetFloatv(GL_MODELVIEW_MATRIX)
+        return (view[0][0], view[1][0], view[2][0], 0.0,
+                view[0][1], view[1][1], view[2][1], 0.0,
+                view[0][2], view[1][2], view[2][2], 0.0,
+                0.0, 0.0, 0.0, 1.0)
+
     def draw(self):
         glDisable(GL_LIGHTING)
         glEnable(GL_BLEND)
@@ -96,9 +103,11 @@ class Snow:
         glEnable(GL_LINE_SMOOTH)
         glLineWidth(1.6)
         glColor3f(*self.flake_color)
+        billboard = self._billboard_matrix()
         for flake in self.flakes:
             glPushMatrix()
             glTranslatef(flake.x, flake.y, flake.z)
+            glMultMatrixf(billboard)
             glScalef(flake.size, flake.size, flake.size)
             glRotatef(flake.spin, 0.0, 0.0, 1.0)
             glCallList(self.display_list)

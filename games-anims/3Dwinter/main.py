@@ -12,6 +12,9 @@ from snow import Snow
 from igloo import Igloo
 from patch import GroundPatch
 from bonfire import Bonfire
+from christmas_robin import ChristmasRobin
+from cloud import Cloud
+from stars import Stars
 
 
 class WinterScene:
@@ -29,11 +32,17 @@ class WinterScene:
         self.settle_duration = 4.0
         self.enter_duration = 3.0
         self.igloo_show_duration = 6.0
+        self.ascend_duration = 4.6
+        self.space_duration = 7.0
+        self.ascend_top = 40.0
+        self.space_color = (0.01, 0.01, 0.04)
         self.snowman_end = self.sway_duration
         self.transition_end = self.snowman_end + self.travel_duration
         self.outside_end = self.transition_end + self.settle_duration
         self.enter_end = self.outside_end + self.enter_duration
         self.show_end = self.enter_end + self.igloo_show_duration
+        self.ascend_end = self.show_end + self.ascend_duration
+        self.space_end = self.ascend_end + self.space_duration
         self.eye = (0.0, 10.0, 26.0)
         self.target = (0.0, 3.0, 0.0)
         self.thanks_printed = False
@@ -51,6 +60,9 @@ class WinterScene:
         self.igloo_patch = GroundPatch(0.0, 0.0, self.igloo.base_radius * 4.0, self.flatty_land)
         self.bonfire = Bonfire(self.igloo.x, self.igloo.ground_height, self.igloo.z, scale=0.9,
                                smoke_fade_height=3.0 * self.igloo.base_radius)
+        self.robins = self._create_robins()
+        self.clouds = self._create_clouds()
+        self.stars = Stars(seed=5)
         self.snow = Snow(220, (-22.0, 22.0, -20.0, 20.0, -1.5, 18.0))
         self.igloo_snow = Snow(200, (self.flatty_offset[0] - 22.0, self.flatty_offset[0] + 22.0,
                                      self.flatty_offset[2] - 20.0, self.flatty_offset[2] + 20.0,
@@ -108,6 +120,31 @@ class WinterScene:
             trees.append(Tree(x, z, ground, snow_top=index % 3 != 0, seed=index + 1))
         return trees
 
+    def _create_robins(self):
+        placements = ((-1.45, 0.55, 1.0, 0.15, 1), (1.30, -0.35, 0.8, 0.85, 2))
+        robins = []
+        for offset_x, offset_z, size, hue, seed in placements:
+            ground = self.flatty_land.surface_height(offset_x, offset_z) + self.igloo_patch.height_offset
+            facing = math.degrees(math.atan2(-offset_x, -offset_z))
+            robins.append(ChristmasRobin(self.bonfire.x + offset_x, self.bonfire.z + offset_z, ground,
+                                         size=size, hue=hue, facing=facing, head_bob=True, seed=seed))
+        return robins
+
+    def _create_clouds(self):
+        placements = ((-14.0, 24.0, -9.0, 5.0, 1), (12.0, 27.5, 8.0, 6.2, 2),
+                      (-8.0, 31.0, 13.0, 4.4, 3), (16.0, 34.0, -12.0, 7.0, 4),
+                      (-18.0, 37.0, 4.0, 5.6, 5), (6.0, 39.5, -16.0, 4.8, 6))
+        clouds = []
+        for offset_x, height, offset_z, size, seed in placements:
+            clouds.append(Cloud(self.igloo.x + offset_x, height, self.igloo.z + offset_z, size=size, seed=seed))
+        return clouds
+
+    def _clamp01(self, value):
+        return max(0.0, min(1.0, value))
+
+    def _ease(self, value):
+        return value * value * (3.0 - 2.0 * value)
+
     def _sway_eye(self, moment):
         orbit = math.radians(35.0 * math.sin(moment * 0.25))
         radius = 26.0
@@ -142,12 +179,38 @@ class WinterScene:
         start_eye, _ = self._outside_igloo_view(self.settle_duration)
         self.eye, self.target = self.igloo.enter_igloo(start_eye, progress)
 
-    def _igloo_scene(self):
+    def _igloo_inside_view(self):
         start_eye, _ = self._outside_igloo_view(self.settle_duration)
-        self.eye, self.target = self.igloo.enter_igloo(start_eye, 1.0)
+        return self.igloo.enter_igloo(start_eye, 1.0)
+
+    def _igloo_scene(self):
+        self.eye, self.target = self._igloo_inside_view()
+
+    def _skyward_target(self, eye, spin):
+        yaw = math.radians(-90.0 + spin * 55.0)
+        return (eye[0] + math.cos(yaw) * 6.0, eye[1] + 10.0, eye[2] + math.sin(yaw) * 6.0)
+
+    def _ascend_view(self, progress):
+        start_eye, start_target = self._igloo_inside_view()
+        centering = self._ease(self._clamp01(progress / 0.30))
+        eye = (start_eye[0] + (self.igloo.x - start_eye[0]) * centering,
+               start_eye[1] + (self.ascend_top - start_eye[1]) * progress,
+               start_eye[2] + (self.igloo.z - start_eye[2]) * centering)
+        skyward = self._skyward_target(eye, progress)
+        return eye, self._lerp(start_target, skyward, self._ease(self._clamp01(progress / 0.22)))
+
+    def _space_view(self, progress):
+        eye = (self.igloo.x, self.ascend_top + progress * 16.0, self.igloo.z)
+        return eye, self._skyward_target(eye, 1.0 + progress * 1.6)
+
+    def _ascend_scene(self):
+        self.eye, self.target = self._ascend_view(self._clamp01((self.elapsed - self.show_end) / self.ascend_duration))
+
+    def _space_scene(self):
+        self.eye, self.target = self._space_view(self._clamp01((self.elapsed - self.ascend_end) / self.space_duration))
 
     def _finish(self):
-        self._igloo_scene()
+        self.eye, self.target = self._space_view(1.0)
         if not self.thanks_printed:
             print("thanks for watching")
             self.thanks_printed = True
@@ -164,6 +227,10 @@ class WinterScene:
             self._enter_igloo()
         elif time <= self.show_end:
             self._igloo_scene()
+        elif time <= self.ascend_end:
+            self._ascend_scene()
+        elif time <= self.space_end:
+            self._space_scene()
         else:
             self._finish()
 
@@ -172,9 +239,14 @@ class WinterScene:
                   self.target[0], self.target[1], self.target[2], 0.0, 1.0, 0.0)
 
     def _draw(self):
+        space_factor = self._ease(self._clamp01((self.eye[1] - 28.0) / 24.0))
+        sky = self._lerp(self.sky_color, self.space_color, space_factor)
+        glClearColor(sky[0], sky[1], sky[2], 1.0)
+        glFogfv(GL_FOG_COLOR, (sky[0], sky[1], sky[2], 1.0))
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         self._place_camera()
+        self.stars.draw(space_factor, self.eye)
         glLightfv(GL_LIGHT0, GL_POSITION, (0.5, 1.0, 0.6, 0.0))
         glow = self.bonfire.glow_intensity()
         glLightfv(GL_LIGHT1, GL_POSITION, self.bonfire.light_position())
@@ -185,10 +257,14 @@ class WinterScene:
         self.flatty_land.draw()
         self.igloo_patch.draw()
         glPopMatrix()
+        for cloud in self.clouds:
+            cloud.draw()
         for tree in self.trees:
             tree.draw()
         self.snowman.draw()
         self.igloo.draw(glow)
+        for robin in self.robins:
+            robin.draw()
         self.bonfire.draw()
         self.snow.draw()
         self.igloo_snow.draw()
@@ -206,6 +282,8 @@ class WinterScene:
             self.snow.update(delta_seconds)
             self.igloo_snow.update(delta_seconds)
             self.bonfire.update(delta_seconds)
+            for robin in self.robins:
+                robin.update(delta_seconds)
             self._play_scene()
             self._draw()
             pygame.display.flip()
