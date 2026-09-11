@@ -5,11 +5,11 @@ from OpenGL.GLU import *
 
 
 class Land:
-    def __init__(self, extent=24.0, resolution=44, seed=7):
+    def __init__(self, extent=24.0, resolution=44, seed=7, height_amplitudes=(1.15, 0.7, 0.5, 0.35)):
         self.extent = extent
         self.resolution = resolution
         self.random_generator = random.Random(seed)
-        self.height_amplitudes = (1.15, 0.7, 0.5, 0.35)
+        self.height_amplitudes = height_amplitudes
         self.snow_white = (0.97, 0.98, 1.0)
         self.cyan_shades = ((0.60, 0.86, 0.95), (0.74, 0.92, 0.98), (0.53, 0.80, 0.93))
         self.vertices = self._build_vertices()
@@ -79,3 +79,9 @@ class Land:
 
     def draw(self):
         glCallList(self.display_list)
+
+
+class FlattyLand(Land):
+
+    def __init__(self, extent=24.0, resolution=44, seed=7):
+        super().__init__(extent, resolution, seed, height_amplitudes=(0.15, 0.07, 0.05, 0.035))
