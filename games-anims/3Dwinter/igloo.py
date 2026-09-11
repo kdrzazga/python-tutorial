@@ -17,7 +17,9 @@ class Igloo:
         self.tunnel_far_z = self.tunnel_near_z + base_radius * 0.5
         self.block_color = (0.95, 0.97, 1.0)
         self.outline_color = (0.85, 1.0, 1.0)
-        self.doorway_color = (0.16, 0.28, 0.40)
+        self.doorway_color = (1.0, 0.62, 0.22)
+        self.inner_color = (0.88, 0.80, 0.72)
+        self.inner_scale = 0.96
         self.display_list = self._compile()
 
     def _dome_point(self, latitude, longitude):
@@ -90,6 +92,15 @@ class Igloo:
                 glVertex3f(*point)
         glEnd()
 
+        glColor3f(*self.inner_color)
+        glBegin(GL_QUADS)
+        for corners in dome_blocks:
+            for point in corners:
+                normal = self._sphere_normal(point)
+                glNormal3f(-normal[0], -normal[1], -normal[2])
+                glVertex3f(point[0] * self.inner_scale, point[1] * self.inner_scale, point[2] * self.inner_scale)
+        glEnd()
+
         glDisable(GL_LIGHTING)
         glLineWidth(1.3)
         glColor3f(*self.outline_color)
@@ -100,7 +111,16 @@ class Igloo:
                 glVertex3f(point[0] * outline_scale, point[1] * outline_scale, point[2] * outline_scale)
             glEnd()
 
-        glColor3f(*self.doorway_color)
+        glEnable(GL_LIGHTING)
+
+        glEndList()
+        return display_list
+
+    def _draw_doorway(self, glow):
+        glDisable(GL_LIGHTING)
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        glColor4f(self.doorway_color[0] * glow, self.doorway_color[1] * glow, self.doorway_color[2] * glow, 0.5)
         slices = 8
         glBegin(GL_TRIANGLE_FAN)
         glVertex3f(0.0, self.tunnel_radius * 0.1, self.tunnel_near_z)
@@ -108,10 +128,8 @@ class Igloo:
             angle = math.pi * slice_index / slices
             glVertex3f(self.tunnel_radius * math.cos(angle), self.tunnel_radius * math.sin(angle), self.tunnel_near_z)
         glEnd()
+        glDisable(GL_BLEND)
         glEnable(GL_LIGHTING)
-
-        glEndList()
-        return display_list
 
     def _blend(self, start, end, factor):
         return tuple(start[axis] + (end[axis] - start[axis]) * factor for axis in range(3))
@@ -122,7 +140,7 @@ class Igloo:
 
         mouth = (self.x, self.ground_height + self.tunnel_radius * 0.55, self.z + self.tunnel_far_z)
         front = (self.x, self.ground_height + self.tunnel_radius * 0.7, self.z + self.tunnel_far_z + base * 0.7)
-        inside = (self.x, self.ground_height + base * 0.4, self.z + base * 0.55)
+        inside = (self.x, self.ground_height + base * 0.4, self.z + base * 0.8)
         half_point = self._blend(current_eye, mouth, 0.5)
 
         if progress < 0.4:
@@ -138,8 +156,9 @@ class Igloo:
         target = self._blend(target_door, target_inside, look_shift)
         return eye, target
 
-    def draw(self):
+    def draw(self, doorway_glow=1.0):
         glPushMatrix()
         glTranslatef(self.x, self.ground_height, self.z)
         glCallList(self.display_list)
+        self._draw_doorway(doorway_glow)
         glPopMatrix()

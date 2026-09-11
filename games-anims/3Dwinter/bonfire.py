@@ -23,6 +23,13 @@ class Bonfire:
     def update(self, dt):
         self.time += dt
 
+    def glow_intensity(self):
+        flicker = 0.72 + 0.18 * math.sin(self.time * 7.0) + 0.10 * math.sin(self.time * 13.0 + 1.3)
+        return max(0.4, min(1.0, flicker))
+
+    def light_position(self):
+        return (self.x, self.y + (self.flame_base_y + 0.9) * self.scale, self.z, 1.0)
+
     def _build_logs(self):
         logs = []
         length = 1.6

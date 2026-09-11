@@ -1,7 +1,7 @@
 import math
 import os
 import pygame
-from pygame.locals import DOUBLEBUF, OPENGL, QUIT, KEYDOWN, K_ESCAPE, K_e
+from pygame.locals import DOUBLEBUF, OPENGL, QUIT, KEYDOWN, K_ESCAPE
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
@@ -27,10 +27,16 @@ class WinterScene:
         self.sway_duration = 5.0
         self.travel_duration = 2.5
         self.settle_duration = 4.0
-        self.enter_speed = 0.35
-        self.entering = False
-        self.entry_progress = 0.0
-        self.entry_start_eye = (0.0, 0.0, 0.0)
+        self.enter_duration = 3.0
+        self.igloo_show_duration = 6.0
+        self.snowman_end = self.sway_duration
+        self.transition_end = self.snowman_end + self.travel_duration
+        self.outside_end = self.transition_end + self.settle_duration
+        self.enter_end = self.outside_end + self.enter_duration
+        self.show_end = self.enter_end + self.igloo_show_duration
+        self.eye = (0.0, 10.0, 26.0)
+        self.target = (0.0, 3.0, 0.0)
+        self.thanks_printed = False
         self._init_display()
         self._start_music()
         self._init_gl()
@@ -77,6 +83,11 @@ class WinterScene:
         glLightfv(GL_LIGHT0, GL_DIFFUSE, (1.0, 0.98, 0.92, 1.0))
         glLightfv(GL_LIGHT0, GL_AMBIENT, (0.35, 0.40, 0.48, 1.0))
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, (0.35, 0.40, 0.48, 1.0))
+        glEnable(GL_LIGHT1)
+        glLightfv(GL_LIGHT1, GL_AMBIENT, (0.14, 0.07, 0.02, 1.0))
+        glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1.0)
+        glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0.09)
+        glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0.032)
         glClearColor(self.sky_color[0], self.sky_color[1], self.sky_color[2], 1.0)
         glEnable(GL_FOG)
         glFogi(GL_FOG_MODE, GL_LINEAR)
@@ -104,43 +115,69 @@ class WinterScene:
     def _lerp(self, start, end, factor):
         return tuple(start[axis] + (end[axis] - start[axis]) * factor for axis in range(3))
 
-    def _camera_eye_target(self):
-        snowman_target = (0.0, 3.0, 0.0)
-        if self.elapsed < self.sway_duration:
-            return self._sway_eye(self.elapsed), snowman_target
-
+    def _outside_igloo_view(self, local_time):
         flatty_x, _, flatty_z = self.flatty_offset
-        after_sway = self.elapsed - self.sway_duration
-        progress = min(1.0, after_sway / self.travel_duration)
-        eased = progress * progress * (3.0 - 2.0 * progress)
-        settle = max(0.0, after_sway - self.travel_duration)
+        eye = (flatty_x - 12.0 + math.sin(local_time * 0.35) * 4.0,
+               8.0,
+               flatty_z + 15.0 + math.cos(local_time * 0.35) * 2.0)
+        return eye, (flatty_x, 2.5, flatty_z)
 
-        eye_end = (flatty_x - 12.0 + math.sin(settle * 0.35) * 4.0,
-                   8.0,
-                   flatty_z + 15.0 + math.cos(settle * 0.35) * 2.0)
-        target_end = (flatty_x, 2.5, flatty_z)
-        eye = self._lerp(self._sway_eye(self.sway_duration), eye_end, eased)
-        target = self._lerp(snowman_target, target_end, eased)
-        return eye, target
+    def _snowman_scene(self):
+        self.eye = self._sway_eye(self.elapsed)
+        self.target = (0.0, 3.0, 0.0)
+
+    def _igloo_transition(self):
+        progress = (self.elapsed - self.snowman_end) / self.travel_duration
+        eased = progress * progress * (3.0 - 2.0 * progress)
+        end_eye, end_target = self._outside_igloo_view(0.0)
+        self.eye = self._lerp(self._sway_eye(self.snowman_end), end_eye, eased)
+        self.target = self._lerp((0.0, 3.0, 0.0), end_target, eased)
+
+    def _igloo_approach(self):
+        self.eye, self.target = self._outside_igloo_view(self.elapsed - self.transition_end)
+
+    def _enter_igloo(self):
+        progress = (self.elapsed - self.outside_end) / self.enter_duration
+        start_eye, _ = self._outside_igloo_view(self.settle_duration)
+        self.eye, self.target = self.igloo.enter_igloo(start_eye, progress)
+
+    def _igloo_scene(self):
+        start_eye, _ = self._outside_igloo_view(self.settle_duration)
+        self.eye, self.target = self.igloo.enter_igloo(start_eye, 1.0)
+
+    def _finish(self):
+        self._igloo_scene()
+        if not self.thanks_printed:
+            print("thanks for watching")
+            self.thanks_printed = True
+
+    def _play_scene(self):
+        time = self.elapsed
+        if time <= self.snowman_end:
+            self._snowman_scene()
+        elif time <= self.transition_end:
+            self._igloo_transition()
+        elif time <= self.outside_end:
+            self._igloo_approach()
+        elif time <= self.enter_end:
+            self._enter_igloo()
+        elif time <= self.show_end:
+            self._igloo_scene()
+        else:
+            self._finish()
 
     def _place_camera(self):
-        if self.entering:
-            eye, target = self.igloo.enter_igloo(self.entry_start_eye, self.entry_progress)
-        else:
-            eye, target = self._camera_eye_target()
-        gluLookAt(eye[0], eye[1], eye[2], target[0], target[1], target[2], 0.0, 1.0, 0.0)
-
-    def _start_entering(self):
-        if not self.entering:
-            self.entry_start_eye, _ = self._camera_eye_target()
-            self.entry_progress = 0.0
-            self.entering = True
+        gluLookAt(self.eye[0], self.eye[1], self.eye[2],
+                  self.target[0], self.target[1], self.target[2], 0.0, 1.0, 0.0)
 
     def _draw(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         self._place_camera()
         glLightfv(GL_LIGHT0, GL_POSITION, (0.5, 1.0, 0.6, 0.0))
+        glow = self.bonfire.glow_intensity()
+        glLightfv(GL_LIGHT1, GL_POSITION, self.bonfire.light_position())
+        glLightfv(GL_LIGHT1, GL_DIFFUSE, (glow, 0.5 * glow, 0.18 * glow, 1.0))
         self.land.draw()
         glPushMatrix()
         glTranslatef(*self.flatty_offset)
@@ -150,7 +187,7 @@ class WinterScene:
         for tree in self.trees:
             tree.draw()
         self.snowman.draw()
-        self.igloo.draw()
+        self.igloo.draw(glow)
         self.bonfire.draw()
         self.snow.draw()
         self.igloo_snow.draw()
@@ -165,15 +202,10 @@ class WinterScene:
                     running = False
                 elif event.type == KEYDOWN and event.key == K_ESCAPE:
                     running = False
-                elif event.type == KEYDOWN and event.key == K_e:
-                    self._start_entering()
-            if self.elapsed >= self.sway_duration + self.travel_duration + self.settle_duration:
-                self._start_entering()
-            if self.entering:
-                self.entry_progress = min(1.0, self.entry_progress + self.enter_speed * delta_seconds)
             self.snow.update(delta_seconds)
             self.igloo_snow.update(delta_seconds)
             self.bonfire.update(delta_seconds)
+            self._play_scene()
             self._draw()
             pygame.display.flip()
         pygame.quit()
