@@ -15,6 +15,7 @@ from bonfire import Bonfire
 from christmas_robin import ChristmasRobin
 from cloud import Cloud
 from stars import Stars
+from space import SpaceBackdrop
 
 
 class WinterScene:
@@ -33,15 +34,20 @@ class WinterScene:
         self.enter_duration = 3.0
         self.igloo_show_duration = 6.0
         self.ascend_duration = 4.6
+        self.hole_tilt_duration = 0.4
+        self.hole_hold_duration = 0.5
         self.space_duration = 7.0
         self.ascend_top = 40.0
         self.space_color = (0.01, 0.01, 0.04)
+        self.nebula_delay = 2.0
+        self.nebula_fade = 2.5
         self.snowman_end = self.sway_duration
         self.transition_end = self.snowman_end + self.travel_duration
         self.outside_end = self.transition_end + self.settle_duration
         self.enter_end = self.outside_end + self.enter_duration
         self.show_end = self.enter_end + self.igloo_show_duration
-        self.ascend_end = self.show_end + self.ascend_duration
+        self.hole_gaze_duration = self.hole_tilt_duration + self.hole_hold_duration
+        self.ascend_end = self.show_end + self.hole_gaze_duration + self.ascend_duration
         self.space_end = self.ascend_end + self.space_duration
         self.eye = (0.0, 10.0, 26.0)
         self.target = (0.0, 3.0, 0.0)
@@ -63,11 +69,31 @@ class WinterScene:
         self.robins = self._create_robins()
         self.clouds = self._create_clouds()
         self.stars = Stars(seed=5)
+        self.space_backdrop = SpaceBackdrop(self.width / self.height, fov=55.0)
         self.snow = Snow(220, (-22.0, 22.0, -20.0, 20.0, -1.5, 18.0))
         self.igloo_snow = Snow(200, (self.flatty_offset[0] - 22.0, self.flatty_offset[0] + 22.0,
                                      self.flatty_offset[2] - 20.0, self.flatty_offset[2] + 20.0,
                                      -1.5, 18.0), seed=123,
                                dome=(self.igloo.x, self.igloo.z, self.igloo.base_radius, self.igloo.ground_height))
+
+    def _play_scene(self):
+        time = self.elapsed
+        if time <= self.snowman_end:
+            self._snowman_scene()
+        elif time <= self.transition_end:
+            self._igloo_transition()
+        elif time <= self.outside_end:
+            self._igloo_approach()
+        elif time <= self.enter_end:
+            self._enter_igloo()
+        elif time <= self.show_end:
+            self._igloo_scene()
+        elif time <= self.ascend_end:
+            self._ascend_scene()
+        elif time <= self.space_end:
+            self._space_scene()
+        else:
+            self._finish()
 
     def _init_display(self):
         pygame.init()
@@ -79,8 +105,8 @@ class WinterScene:
         try:
             pygame.mixer.init()
             pygame.mixer.music.load(music_path)
-            pygame.mixer.music.set_volume(0.6)
-            pygame.mixer.music.play(-1)
+            pygame.mixer.music.set_volume(1.0)
+            pygame.mixer.music.play()
         except pygame.error:
             pass
 
@@ -139,6 +165,13 @@ class WinterScene:
             clouds.append(Cloud(self.igloo.x + offset_x, height, self.igloo.z + offset_z, size=size, seed=seed))
         return clouds
 
+    def _space_factor(self):
+        return self._ease(self._clamp01((self.eye[1] - 28.0) / 24.0))
+
+    def _nebula_factor(self):
+        started = self.elapsed - self.ascend_end - self.nebula_delay
+        return self._ease(self._clamp01(started / self.nebula_fade))
+
     def _clamp01(self, value):
         return max(0.0, min(1.0, value))
 
@@ -190,21 +223,34 @@ class WinterScene:
         yaw = math.radians(-90.0 + spin * 55.0)
         return (eye[0] + math.cos(yaw) * 6.0, eye[1] + 10.0, eye[2] + math.sin(yaw) * 6.0)
 
+    def _hole_position(self):
+        return (self.igloo.x, self.igloo.ground_height + self.igloo.base_radius, self.igloo.z)
+
+    def _hole_gaze_view(self, local_time):
+        inside_eye, inside_target = self._igloo_inside_view()
+        tilt = self._ease(self._clamp01(local_time / self.hole_tilt_duration))
+        return inside_eye, self._lerp(inside_target, self._hole_position(), tilt)
+
     def _ascend_view(self, progress):
-        start_eye, start_target = self._igloo_inside_view()
+        start_eye, _ = self._igloo_inside_view()
         centering = self._ease(self._clamp01(progress / 0.30))
         eye = (start_eye[0] + (self.igloo.x - start_eye[0]) * centering,
                start_eye[1] + (self.ascend_top - start_eye[1]) * progress,
                start_eye[2] + (self.igloo.z - start_eye[2]) * centering)
         skyward = self._skyward_target(eye, progress)
-        return eye, self._lerp(start_target, skyward, self._ease(self._clamp01(progress / 0.22)))
+        return eye, self._lerp(self._hole_position(), skyward, self._ease(self._clamp01(progress / 0.22)))
 
     def _space_view(self, progress):
         eye = (self.igloo.x, self.ascend_top + progress * 16.0, self.igloo.z)
         return eye, self._skyward_target(eye, 1.0 + progress * 1.6)
 
     def _ascend_scene(self):
-        self.eye, self.target = self._ascend_view(self._clamp01((self.elapsed - self.show_end) / self.ascend_duration))
+        local_time = self.elapsed - self.show_end
+        if local_time <= self.hole_gaze_duration:
+            self.eye, self.target = self._hole_gaze_view(local_time)
+        else:
+            rise = (local_time - self.hole_gaze_duration) / self.ascend_duration
+            self.eye, self.target = self._ascend_view(self._clamp01(rise))
 
     def _space_scene(self):
         self.eye, self.target = self._space_view(self._clamp01((self.elapsed - self.ascend_end) / self.space_duration))
@@ -215,37 +261,19 @@ class WinterScene:
             print("thanks for watching")
             self.thanks_printed = True
 
-    def _play_scene(self):
-        time = self.elapsed
-        if time <= self.snowman_end:
-            self._snowman_scene()
-        elif time <= self.transition_end:
-            self._igloo_transition()
-        elif time <= self.outside_end:
-            self._igloo_approach()
-        elif time <= self.enter_end:
-            self._enter_igloo()
-        elif time <= self.show_end:
-            self._igloo_scene()
-        elif time <= self.ascend_end:
-            self._ascend_scene()
-        elif time <= self.space_end:
-            self._space_scene()
-        else:
-            self._finish()
-
     def _place_camera(self):
         gluLookAt(self.eye[0], self.eye[1], self.eye[2],
                   self.target[0], self.target[1], self.target[2], 0.0, 1.0, 0.0)
 
     def _draw(self):
-        space_factor = self._ease(self._clamp01((self.eye[1] - 28.0) / 24.0))
+        space_factor = self._space_factor()
         sky = self._lerp(self.sky_color, self.space_color, space_factor)
         glClearColor(sky[0], sky[1], sky[2], 1.0)
         glFogfv(GL_FOG_COLOR, (sky[0], sky[1], sky[2], 1.0))
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         self._place_camera()
+        self.space_backdrop.draw(self._nebula_factor(), self.eye, self.target)
         self.stars.draw(space_factor, self.eye)
         glLightfv(GL_LIGHT0, GL_POSITION, (0.5, 1.0, 0.6, 0.0))
         glow = self.bonfire.glow_intensity()
@@ -285,6 +313,7 @@ class WinterScene:
             for robin in self.robins:
                 robin.update(delta_seconds)
             self._play_scene()
+            self.space_backdrop.update(self.elapsed, self._nebula_factor())
             self._draw()
             pygame.display.flip()
         pygame.quit()
