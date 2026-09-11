@@ -16,14 +16,15 @@ class WinterScene:
         self.height = height
         self.sky_color = (0.66, 0.76, 0.86)
         self.tree_positions = ((-8.0, -4.0), (-5.5, 3.0), (6.5, -6.0), (9.0, 2.5),
-                               (-10.0, -9.0), (3.0, 8.0), (-2.0, -11.0), (11.0, -1.0))
+                               (-10.0, -9.0), (3.0, 8.0), (-2.0, -11.0), (11.0, -1.0),
+                               (-12.0, -14.0), (1.0, 13.0), (-4.0, -14.0), (12.0, -12.0))
         self.clock = pygame.time.Clock()
         self.elapsed = 0.0
         self._init_display()
         self._init_gl()
-        self.land = Land(extent=24.0, resolution=44, seed=7)
+        self.land = Land(extent=80.0, resolution=144, seed=7)
         self.trees = self._create_trees()
-        self.snowman = Snowman(0.0, 0.0, self.land.surface_height(0.0, 0.0))
+        self.snowman = Snowman(1.7, 0.0, self.land.surface_height(1.7, 0.0) - 0.6)
         self.snow = Snow(220, (-22.0, 22.0, -20.0, 20.0, -1.5, 18.0))
 
     def _init_display(self):
