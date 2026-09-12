@@ -16,6 +16,7 @@ from christmas_robin import ChristmasRobin
 from cloud import Cloud
 from stars import Stars
 from space import SpaceBackdrop
+from santa_ride import SantaRide
 
 
 class WinterScene:
@@ -36,11 +37,18 @@ class WinterScene:
         self.ascend_duration = 4.6
         self.hole_tilt_duration = 0.4
         self.hole_hold_duration = 0.5
-        self.space_duration = 7.0
+        self.space_duration = 11.0
         self.ascend_top = 40.0
         self.space_color = (0.01, 0.01, 0.04)
         self.nebula_delay = 2.0
         self.nebula_fade = 2.5
+        self.nebula_travel_speed = 90.0
+        self.nebula_travel_cap = 700.0
+        self.santa_delay = 2.0
+        self.santa_approach = 6.0
+        self.santa_size = 2.0
+        self.santa_start_offset = (110.0, 100.0, 30.0)
+        self.santa_end_offset = (18.0, 22.0, 6.0)
         self.snowman_end = self.sway_duration
         self.transition_end = self.snowman_end + self.travel_duration
         self.outside_end = self.transition_end + self.settle_duration
@@ -49,6 +57,8 @@ class WinterScene:
         self.hole_gaze_duration = self.hole_tilt_duration + self.hole_hold_duration
         self.ascend_end = self.show_end + self.hole_gaze_duration + self.ascend_duration
         self.space_end = self.ascend_end + self.space_duration
+        self.nebula_start = self.ascend_end + self.nebula_delay
+        self.santa_start = self.nebula_start + self.santa_delay
         self.eye = (0.0, 10.0, 26.0)
         self.target = (0.0, 3.0, 0.0)
         self.thanks_printed = False
@@ -70,6 +80,7 @@ class WinterScene:
         self.clouds = self._create_clouds()
         self.stars = Stars(seed=5)
         self.space_backdrop = SpaceBackdrop(self.width / self.height, fov=55.0)
+        self.santa_ride = self._create_santa_ride()
         self.snow = Snow(220, (-22.0, 22.0, -20.0, 20.0, -1.5, 18.0))
         self.igloo_snow = Snow(200, (self.flatty_offset[0] - 22.0, self.flatty_offset[0] + 22.0,
                                      self.flatty_offset[2] - 20.0, self.flatty_offset[2] + 20.0,
@@ -164,6 +175,35 @@ class WinterScene:
         for offset_x, height, offset_z, size, seed in placements:
             clouds.append(Cloud(self.igloo.x + offset_x, height, self.igloo.z + offset_z, size=size, seed=seed))
         return clouds
+
+    def _santa_anchor(self):
+        return (self.igloo.x, self.ascend_top + 8.0, self.igloo.z)
+
+    def _santa_waypoint(self, offset):
+        anchor = self._santa_anchor()
+        return (anchor[0] + offset[0], anchor[1] + offset[1], anchor[2] + offset[2])
+
+    def _create_santa_ride(self):
+        start = self._santa_waypoint(self.santa_start_offset)
+        end = self._santa_waypoint(self.santa_end_offset)
+        course = tuple(end[axis] - start[axis] for axis in range(3))
+        flat = math.hypot(course[0], course[2])
+        facing = math.degrees(math.atan2(course[0], course[2]))
+        pitch = math.degrees(math.atan2(-course[1], flat))
+        return SantaRide(start[0], start[1], start[2], size=self.santa_size,
+                         facing=facing, pitch=pitch, bob=True, seed=4)
+
+    def _santa_progress(self):
+        return (self.elapsed - self.santa_start) / self.santa_approach
+
+    def _place_santa(self, progress):
+        start = self._santa_waypoint(self.santa_start_offset)
+        end = self._santa_waypoint(self.santa_end_offset)
+        self.santa_ride.x, self.santa_ride.y, self.santa_ride.z = self._lerp(start, end, self._clamp01(progress))
+
+    def _nebula_travel(self):
+        return min(self.nebula_travel_cap,
+                   max(0.0, self.elapsed - self.nebula_start) * self.nebula_travel_speed)
 
     def _space_factor(self):
         return self._ease(self._clamp01((self.eye[1] - 28.0) / 24.0))
@@ -270,10 +310,11 @@ class WinterScene:
         sky = self._lerp(self.sky_color, self.space_color, space_factor)
         glClearColor(sky[0], sky[1], sky[2], 1.0)
         glFogfv(GL_FOG_COLOR, (sky[0], sky[1], sky[2], 1.0))
+        glFogf(GL_FOG_END, 80.0 + 180.0 * space_factor)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         self._place_camera()
-        self.space_backdrop.draw(self._nebula_factor(), self.eye, self.target)
+        self.space_backdrop.draw(self._nebula_factor(), self.eye, self.target, self._nebula_travel())
         self.stars.draw(space_factor, self.eye)
         glLightfv(GL_LIGHT0, GL_POSITION, (0.5, 1.0, 0.6, 0.0))
         glow = self.bonfire.glow_intensity()
@@ -294,6 +335,10 @@ class WinterScene:
         for robin in self.robins:
             robin.draw()
         self.bonfire.draw()
+        santa_progress = self._santa_progress()
+        if santa_progress >= 0.0:
+            self._place_santa(santa_progress)
+            self.santa_ride.draw()
         self.snow.draw()
         self.igloo_snow.draw()
 
@@ -312,6 +357,7 @@ class WinterScene:
             self.bonfire.update(delta_seconds)
             for robin in self.robins:
                 robin.update(delta_seconds)
+            self.santa_ride.update(delta_seconds)
             self._play_scene()
             self.space_backdrop.update(self.elapsed, self._nebula_factor())
             self._draw()

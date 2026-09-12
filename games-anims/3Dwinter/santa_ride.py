@@ -9,12 +9,13 @@ from reindeer import Reindeer
 
 
 class SantaRide:
-    def __init__(self, x, y, z, size=1.0, facing=0.0, bob=True, seed=0):
+    def __init__(self, x, y, z, size=1.0, facing=0.0, pitch=0.0, bob=True, seed=0):
         self.x = x
         self.y = y
         self.z = z
         self.size = size
         self.facing = facing
+        self.pitch = pitch
         self.bob = bob
         self.random_generator = random.Random(seed)
         self.time = 0.0
@@ -94,7 +95,7 @@ class SantaRide:
         glPushMatrix()
         glTranslatef(self.x, self.y + lift, self.z)
         glRotatef(self.facing, 0.0, 1.0, 0.0)
-        glRotatef(tilt, 1.0, 0.0, 0.0)
+        glRotatef(self.pitch + tilt, 1.0, 0.0, 0.0)
         glScalef(self.size, self.size, self.size)
         self.sleigh.draw()
         self.santa.draw()

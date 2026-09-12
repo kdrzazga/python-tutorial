@@ -10,7 +10,7 @@ from .round_nebula import RoundNebula
 
 
 class SpaceBackdrop:
-    def __init__(self, aspect, fov=55.0, far=3000.0, tilt=90.0, view_distance=46.0):
+    def __init__(self, aspect, fov=55.0, far=3200.0, tilt=90.0, view_distance=220.0):
         self.aspect = aspect
         self.fov = fov
         self.far = far
@@ -18,6 +18,8 @@ class SpaceBackdrop:
         self.view_distance = view_distance
         self.world_up = np.array([0.0, 1.0, 0.0], dtype=np.float32)
         self.config = Config()
+        self.config.stars = 8000
+        self.config.star_volume = (-620.0, 620.0, -540.0, 520.0, -1800.0, 500.0)
         self.textures = TextureLibrary()
         self.batches = (#NebulaGas(self.config, self.textures.glow),
                         StarField(self.config, self.textures.glow),
@@ -27,17 +29,17 @@ class SpaceBackdrop:
 
     def _build_round_nebulas(self):
         glow = self.textures.glow
-        return (RoundNebula(glow, center=(-530.0, 55.0, -95.0), radius=130.0, seed=3, spin_speed=10.1),
-                RoundNebula(glow, center=(-630.0, -255.0, 155.0), radius=30.0, seed=2,
-                            inner_color=(0.1, 0.96, 0.1)),
-                RoundNebula(glow, center=(0.0, 0.0, 1500.0), radius=130.0, seed=2, spin_speed=0.1,
+        return (RoundNebula(glow, center=(-210.0, 214.0, -900.0), radius=170.0, seed=3, spin_speed=0.08),
+                RoundNebula(glow, center=(330.0, -260.0, -1200.0), radius=190.0, seed=2, spin_speed=-0.05,
+                            inner_color=(0.10, 0.96, 0.10)),
+                RoundNebula(glow, center=(-200.0, -436.0, -1500.0), radius=200.0, seed=2, spin_speed=0.10,
                             rim_color=(0.0, 0.94, 0.30)),
-                RoundNebula(glow, center=(-400.0, -400.0, 1600.0), radius=120.0, seed=5, spin_speed=-0.9,
+                RoundNebula(glow, center=(520.0, 300.0, -1800.0), radius=240.0, seed=5, spin_speed=-0.09,
                             rim_color=(0.0, 0.15, 0.99)),
-                RoundNebula(glow, center=(300.0, 450.0, 1650.0), radius=110.0, seed=1, spin_speed=-5.5),
-                RoundNebula(glow, center=(255.0, -65.0, -150.0), radius=42.0, seed=6,
+                RoundNebula(glow, center=(-620.0, -280.0, -2100.0), radius=250.0, seed=1, spin_speed=-0.06),
+                RoundNebula(glow, center=(150.0, 212.0, -700.0), radius=130.0, seed=6, spin_speed=-0.045,
                             rim_color=(1.0, 0.34, 0.30), shell_color=(1.0, 0.58, 0.34),
-                            inner_color=(0.40, 0.46, 0.92), spin_speed=-0.045))
+                            inner_color=(0.40, 0.46, 0.92)))
 
     def _camera_basis(self, eye, target):
         forward = np.array(target, dtype=np.float32) - np.array(eye, dtype=np.float32)
@@ -64,7 +66,7 @@ class SpaceBackdrop:
             nebula.update(moment)
             nebula.colors[:, 3] *= brightness
 
-    def draw(self, brightness, eye, target):
+    def draw(self, brightness, eye, target, travel=0.0):
         if brightness <= 0.01:
             return
         forward, right, up = self._camera_basis(eye, target)
@@ -96,7 +98,7 @@ class SpaceBackdrop:
         gluLookAt(0.0, 0.0, 0.0, forward[0], forward[1], forward[2],
                   self.world_up[0], self.world_up[1], self.world_up[2])
         glRotatef(self.tilt, 1.0, 0.0, 0.0)
-        glTranslatef(0.0, 0.0, -self.view_distance)
+        glTranslatef(0.0, 0.0, -(self.view_distance - travel))
 
         for batch in self.batches:
             batch.render(local_right, local_up)
