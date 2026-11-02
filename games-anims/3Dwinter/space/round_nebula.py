@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from .common import ParticleBatch
+from .particles import ParticleBatch
 
 
 class RoundNebula(ParticleBatch):

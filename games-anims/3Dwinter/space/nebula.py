@@ -2,7 +2,7 @@ import math
 
 import numpy as np
 
-from .common import Camera, ParticleBatch
+from .particles import Camera, ParticleBatch
 
 
 class Config:

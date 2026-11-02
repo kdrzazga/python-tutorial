@@ -5,7 +5,7 @@ import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from space.common import Texture2D
+from space.particles import Texture2D
 from space.moon import Moon
 
 

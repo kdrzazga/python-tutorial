@@ -4,7 +4,7 @@ import numpy as np
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from .common import Texture2D
+from .particles import Texture2D
 
 
 class Mars:

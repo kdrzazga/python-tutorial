@@ -79,7 +79,7 @@ class WinterScene:
         self.robins = self._create_robins()
         self.clouds = self._create_clouds()
         self.stars = Stars(seed=5)
-        self.space_backdrop = SpaceBackdrop(self.width / self.height, fov=55.0)
+        self.space_backdrop = SpaceBackdrop(self.width / self.height, fov=65.0)
         self.santa_ride = self._create_santa_ride()
         self.snow = Snow(220, (-22.0, 22.0, -20.0, 20.0, -1.5, 18.0))
         self.igloo_snow = Snow(200, (self.flatty_offset[0] - 22.0, self.flatty_offset[0] + 22.0,
