@@ -194,7 +194,7 @@ class Haircut:
         self.hairline_recession = 0.25
         self.slope_step = 0.01
         self.hair_count = 1000
-        self.color = (0.04, 0.03, 0.03)
+        self.color = (0.25, 0.25, 0.25)
         self.nape_line = 0.7
         self.temple_line = -0.3
         self.cheek_clearance = 0.6

@@ -104,7 +104,7 @@ class CodePanel:
         return sheet
 
     def render_footer(self):
-        hint = "Space/Enter/Right: next   Left: back   Up/Down W/S: scroll   R: replay"
+        hint = "Space/Enter/Right: next  Left: back  Up/Down W/S: scroll  R: replay  O/K/H/P: pause"
         return self.small_font.render(hint, True, self.hint_color)
 
     def draw_scrollbar(self, overlay):

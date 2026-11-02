@@ -23,6 +23,8 @@ class TutorialApplication:
         self.previous_lesson_keys = {pygame.K_LEFT}
         self.scroll_up_keys = (pygame.K_UP, pygame.K_w)
         self.scroll_down_keys = (pygame.K_DOWN, pygame.K_s)
+        self.pause_keys = {pygame.K_o, pygame.K_k, pygame.K_h, pygame.K_p}
+        self.is_paused = False
         pygame.init()
         pygame.display.set_caption("OpenGL in Python - animated tutorial")
         pygame.display.set_mode((self.window_width, self.window_height),
@@ -52,11 +54,24 @@ class TutorialApplication:
         lesson.restart()
         source_text = (self.snippets_directory / lesson.snippet_name).read_text(encoding="utf-8")
         self.code_panel.show(lesson, len(self.lessons), source_text)
-        self.title_bar.show(f"Lesson {lesson.number}: {lesson.title}")
+        self.show_title()
+
+    def show_title(self):
+        lesson = self.current_lesson
+        title = f"Lesson {lesson.number}: {lesson.title}"
+        if self.is_paused:
+            title += "  [PAUSED]"
+        self.title_bar.show(title)
+
+    def toggle_pause(self):
+        self.is_paused = not self.is_paused
+        self.show_title()
 
     def handle_key(self, key):
         if key == pygame.K_ESCAPE:
             self.running = False
+        elif key in self.pause_keys:
+            self.toggle_pause()
         elif key in self.next_lesson_keys:
             self.open_lesson(self.lesson_index + 1)
         elif key in self.previous_lesson_keys:
@@ -80,8 +95,9 @@ class TutorialApplication:
         return int(scrolls_down) - int(scrolls_up)
 
     def update(self, seconds):
-        self.current_lesson.update(seconds)
-        self.scene_view.update(seconds, self.current_lesson.camera_tilt)
+        if not self.is_paused:
+            self.current_lesson.update(seconds)
+            self.scene_view.update(seconds, self.current_lesson.camera_tilt)
         self.code_panel.update(seconds, self.scroll_direction())
         self.caption_bar.show(self.current_lesson.caption())
         self.title_bar.update(seconds)

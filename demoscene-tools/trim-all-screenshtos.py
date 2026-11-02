@@ -1,9 +1,9 @@
 import os
 from PIL import Image
 
-directory = 'screenshots'
-x1, y1 = 267, 207
-x2, y2 = 1117, 765
+directory = 'screenshots/p'
+x1, y1 = 104, 200
+x2, y2 = 728,730
 
 for filename in os.listdir(directory):
     if filename.lower().endswith('.png'):
